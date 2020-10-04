@@ -1,28 +1,49 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <b-card id="mainCard">
+      <b-card-body><SelectApp /></b-card-body>
+      <b-card-body><WeChat ref="WeChat"/></b-card-body>
+      <b-card-body><Footer @cleanUp="cleanUpFloder"/></b-card-body>
+    </b-card>
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import SelectApp from "./components/SelectApp";
+import WeChat from "./components/WeChat";
+import Footer from "./components/Footer";
 
 export default {
   name: "App",
   components: {
-    HelloWorld
-  }
+    SelectApp,
+    WeChat,
+    Footer,
+  },
+  methods: {
+    cleanUpFloder: async function() {
+      await window.exports.cleanUpSubItem(this.$refs.WeChat.ListIs);
+      window.utools.showNotification("清理完成");
+    },
+  },
 };
 </script>
 
 <style>
+html,
+body {
+  height: 100%;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  /* margin-top: 60px; */
+  height: 100%;
+}
+#mainCard {
+  height: 100%;
 }
 </style>

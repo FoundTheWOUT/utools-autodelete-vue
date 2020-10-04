@@ -1,7 +1,7 @@
 {
-  "pluginName": "auto-Delete",
-  "description": "自动清除微信缓存垃圾",
-  "version": "0.0.2",
+  "pluginName": "auto-Delete-vue",
+  "description": "一件清除微信缓存垃圾",
+  "version": "0.9.0",
   "author": "FoundTheWOUT",
   "main": "dist/index.html",
   "preload": "preload.js",
@@ -9,8 +9,8 @@
   "platform": ["win32"],
   "features": [
     {
-      "code": "180723e2-2d52-45f8-8c5e-269fc95a2090",
-      "explain": "自动清除微信缓存垃圾",
+      "code": "main",
+      "explain": "一件清除微信缓存垃圾",
       "cmds": ["autoDelete", "自动清理"]
     }
   ]
