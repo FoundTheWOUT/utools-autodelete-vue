@@ -2,24 +2,22 @@ const os = require("os");
 const path = require("path");
 const fs = require("fs");
 const rmdir = require("rimraf");
-
 const user = os.userInfo().username;
+
 const dic = {
-  forwin10:
-    "C:\\Users\\" +
-    user +
-    "\\AppData\\Local\\Packages\\TencentWeChatLimited.forWindows10_sdtnhv12zgd7a\\LocalCache\\Roaming\\Tencent\\WeChatAppStore\\WeChatAppStore Files",
+  forwin10: ` C:\\Users\\" +
+    ${user} +
+    "\\AppData\\Local\\Packages\\TencentWeChatLimited.forWindows10_sdtnhv12zgd7a\\LocalCache\\Roaming\\Tencent\\WeChatAppStore\\WeChatAppStore Files`,
 
   pc: `C:\\Users\\${user}\\Documents\\WeChat Files`,
-  foruwp:
-    "C:\\Users\\" +
-    user +
-    "\\AppData\\Local\\Packages\\TencentWeChatLimited.WeChatUWP_sdtnhv12zgd7a\\LocalCache\\Roaming\\Tencent\\WeChatAppStore\\WeChatAppStore Files",
+  foruwp: `C:\\Users\\" +
+    ${user} +
+    "\\AppData\\Local\\Packages\\TencentWeChatLimited.WeChatUWP_sdtnhv12zgd7a\\LocalCache\\Roaming\\Tencent\\WeChatAppStore\\WeChatAppStore Files`,
 };
 
 // 本机用户
 let accountsList = [];
-// 待清除目录
+// 待清理目录
 let waitingFloderList = [];
 
 // 删除arr数组中与rmvalue数组重合内容
@@ -31,6 +29,7 @@ function removeValue(arr, rmvalue) {
   return newarr;
 }
 
+// 初始化本地用户、待清理目录
 (function getWeChatFile() {
   let AllWeChat = [];
   for (const key in dic) {

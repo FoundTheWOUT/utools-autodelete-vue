@@ -1,9 +1,6 @@
-#### ⚠数据无价，请确保需要保存文件，图片，视频等内容已自行保存
+#### ⚠ 数据无价，请确保需要保存文件，图片，视频等内容已自行保存
 
-⚠运行本脚本后文件将会被**直接**删除
-
-------
-
+---
 
 ### 一步清除微信缓存文件
 
@@ -16,14 +13,8 @@
         - **File**
         - **Video**
 
-该文件夹都是占用空间大户，几个月下来一个文件夹几个g，还有另一个Image文件夹也是如此，但由于涉及到聊天记录问题还善等待改进，可能以后会更新个可以选择时间进行删除。（可能还会集成清理QQ？）
+此些文件夹都是占用空间大户，几个月下来一个文件夹几个 g，还有另一个 Image 文件夹也是如此，但由于涉及到聊天记录问题还善等待改进，可能以后会更新个可以选择时间进行删除。（可能还会集成清理 QQ？）
 
-### 使用方法
+![](https://drimagebed.oss-cn-shenzhen.aliyuncs.com/img/autoDelete.png)
 
-直接运行即可
-
-
-
-
-> 制作参考： [https://github.com/blackboxo/CleanMyWechat](https://github.com/blackboxo/CleanMyWechat)
-
+开源：[项目地址](https://github.com/FoundTheWOUT/auto-delete-vue)
