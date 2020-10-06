@@ -72,29 +72,41 @@ function removeValue(arr, rmvalue) {
 // getWeChatFile()
 // console.log(accountsList, waitingFloderList);
 
-function deleteFile(path) {
-  return new Promise((resolve, reject) => {
+function deleteFilePromise(path) {
+  return new Promise(resolve => {
     rmdir(path, () => {
+      console.log("rmdir");
       resolve();
-    }).catch(reject());
+    });
   });
 }
 
-function cleanUpSubItem(List) {
+// function countTime(t = 10000) {
+//   return new Promise(resolve => {
+//     setTimeout(() => {
+//       console.log("waiting");
+//       resolve();
+//     }, t);
+//   });
+// }
+
+async function cleanUpSubItem(List) {
   let delFile = [];
   List.forEach(filepath => {
     fs.readdirSync(filepath).forEach(value => {
       delFile.push(path.join(filepath, value));
     });
   });
-
   // console.log(delFile)
-  delFile.forEach(value => {
-    deleteFile(value);
-  });
+  // delFile.forEach(value => {
+  //   rmdir(value);
+  // });
   for (let index = 0; index < delFile.length; index++) {
-    deleteFile(delFile[index]);
+    await deleteFilePromise(delFile[index]);
   }
+  // await countTime();
+  console.log("finshed");
+  window.utools.showNotification("清理完成");
 }
 
 function resizeData(name, List) {
@@ -108,6 +120,7 @@ let accounts = [];
 accountsList.forEach((value, index) => {
   accounts.push(resizeData(accountsList[index], waitingFloderList[index]));
 });
+
 // console.log(accounts);
 window.exports = {
   accounts,

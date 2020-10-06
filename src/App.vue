@@ -21,9 +21,8 @@ export default {
     Footer,
   },
   methods: {
-    cleanUpFloder: async function() {
-      await window.exports.cleanUpSubItem(this.$refs.WeChat.ListIs);
-      window.utools.showNotification("清理完成");
+    cleanUpFloder: function() {
+      window.exports.cleanUpSubItem(this.$refs.WeChat.ListIs);
     },
   },
 };
