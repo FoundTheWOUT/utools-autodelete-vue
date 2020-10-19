@@ -1,17 +1,16 @@
 const os = require("os");
 const path = require("path");
 const fs = require("fs");
-const rmdir = require("rimraf");
-const user = os.userInfo().username;
-
+const utils = require("./utils");
+const USER = os.userInfo().username;
 const dic = {
   forwin10: ` C:\\Users\\" +
-    ${user} +
+    ${USER} +
     "\\AppData\\Local\\Packages\\TencentWeChatLimited.forWindows10_sdtnhv12zgd7a\\LocalCache\\Roaming\\Tencent\\WeChatAppStore\\WeChatAppStore Files`,
 
-  pc: `C:\\Users\\${user}\\Documents\\WeChat Files`,
+  pc: `C:\\Users\\${USER}\\Documents\\WeChat Files`,
   foruwp: `C:\\Users\\" +
-    ${user} +
+    ${USER} +
     "\\AppData\\Local\\Packages\\TencentWeChatLimited.WeChatUWP_sdtnhv12zgd7a\\LocalCache\\Roaming\\Tencent\\WeChatAppStore\\WeChatAppStore Files`,
 };
 
@@ -20,14 +19,12 @@ let accountsList = [];
 // 待清理目录
 let waitingFloderList = [];
 
-// 删除arr数组中与rmvalue数组重合内容
-function removeValue(arr, rmvalue) {
-  let newarr = arr;
-  for (let index = 0; index < rmvalue.length; index++) {
-    newarr = newarr.filter(value => value !== rmvalue[index]);
-  }
-  return newarr;
-}
+// accounts[account]
+// account= {
+//   name: waua,
+//   waitingFloderList:waitingFloderList[],
+// }
+let accounts = [];
 
 // 初始化本地用户、待清理目录
 (function getWeChatFile() {
@@ -45,7 +42,7 @@ function removeValue(arr, rmvalue) {
     // _list == //c/Users/*/Documents/WeChat Files
     let _list = new Set(fs.readdirSync(AllWeChat[key]));
     _list = Array.from(_list);
-    _list = removeValue(_list, ["All Users", "Applet"]);
+    _list = utils.removeValue(_list, ["All Users", "Applet", "config"]);
 
     let count = 0;
     _list.forEach(value => {
@@ -57,6 +54,7 @@ function removeValue(arr, rmvalue) {
         let File = path.join(fileStorage, "File");
         // let Image = path.join(fileStorage, 'Image')
         let Video = path.join(fileStorage, "Video");
+        // 获取账号
         accountsList.push(
           fs.readdirSync(path.join(AllWeChat[key], value))[0].substr(8)
         );
@@ -72,24 +70,6 @@ function removeValue(arr, rmvalue) {
 // getWeChatFile()
 // console.log(accountsList, waitingFloderList);
 
-function deleteFilePromise(path) {
-  return new Promise(resolve => {
-    rmdir(path, () => {
-      console.log("rmdir");
-      resolve();
-    });
-  });
-}
-
-// function countTime(t = 10000) {
-//   return new Promise(resolve => {
-//     setTimeout(() => {
-//       console.log("waiting");
-//       resolve();
-//     }, t);
-//   });
-// }
-
 async function cleanUpSubItem(List) {
   let delFile = [];
   List.forEach(filepath => {
@@ -102,23 +82,17 @@ async function cleanUpSubItem(List) {
   //   rmdir(value);
   // });
   for (let index = 0; index < delFile.length; index++) {
-    await deleteFilePromise(delFile[index]);
+    await utils.deleteFilePromise(delFile[index]);
   }
   // await countTime();
   console.log("finshed");
   window.utools.showNotification("清理完成");
 }
 
-function resizeData(name, List) {
-  return {
-    name: name,
-    waitingFloderList: List,
-  };
-}
-
-let accounts = [];
 accountsList.forEach((value, index) => {
-  accounts.push(resizeData(accountsList[index], waitingFloderList[index]));
+  accounts.push(
+    utils.resizeData(accountsList[index], waitingFloderList[index])
+  );
 });
 
 // console.log(accounts);
@@ -126,10 +100,3 @@ window.exports = {
   accounts,
   cleanUpSubItem,
 };
-
-// accounts template
-// accounts[account]
-// account= {
-//   name: waua,
-//   waitingFloderList:waitingFloderList[],
-// }

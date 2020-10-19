@@ -1,11 +1,5 @@
 {
-  "author": "FoundTheWOUT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/FoundTheWOUT/auto-delete-vue.git"
-  },
   "dependencies": {
-    "rimraf": "^3.0.2",
-    "vue": "^2.6.11"
+    "rimraf": "^3.0.2"
   }
 }
