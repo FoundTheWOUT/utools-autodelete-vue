@@ -18,4 +18,3 @@
 ![](https://drimagebed.oss-cn-shenzhen.aliyuncs.com/img/autoDelete.png)
 
 开源：[项目地址](https://github.com/FoundTheWOUT/auto-delete-vue)
-hi
