@@ -13,8 +13,4 @@ let account3 = {
   name: "Jacky",
   waitingFloderList: [123, 134, 13],
 };
-let accounts = [account1, account2, account3];
-
-module.exports = {
-  accounts,
-};
+export let accounts = [account1, account2, account3];

@@ -10,7 +10,11 @@
           >{{ btn[0].app }}</b-button
         ></b-col
       >
-      <b-col><b-button pill size="lg" disabled>QQ</b-button></b-col>
+      <b-col
+        ><b-button pill :pressed="btn[1].state" size="lg" @click="routeToQQ"
+          >QQ</b-button
+        ></b-col
+      >
     </b-row>
   </div>
 </template>
@@ -27,13 +31,15 @@ export default {
   },
   methods: {
     routeToWeChact: function() {
-      // window.utools.showNotification('hi')
-      // window.utools.ubrowser.goto('https://www.baidu.com').show()
       if (this.btn[0].state) {
         return;
       }
       //route to wechate
       this.btn[0].state = true;
+    },
+    routeToQQ: function() {
+      console.log("hi");
+      this.btn[1].state = true;
     },
   },
 };

@@ -4,6 +4,7 @@
       <b-tabs pills card vertical>
         <b-tab title="账号" disabled></b-tab>
         <b-tab
+          v-show="accounts.length !== 0"
           v-for="(account, index) in accounts"
           :key="account.name"
           :title="account.name"
@@ -28,14 +29,19 @@
 </template>
 
 <script>
-// import { accounts } from "../js/datatest";
-let accounts = window.exports.accounts;
+let accounts;
+if (process.env.NODE_ENV === "production") {
+  accounts = window.exports.accounts;
+} else {
+  let accountsReq = require("../js/datatest");
+  accounts = accountsReq.accounts;
+}
 
 export default {
   data() {
     return {
       activeID: 0,
-      accounts: accounts,
+      accounts,
     };
   },
   methods: {

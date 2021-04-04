@@ -11,16 +11,18 @@ Vue.use(BootstrapVue);
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin);
 
-// new Vue({
-//   render: h => h(App),
-// }).$mount("#app");
-
-window.utools.onPluginReady(() => {
-  // window.exports.getWeChatFile();
+if (process.env.NODE_ENV === "production") {
+  window.utools.onPluginReady(() => {
+    // window.exports.getWeChatFile();
+    new Vue({
+      render: h => h(App),
+    }).$mount("#app");
+    window.utools.onPluginEnter(code => {
+      console.log("进入插件", code);
+    });
+  });
+} else {
   new Vue({
     render: h => h(App),
   }).$mount("#app");
-  window.utools.onPluginEnter(code => {
-    console.log("进入插件", code);
-  });
-});
+}
