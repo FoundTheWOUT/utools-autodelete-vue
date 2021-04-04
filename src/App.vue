@@ -1,8 +1,7 @@
 <template>
   <div id="app">
     <b-card id="mainCard">
-      <b-card-body><SelectApp /></b-card-body>
-      <b-card-body><WeChat ref="WeChat"/></b-card-body>
+      <b-card-body><SelectApp ref="SelectApp"/></b-card-body>
       <b-card-body><Footer @cleanUp="cleanUpFloder"/></b-card-body>
     </b-card>
   </div>
@@ -10,19 +9,17 @@
 
 <script>
 import SelectApp from "./components/SelectApp";
-import WeChat from "./components/WeChat";
 import Footer from "./components/Footer";
 
 export default {
   name: "App",
   components: {
     SelectApp,
-    WeChat,
     Footer,
   },
   methods: {
     cleanUpFloder: function() {
-      window.exports.cleanUpSubItem(this.$refs.WeChat.ListIs);
+      this.$refs.SelectApp.Clean();
     },
   },
 };

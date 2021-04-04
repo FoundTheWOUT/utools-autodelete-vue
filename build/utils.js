@@ -18,15 +18,7 @@ function deleteFilePromise(path) {
   });
 }
 
-function resizeData(name, List) {
-  return {
-    name: name,
-    waitingFloderList: List,
-  };
-}
-
 module.exports = {
   removeValue,
   deleteFilePromise,
-  resizeData,
 };

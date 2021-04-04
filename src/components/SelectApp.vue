@@ -1,52 +1,60 @@
 <template>
   <div>
-    <b-row>
-      <b-col
-        ><b-button
+    <b-row style="margin:10px;">
+      <b-col v-for="item in btn" :key="item">
+        <b-button
           pill
-          :pressed="btn[0].state"
-          @click="routeToWeChact"
+          :pressed="curBtn == btn.indexOf(item)"
           size="lg"
-          >{{ btn[0].app }}</b-button
-        ></b-col
-      >
-      <b-col
-        ><b-button pill :pressed="btn[1].state" size="lg" @click="routeToQQ"
-          >QQ</b-button
-        ></b-col
-      >
+          @click="handleSwitchApp(item)"
+        >
+          {{ item }}
+        </b-button>
+      </b-col>
     </b-row>
+    <AppCard :accounts="accounts" ref="AppCard"></AppCard>
   </div>
 </template>
 
 <script>
+import AppCard from "./AppCard";
+
+let accounts;
+if (process.env.NODE_ENV === "production") {
+  accounts = window.exports.getWeChatFile();
+} else {
+  let accountsReq = require("../js/datatest");
+  accounts = accountsReq.accounts;
+}
 export default {
   data() {
     return {
-      btn: [
-        { app: "微信", state: true },
-        { app: "QQ", state: false },
-      ],
+      curBtn: 0,
+      btn: ["微信", "QQ"],
+      accounts,
     };
   },
+  components: {
+    AppCard,
+  },
   methods: {
-    routeToWeChact: function() {
-      if (this.btn[0].state) {
-        return;
-      }
-      //route to wechate
-      this.btn[0].state = true;
+    Clean: function() {
+      window.exports.cleanUpSubItem(
+        this.accounts[this.$refs.AppCard.activeID].waitingFolderList
+      );
     },
-    routeToQQ: function() {
-      console.log("hi");
-      this.btn[1].state = true;
+    handleSwitchApp: function(app) {
+      switch (app) {
+        case "QQ":
+          this.curBtn = 1;
+          this.accounts = window.exports.getFile(window.exports.dir.qqDir);
+          break;
+        case "微信":
+          this.curBtn = 0;
+          this.accounts = window.exports.getWeChatFile();
+          break;
+      }
     },
   },
 };
 </script>
-
-<style scoped>
-/* .Appbtn{
-
-} */
-</style>
