@@ -17,7 +17,7 @@ if (process.env.NODE_ENV === "production") {
     new Vue({
       render: h => h(App),
     }).$mount("#app");
-    window.utools.onPluginEnter(code => {
+    window.utools.onPluginEnter((code: any) => {
       console.log("进入插件", code);
     });
   });

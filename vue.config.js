@@ -6,6 +6,11 @@ module.exports = {
   outputDir: "./build/dist",
   productionSourceMap: false,
   configureWebpack: {
+    resolve: {
+      alias: {
+        "@": path.resolve("src"),
+      },
+    },
     plugins: [
       new CopyPlugin({
         patterns: [

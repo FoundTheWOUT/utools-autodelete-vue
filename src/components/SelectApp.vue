@@ -16,34 +16,43 @@
   </div>
 </template>
 
-<script>
-import AppCard from "./AppCard";
+<script lang="ts">
+import Vue from "vue";
+import AppCard from "./AppCard.vue";
+import { TestAccounts } from "../js/datatest.js";
 
-let accounts;
-if (process.env.NODE_ENV === "production") {
-  accounts = window.exports.getWeChatFile();
-} else {
-  let accountsReq = require("../js/datatest");
-  accounts = accountsReq.accounts;
+interface Accounts {
+  account: string;
+  waitingFolderList: string[];
 }
-export default {
+
+export default Vue.extend({
   data() {
     return {
       curBtn: 0,
       btn: ["微信", "QQ"],
-      accounts,
+      accounts: [] as Accounts[],
     };
   },
   components: {
     AppCard,
   },
+  created() {
+    if (process.env.NODE_ENV === "production") {
+      this.accounts = window.exports.getWeChatFile();
+    } else {
+      this.accounts = TestAccounts;
+    }
+  },
   methods: {
     Clean: function() {
       window.exports.cleanUpSubItem(
-        this.accounts[this.$refs.AppCard.activeID].waitingFolderList
+        this.accounts[
+          (this.$refs.AppCard as Vue & { activeID: number }).activeID
+        ].waitingFolderList
       );
     },
-    handleSwitchApp: function(app) {
+    handleSwitchApp: function(app: string) {
       switch (app) {
         case "QQ":
           this.curBtn = 1;
@@ -56,5 +65,5 @@ export default {
       }
     },
   },
-};
+});
 </script>

@@ -7,11 +7,12 @@
   </div>
 </template>
 
-<script>
-import SelectApp from "./components/SelectApp";
-import Footer from "./components/Footer";
+<script lang="ts">
+import Vue from "vue";
+import SelectApp from "@/components/SelectApp.vue";
+import Footer from "@/components/Footer.vue";
 
-export default {
+export default Vue.extend({
   name: "App",
   components: {
     SelectApp,
@@ -19,10 +20,10 @@ export default {
   },
   methods: {
     cleanUpFloder: function() {
-      this.$refs.SelectApp.Clean();
+      (this.$refs.SelectApp as Vue & { Clean: () => void }).Clean();
     },
   },
-};
+});
 </script>
 
 <style>

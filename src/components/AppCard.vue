@@ -28,8 +28,10 @@
   </b-container>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from "vue";
+
+export default Vue.extend({
   props: { accounts: Array },
   data() {
     return {
@@ -37,11 +39,11 @@ export default {
     };
   },
   methods: {
-    openFloder: function(target) {
+    openFloder: function(target: string) {
       window.utools.shellOpenPath(target);
     },
   },
-};
+});
 </script>
 
 <style scoped></style>

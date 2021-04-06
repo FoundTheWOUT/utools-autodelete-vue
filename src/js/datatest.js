@@ -3,14 +3,14 @@
 // let waitingFolderList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2]
 let account1 = {
   account: "waua",
-  waitingFolderList: [1, 2],
+  waitingFolderList: ["12", "hi"],
 };
 let account2 = {
   account: "happy",
-  waitingFolderList: [34, 134, 15],
+  waitingFolderList: ["34", "134", "15"],
 };
 let account3 = {
   account: "Jacky",
-  waitingFolderList: [123, 134, 13],
+  waitingFolderList: ["123", "134", "13"],
 };
-export let accounts = [account1, account2, account3];
+export let TestAccounts = [account1, account2, account3];
