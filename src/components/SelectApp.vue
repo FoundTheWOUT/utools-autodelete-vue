@@ -1,10 +1,10 @@
 <template>
   <div>
     <b-row style="margin:10px;">
-      <b-col v-for="item in btn" :key="item">
+      <b-col v-for="item in app" :key="item">
         <b-button
           pill
-          :pressed="curBtn == btn.indexOf(item)"
+          :pressed="curApp == app.indexOf(item)"
           size="lg"
           @click="handleSwitchApp(item)"
         >
@@ -19,19 +19,32 @@
 <script lang="ts">
 import Vue from "vue";
 import AppCard from "./AppCard.vue";
-import { TestAccounts } from "../js/datatest.js";
+import { EventBus } from "../event-bus";
+const TestAccounts = [
+  {
+    account: "waua",
+    waitingFolderList: ["12", "hi"],
+  },
+  {
+    account: "happy",
+    waitingFolderList: ["34", "134", "15"],
+  },
+];
 
 interface Accounts {
   account: string;
   waitingFolderList: string[];
 }
-
+interface cacheFile {
+  [property: string]: Accounts[];
+}
 export default Vue.extend({
   data() {
     return {
-      curBtn: 0,
-      btn: ["微信", "QQ"],
+      curApp: 0,
+      app: ["微信", "QQ"],
       accounts: [] as Accounts[],
+      cacheFile: {} as cacheFile,
     };
   },
   components: {
@@ -39,30 +52,49 @@ export default Vue.extend({
   },
   created() {
     if (process.env.NODE_ENV === "production") {
-      this.accounts = window.exports.getWeChatFile();
+      this.handleSwitchApp(this.app[this.curApp]);
     } else {
       this.accounts = TestAccounts;
     }
   },
+  mounted() {
+    EventBus.$on("clean-up", () => {
+      this.handelCleanUp();
+    });
+  },
   methods: {
-    Clean: function() {
-      window.exports.cleanUpSubItem(
-        this.accounts[
-          (this.$refs.AppCard as Vue & { activeID: number }).activeID
-        ].waitingFolderList
-      );
+    handelCleanUp() {
+      if (window.exports?.cleanUpSubItem) {
+        window.exports.cleanUpSubItem(
+          this.accounts[
+            (this.$refs.AppCard as Vue & { activeID: number }).activeID
+          ].waitingFolderList
+        );
+      } else {
+        console.log("no method");
+      }
     },
-    handleSwitchApp: function(app: string) {
+    handleSwitchApp(app: string) {
       switch (app) {
         case "QQ":
-          this.curBtn = 1;
-          this.accounts = window.exports.getFile(window.exports.dir.qqDir);
+          this.curApp = 1;
+          this.accounts = this.handleGetFile(app);
           break;
         case "微信":
-          this.curBtn = 0;
-          this.accounts = window.exports.getWeChatFile();
+          this.curApp = 0;
+          this.accounts = this.handleGetFile(app);
           break;
       }
+    },
+    handleGetFile(app: string): Accounts[] {
+      // check if caching
+      if (Object.keys(this.cacheFile[app]).length !== 0) {
+        return this.cacheFile[app];
+      }
+      if (app === "微信") {
+        return (this.cacheFile["微信"] = window.exports?.getWeChatFile());
+      }
+      return (this.cacheFile[app] = window.exports?.getFile(app));
     },
   },
 });

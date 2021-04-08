@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <b-card id="mainCard">
-      <b-card-body><SelectApp ref="SelectApp"/></b-card-body>
-      <b-card-body><Footer @cleanUp="cleanUpFloder"/></b-card-body>
+      <b-card-body><SelectApp /></b-card-body>
+      <b-card-body><Footer /></b-card-body>
     </b-card>
   </div>
 </template>
@@ -17,11 +17,6 @@ export default Vue.extend({
   components: {
     SelectApp,
     Footer,
-  },
-  methods: {
-    cleanUpFloder: function() {
-      (this.$refs.SelectApp as Vue & { Clean: () => void }).Clean();
-    },
   },
 });
 </script>

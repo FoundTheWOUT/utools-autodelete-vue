@@ -11,15 +11,14 @@
   </b-container>
 </template>
 
-<script>
+<script lang="ts">
+import { EventBus } from "../event-bus";
 export default {
   methods: {
-    cleanup: function() {
-      console.log("cleaning");
-      this.$emit("cleanUp");
+    cleanup(): void {
+      console.warn("clean up.");
+      EventBus.$emit("clean-up");
     },
   },
 };
 </script>
-
-<style scoped></style>
