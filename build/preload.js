@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const os = require("os");
 const path = require("path");
 const fs = require("fs");
@@ -68,11 +69,19 @@ function getWeChatFile() {
 
 /**
  *
- * @param {Object} dir
+ * @param {String} app
  * @returns {Array}
  */
-function getFile(dir) {
-  let accountsList = [];
+function getFile(app) {
+  let dir,
+    accountsList = [];
+  switch (app) {
+    case "QQ":
+      dir = qqDir;
+      break;
+    default:
+      return;
+  }
   // 遍历 Account
   for (const key in dir) {
     if (!fs.existsSync(dic[key])) continue;
@@ -107,9 +116,6 @@ async function cleanUpSubItem(List) {
 }
 
 window.exports = {
-  dir: {
-    qqDir,
-  },
   getFile,
   getWeChatFile,
   cleanUpSubItem,
