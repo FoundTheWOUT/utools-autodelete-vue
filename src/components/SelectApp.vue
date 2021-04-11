@@ -20,6 +20,8 @@
 import Vue from "vue";
 import AppCard from "./AppCard.vue";
 import { EventBus } from "../event-bus";
+import { Accounts, cacheFile } from "../types";
+
 const TestAccounts = [
   {
     account: "waua",
@@ -31,13 +33,6 @@ const TestAccounts = [
   },
 ];
 
-interface Accounts {
-  account: string;
-  waitingFolderList: string[];
-}
-interface cacheFile {
-  [property: string]: Accounts[];
-}
 export default Vue.extend({
   data() {
     return {
