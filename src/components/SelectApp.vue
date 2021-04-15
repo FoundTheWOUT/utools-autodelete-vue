@@ -83,9 +83,13 @@ export default Vue.extend({
     },
     handleGetFile(app: string): Accounts[] {
       // check if caching
-      if (Object.keys(this.cacheFile[app]).length !== 0) {
-        return this.cacheFile[app];
-      }
+      Object.keys(this.cacheFile).some(arrVal => {
+        if (arrVal === app && this.cacheFile[app].length !== 0) {
+          console.log("using cache");
+          return this.cacheFile[app];
+        }
+      });
+
       if (app === "微信") {
         return (this.cacheFile["微信"] = window.exports?.getWeChatFile());
       }
