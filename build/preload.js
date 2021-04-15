@@ -3,16 +3,18 @@ const os = require("os");
 const path = require("path");
 const fs = require("fs");
 const utils = require("./utils");
+const glob = require("glob");
 const USER = os.userInfo().username;
-const dic = {
-  forwin10: ` C:\\Users\\${USER}\\AppData\\Local\\Packages\\TencentWeChatLimited.forWindows10_sdtnhv12zgd7a\\LocalCache\\Roaming\\Tencent\\WeChatAppStore\\WeChatAppStore Files`,
+const dir = {
+  WeChat: {
+    forwin10: ` C:\\Users\\${USER}\\AppData\\Local\\Packages\\TencentWeChatLimited.forWindows10_sdtnhv12zgd7a\\LocalCache\\Roaming\\Tencent\\WeChatAppStore\\WeChatAppStore Files`,
 
-  pc: `C:\\Users\\${USER}\\Documents\\WeChat Files`,
-  foruwp: `C:\\Users\\${USER}\\AppData\\Local\\Packages\\TencentWeChatLimited.WeChatUWP_sdtnhv12zgd7a\\LocalCache\\Roaming\\Tencent\\WeChatAppStore\\WeChatAppStore Files`,
-};
-
-const qqDir = {
-  pc: `C:\\Users\\${USER}\\Documents\\Tencent Files`,
+    pc: `C:\\Users\\${USER}\\Documents\\WeChat Files`,
+    foruwp: `C:\\Users\\${USER}\\AppData\\Local\\Packages\\TencentWeChatLimited.WeChatUWP_sdtnhv12zgd7a\\LocalCache\\Roaming\\Tencent\\WeChatAppStore\\WeChatAppStore Files`,
+  },
+  QQ: {
+    pc: `C:\\Users\\${USER}\\Documents\\Tencent Files`,
+  },
 };
 
 const removeV = ["All Users", "Applet", "config"];
@@ -22,9 +24,9 @@ function getWeChatFile() {
     accountsList = [],
     waitingFolderList = [];
 
-  for (const key in dic) {
-    if (fs.existsSync(dic[key])) {
-      AllWeChat.push(dic[key]);
+  for (const key in dir.WeChat) {
+    if (fs.existsSync(dir.WeChat[key])) {
+      AllWeChat.push(dir.WeChat[key]);
     }
   }
   if (AllWeChat == 0) {
@@ -73,18 +75,10 @@ function getWeChatFile() {
  * @returns {Array}
  */
 function getFile(app) {
-  let dir,
-    accountsList = [];
-  switch (app) {
-    case "QQ":
-      dir = qqDir;
-      break;
-    default:
-      return;
-  }
+  let accountsList = [];
   // 遍历 Account
-  for (const key in dir) {
-    if (!fs.existsSync(dic[key])) continue;
+  for (const key in dir[app]) {
+    if (!fs.existsSync(dir[app][key])) continue;
     let accountSet = new Set(fs.readdirSync(dir[key]));
     accountsList = utils.removeValue(Array.from(accountSet), removeV);
   }
