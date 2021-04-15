@@ -3,7 +3,6 @@ const os = require("os");
 const path = require("path");
 const fs = require("fs");
 const utils = require("./utils");
-const glob = require("glob");
 const USER = os.userInfo().username;
 const dir = {
   WeChat: {
@@ -24,49 +23,42 @@ function getWeChatFile() {
     accountsList = [],
     waitingFolderList = [];
 
-  for (const key in dir.WeChat) {
-    if (fs.existsSync(dir.WeChat[key])) {
-      AllWeChat.push(dir.WeChat[key]);
+  for (const WeChatDir in dir.WeChat) {
+    if (fs.existsSync(dir.WeChat[WeChatDir])) {
+      AllWeChat.push(dir.WeChat[WeChatDir]);
     }
   }
   if (AllWeChat == 0) {
     window.utools.showNotification("没有安装微信");
     return;
   }
-  for (const key in AllWeChat) {
-    // _list == //c/Users/*/Documents/WeChat Files
-    let _list = new Set(fs.readdirSync(AllWeChat[key]));
-    _list = Array.from(_list);
-    _list = utils.removeValue(_list, removeV);
+  // for (const key in AllWeChat) {
+  // _list is a is Array of All Account Folders in the Computer.
+  let _list = utils.removeValue(
+    Array.from(new Set(fs.readdirSync(AllWeChat[key]))),
+    removeV
+  );
 
-    let count = 0;
-    _list.forEach(value => {
-      const fileStorage = path.join(AllWeChat[key], value, "FileStorage");
-      if (
-        fs.existsSync(fileStorage) &&
-        fs.lstatSync(fileStorage).isDirectory()
-      ) {
-        let File = path.join(fileStorage, "File");
-        // let Image = path.join(fileStorage, 'Image')
-        let Video = path.join(fileStorage, "Video");
-        // 获取账号
-        accountsList.push(
-          fs.readdirSync(path.join(AllWeChat[key], value))[0].substr(8)
-        );
-        waitingFolderList.push([File, Video]);
-      } else {
-        // 没有FileStorage的wxid移出列表
-        _list.splice(count, 1);
-      }
-      count++;
-    });
-  }
-  return accountsList.map((account, i) => {
-    return {
-      account,
-      waitingFolderList: waitingFolderList[i],
-    };
+  // iterate all account
+  _list.forEach((value, i) => {
+    const fileStorage = path.join(AllWeChat[i], value, "FileStorage");
+    if (fs.existsSync(fileStorage) && fs.lstatSync(fileStorage).isDirectory()) {
+      let FolderPath = [
+        path.join(fileStorage, "File"),
+        path.join(fileStorage, "Video"),
+      ];
+      // let Image = path.join(fileStorage, 'Image')
+
+      let account = fs.readdirSync(path.join(AllWeChat[i], value))[0].substr(8);
+
+      accountsList.push({
+        account,
+        waitingFolderList,
+      });
+    }
   });
+  // }
+  return accountsList;
 }
 
 /**
@@ -77,16 +69,25 @@ function getWeChatFile() {
 function getFile(app) {
   let accountsList = [];
   // 遍历 Account
-  for (const key in dir[app]) {
-    if (!fs.existsSync(dir[app][key])) continue;
-    let accountSet = new Set(fs.readdirSync(dir[key]));
-    accountsList = utils.removeValue(Array.from(accountSet), removeV);
+  for (const systemType in dir[app]) {
+    if (!fs.existsSync(dir[app][systemType])) continue;
+    accountsList = utils.removeValue(
+      Array.from(new Set(fs.readdirSync(dir[app][systemType]))),
+      removeV
+    );
   }
-  // 遍历 Account ，添加 waitingFolderList
+  // 遍历 Account ，full waitingFolderList
   return accountsList.map(account => {
     let waitingFolderList = [];
-    for (const key in dir) {
-      waitingFolderList.push(path.join(dir[key], account, "Image"));
+    // Folder can be clear
+    let FolderPath = ["File", "Video"];
+    for (const systemType in dir[app]) {
+      FolderPath.forEach(v => {
+        waitingFolderList.push({
+          status: true,
+          path: path.join(dir[app][systemType], account, v),
+        });
+      });
     }
 
     return {
@@ -113,4 +114,5 @@ window.exports = {
   getFile,
   getWeChatFile,
   cleanUpSubItem,
+  getFolderSize: utils.getFolderSize,
 };

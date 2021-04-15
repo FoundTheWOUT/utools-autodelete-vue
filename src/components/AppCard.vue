@@ -12,13 +12,19 @@
         >
           <b-card no-body>
             <b-list-group
+              class="d-flex flex-row"
               flush
-              v-for="waitingItem in account.waitingFolderList"
-              :key="waitingItem"
+              v-for="item in account.waitingFolderList"
+              :key="item.path"
             >
-              <b-list-group-item href="#" @click="openFloder(waitingItem)">{{
-                waitingItem
-              }}</b-list-group-item>
+              <b-form-checkbox
+                class="my-auto mx-2"
+                v-model="item.status"
+                @change="handleCheckbox"
+              />
+              <b-list-group-item href="#" @click="openFloder(item.path)">
+                {{ item.path }}
+              </b-list-group-item>
             </b-list-group>
             <b-card-footer>点击可打开目录查看</b-card-footer>
           </b-card>
@@ -30,6 +36,7 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { EventBus } from "../event-bus";
 
 export default Vue.extend({
   props: { accounts: Array },
@@ -38,9 +45,15 @@ export default Vue.extend({
       activeID: 0,
     };
   },
+  mounted() {
+    // console.log(this.accounts);
+  },
   methods: {
-    openFloder: function(target: string) {
+    openFloder(target: string): void {
       window.utools.shellOpenPath(target);
+    },
+    handleCheckbox(): void {
+      EventBus.$emit("check-box-change");
     },
   },
 });
