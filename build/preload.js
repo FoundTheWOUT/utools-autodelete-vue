@@ -23,7 +23,6 @@ function getAccountName(app, accountRootPath) {
     case "WeChat":
       return fs.readdirSync(path.join(accountRootPath))[0].substr(8);
     case "QQ":
-      // TODO: some behaviour here
       return path.basename(accountRootPath);
     default:
       return;

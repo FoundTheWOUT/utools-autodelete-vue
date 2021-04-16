@@ -15,12 +15,12 @@
     <AppCard :accounts="accounts" ref="AppCard"></AppCard>
     <div class="d-flex flex-row text-secondary px-3 pt-2">
       <div class="mx-1">文件大小：</div>
-      <b-icon
-        class="my-auto"
+      <b-spinner
         v-if="paddingFolderSize"
-        icon="three-dots"
-        animation="cylon"
-      />
+        class="my-auto"
+        small
+        label="Loading..."
+      ></b-spinner>
       <div v-if="!paddingFolderSize">{{ folderSize }}</div>
     </div>
   </div>
@@ -31,6 +31,7 @@ import Vue from "vue";
 import AppCard from "./AppCard.vue";
 import { EventBus } from "../event-bus";
 import { Accounts, cacheFile } from "../types";
+import * as _ from "lodash";
 
 const TestAccounts = [
   {
@@ -128,8 +129,7 @@ export default Vue.extend({
       }
     },
 
-    getFileSizeFromArray(): void {
-      // TODO: debounce
+    getFileSizeFromArray: _.debounce(function(this: any) {
       this.paddingFolderSize = true;
       window.exports
         ?.getFolderSize(this.filterWaitingFolderList())
@@ -145,7 +145,7 @@ export default Vue.extend({
           this.folderSize = "0";
           this.paddingFolderSize = false;
         });
-    },
+    }, 800),
   },
 });
 </script>
