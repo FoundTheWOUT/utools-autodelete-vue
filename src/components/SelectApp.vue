@@ -13,8 +13,15 @@
       </b-col>
     </b-row>
     <AppCard :accounts="accounts" ref="AppCard"></AppCard>
-    <div class="d-flex flex-row-reverse text-secondary px-3 pt-2">
-      文件大小: {{ folderSize }} GB
+    <div class="d-flex flex-row text-secondary px-3 pt-2">
+      <div class="mx-1">文件大小：</div>
+      <b-icon
+        class="my-auto"
+        v-if="paddingFolderSize"
+        icon="three-dots"
+        animation="cylon"
+      />
+      <div v-if="!paddingFolderSize">{{ folderSize }}</div>
     </div>
   </div>
 </template>
@@ -55,35 +62,30 @@ export default Vue.extend({
       accounts: [] as Accounts[],
       cacheFile: {} as cacheFile,
       folderSize: "0",
+      paddingFolderSize: false,
     };
   },
   components: {
     AppCard,
   },
-  created() {
-    this.handleSwitchApp(this.app[this.curApp]);
-  },
   mounted() {
+    this.handleSwitchApp(this.app[this.curApp]);
     EventBus.$on("clean-up", () => {
-      // filter path
-      let pathArr = this.accounts[this.getActiceID()].waitingFolderList
-        .filter(v => v.status !== false)
-        .map(v => v.path);
-
-      this.handelCleanUp(pathArr);
+      this.handelCleanUp(this.filterWaitingFolderList());
     });
     EventBus.$on("check-box-change", () => {
-      // filter path
-      let pathArr = this.accounts[this.getActiceID()].waitingFolderList
-        .filter(v => v.status !== false)
-        .map(v => v.path);
-      this.folderSize = "计算中...";
-      this.handleGetFileSizeFromArray(pathArr);
+      this.getFileSizeFromArray();
     });
   },
   methods: {
     getActiceID(): number {
       return (this.$refs.AppCard as Vue & { activeID: number }).activeID;
+    },
+
+    filterWaitingFolderList(): string[] {
+      return this.accounts[this.getActiceID()].waitingFolderList
+        .filter(v => v.status !== false)
+        .map(v => v.path);
     },
 
     handelCleanUp(FolderList: string[]) {
@@ -95,14 +97,15 @@ export default Vue.extend({
     },
 
     handleSwitchApp(app: string) {
+      // we must get the accouts first to own enough information
+      this.accounts = this.handleGetFile(app);
+      this.getFileSizeFromArray();
       switch (app) {
         case "QQ":
           this.curApp = 1;
-          this.accounts = this.handleGetFile(app);
           break;
         case "WeChat":
           this.curApp = 0;
-          this.accounts = this.handleGetFile(app);
           break;
       }
     },
@@ -119,22 +122,29 @@ export default Vue.extend({
 
       // check env
       if (process.env.NODE_ENV === "production") {
-        // old WeChat API
-        // if (app === "微信") {
-        //   return (this.cacheFile["微信"] = window.exports?.getWeChatFile());
-        // }
         return (this.cacheFile[app] = window.exports?.getFile(app));
       } else {
         return (this.cacheFile[app] = TestAccounts);
       }
     },
 
-    async handleGetFileSizeFromArray(arr: string[]): Promise<number> {
-      let total = 0;
-      for (const item of arr) {
-        total += await window.exports?.getFolderSize(item);
-      }
-      return total;
+    getFileSizeFromArray(): void {
+      // TODO: debounce
+      this.paddingFolderSize = true;
+      window.exports
+        ?.getFolderSize(this.filterWaitingFolderList())
+        .then((size: number[]) => {
+          let totalSize =
+            size.length !== 0 ? size.reduce((pre, cur) => pre + cur) : 0;
+          // conver to GB
+          this.folderSize = `${(totalSize / 1024 / 1024 / 1024).toFixed(2)} GB`;
+          this.paddingFolderSize = false;
+        })
+        .catch((err: string) => {
+          console.error(err);
+          this.folderSize = "0";
+          this.paddingFolderSize = false;
+        });
     },
   },
 });

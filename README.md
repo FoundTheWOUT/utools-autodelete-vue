@@ -9,7 +9,8 @@
 此些缓存文件都是占用空间大户, 几个月下来一个文件夹几个g, 我们应该也需要一些简单的方法去清理它们.
 
 - [X] 支持QQ
-- [ ] 自选择删除目录
-- [ ] 显示删除文件大小
+- [X] 自选择删除目录
+- [X] 显示删除文件大小
+- [ ] 支持删除账号
 
 ![](https://drimagebed.oss-cn-shenzhen.aliyuncs.com/img/autoDelete.png)

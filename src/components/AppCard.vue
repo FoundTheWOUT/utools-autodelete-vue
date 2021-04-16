@@ -8,7 +8,7 @@
           v-for="(account, index) in accounts"
           :key="account.account"
           :title="account.account"
-          @click="activeID = index"
+          @click="handelChangeAccount(index)"
         >
           <b-card no-body>
             <b-list-group
@@ -52,7 +52,13 @@ export default Vue.extend({
     openFloder(target: string): void {
       window.utools.shellOpenPath(target);
     },
+
     handleCheckbox(): void {
+      EventBus.$emit("check-box-change");
+    },
+
+    handelChangeAccount(index: number): void {
+      this.activeID = index;
       EventBus.$emit("check-box-change");
     },
   },
