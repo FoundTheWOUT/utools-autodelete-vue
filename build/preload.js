@@ -63,7 +63,7 @@ function getWaitingPath(app, accountRootPath) {
     );
   });
 
-  return _waitingPath.flat();
+  return _waitingPath.flat().filter(v => fs.existsSync(v.path));
 }
 
 /**
@@ -101,6 +101,8 @@ function getFile(app) {
 async function cleanUpSubItem(List) {
   let delFile = [];
   List.forEach(filepath => {
+    // if no this file path
+    if (!fs.existsSync(filepath)) return;
     fs.readdirSync(filepath).forEach(value => {
       delFile.push(path.join(filepath, value));
     });

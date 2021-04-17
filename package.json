@@ -7,7 +7,7 @@
   },
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build && cd build && yarn",
     "lint": "vue-cli-service lint",
     "prepare": "husky install"
   },
