@@ -69,6 +69,9 @@ export default Vue.extend({
   components: {
     AppCard,
   },
+  created() {
+    this.getFileSizeFromArray = _.debounce(this.getFileSizeFromArray, 800);
+  },
   mounted() {
     this.handleSwitchApp(this.app[this.curApp]);
     EventBus.$on("clean-up", () => {
@@ -129,7 +132,7 @@ export default Vue.extend({
       }
     },
 
-    getFileSizeFromArray: _.debounce(function(this: any) {
+    getFileSizeFromArray() {
       this.paddingFolderSize = true;
       window.exports
         ?.getFolderSize(this.filterWaitingFolderList())
@@ -145,7 +148,7 @@ export default Vue.extend({
           this.folderSize = "0";
           this.paddingFolderSize = false;
         });
-    }, 800),
+    },
   },
 });
 </script>

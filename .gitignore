@@ -2,6 +2,7 @@
 node_modules
 dist
 build/README.md
+build/Release
 
 # local env files
 .env.local

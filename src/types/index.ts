@@ -3,5 +3,5 @@ export interface Accounts {
   waitingFolderList: { status: boolean; path: string }[];
 }
 export interface cacheFile {
-  [property: string]: Accounts[];
+  [app: string]: Accounts[];
 }
