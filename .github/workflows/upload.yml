@@ -1,0 +1,26 @@
+on:
+  release:
+    types: [created]
+name: upload asset
+jobs:
+  pack:
+    name: pack
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: install node@12
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+      - name: build
+        run: |
+          cd build
+          yarn
+      - name: pack
+        uses: mohuishou/utools/.github/action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: $ {{ github.ref }}
+          dir: ./build
+          upload_url: ${{ github.event.release.upload_url }}
