@@ -1,28 +1,24 @@
 <template>
-  <div>
-    <b-row style="margin:10px;">
-      <b-col v-for="item in app" :key="item">
-        <b-button
-          pill
-          :pressed="curApp == app.indexOf(item)"
-          size="lg"
-          @click="handleSwitchApp(item)"
-        >
+  <div class="w-4/5 m-auto">
+    <div class="flex justify-center">
+      <button
+        class="w-40 rounded-full m-4 p-2 bg-gray-500 hover:bg-gray-700 focus:outline-none"
+        :class="curApp === app.indexOf(item) ? 'bg-gray-700' : ''"
+        v-for="item in app"
+        :key="item"
+        @click="handleSwitchApp(item)"
+      >
+        <p class="text-lg text-white font-bold">
           {{ item }}
-        </b-button>
-      </b-col>
-    </b-row>
-    <AppCard :accounts="accounts" ref="AppCard"></AppCard>
-    <div class="d-flex flex-row text-secondary px-3 pt-2">
-      <div class="mx-1">文件大小：</div>
-      <b-spinner
-        v-if="paddingFolderSize"
-        class="my-auto"
-        small
-        label="Loading..."
-      ></b-spinner>
-      <div v-if="!paddingFolderSize">{{ folderSize }}</div>
+        </p>
+      </button>
     </div>
+    <AppCard
+      :accounts="accounts"
+      :padding="paddingFolderSize"
+      :size="folderSize"
+      ref="AppCard"
+    ></AppCard>
   </div>
 </template>
 
@@ -30,7 +26,7 @@
 import Vue from "vue";
 import AppCard from "./AppCard.vue";
 import { EventBus } from "../event-bus";
-import { Accounts, cacheFile } from "../types";
+import type { Accounts, cacheFile } from "../types";
 import * as _ from "lodash";
 
 const TestAccounts = [
@@ -62,8 +58,8 @@ export default Vue.extend({
       app: ["WeChat", "QQ"],
       accounts: [] as Accounts[],
       cacheFile: {} as cacheFile,
-      folderSize: "0",
-      paddingFolderSize: false,
+      paddingFolderSize:false,
+      folderSize: "0"
     };
   },
   components: {
@@ -103,7 +99,9 @@ export default Vue.extend({
     handleSwitchApp(app: string) {
       // we must get the accouts first to own enough information
       this.accounts = this.handleGetFile(app);
-      this.getFileSizeFromArray();
+      this.getFileSizeFromArray()
+      EventBus.$emit('check-box-change')
+      EventBus.$emit('reset-activeID')
       switch (app) {
         case "QQ":
           this.curApp = 1;
@@ -148,7 +146,7 @@ export default Vue.extend({
           this.folderSize = "0";
           this.paddingFolderSize = false;
         });
-    },
+    }
   },
 });
 </script>
