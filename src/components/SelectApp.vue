@@ -1,26 +1,26 @@
 <template>
   <div>
-    <b-row style="margin:10px;">
-      <b-col v-for="item in app" :key="item">
-        <b-button
+    <div>
+      <div v-for="item in app" :key="item">
+        <button
           pill
           :pressed="curApp == app.indexOf(item)"
           size="lg"
           @click="handleSwitchApp(item)"
         >
           {{ item }}
-        </b-button>
-      </b-col>
-    </b-row>
+        </button>
+      </div>
+    </div>
     <AppCard :accounts="accounts" ref="AppCard"></AppCard>
     <div class="d-flex flex-row text-secondary px-3 pt-2">
       <div class="mx-1">文件大小：</div>
-      <b-spinner
+      <!-- <b-spinner
         v-if="paddingFolderSize"
         class="my-auto"
         small
         label="Loading..."
-      ></b-spinner>
+      ></b-spinner> -->
       <div v-if="!paddingFolderSize">{{ folderSize }}</div>
     </div>
   </div>

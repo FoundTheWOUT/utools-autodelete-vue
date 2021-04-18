@@ -1,9 +1,9 @@
 <template>
   <div id="app">
-    <b-card id="mainCard">
-      <b-card-body><SelectApp /></b-card-body>
-      <b-card-body><Footer /></b-card-body>
-    </b-card>
+    <div id="mainCard">
+      <div><SelectApp /></div>
+      <div><Footer /></div>
+    </div>
   </div>
 </template>
 

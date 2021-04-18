@@ -1,37 +1,30 @@
 <template>
-  <b-container fluid>
-    <b-card no-body>
-      <b-tabs pills card vertical>
-        <b-tab title="账号" disabled></b-tab>
-        <b-tab
-          v-show="accounts.length !== 0"
-          v-for="(account, index) in accounts"
-          :key="account.account"
-          :title="account.account"
-          @click="handelChangeAccount(index)"
+  <div>
+    <div title="账号" disabled></div>
+    <div
+      v-show="accounts.length !== 0"
+      v-for="(account, index) in accounts"
+      :key="account.account"
+      :title="account.account"
+      @click="handelChangeAccount(index)"
+    >
+      <div>
+        <div
+          class="d-flex flex-row"
+          flush
+          v-for="item in account.waitingFolderList"
+          :key="item.path"
         >
-          <b-card no-body>
-            <b-list-group
-              class="d-flex flex-row"
-              flush
-              v-for="item in account.waitingFolderList"
-              :key="item.path"
-            >
-              <b-form-checkbox
-                class="my-auto mx-2"
-                v-model="item.status"
-                @change="handleCheckbox"
-              />
-              <b-list-group-item href="#" @click="openFloder(item.path)">
-                {{ item.path }}
-              </b-list-group-item>
-            </b-list-group>
-            <b-card-footer>点击可打开目录查看</b-card-footer>
-          </b-card>
-        </b-tab>
-      </b-tabs>
-    </b-card>
-  </b-container>
+          <div class="my-auto mx-2" @change="handleCheckbox">
+            <div href="#" @click="openFloder(item.path)">
+              {{ item.path }}
+            </div>
+          </div>
+          <div>点击可打开目录查看</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
