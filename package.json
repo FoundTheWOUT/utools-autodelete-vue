@@ -8,10 +8,9 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@popperjs/core": "^2.9.2",
     "@tailwindcss/postcss7-compat": "^2.0.2",
     "autoprefixer": "^9",
-    "bootstrap": "^4.6.0",
-    "bootstrap-vue": "^2.21.2",
     "glob": "^7.1.6",
     "lodash": "^4.17.21",
     "postcss": "^7",

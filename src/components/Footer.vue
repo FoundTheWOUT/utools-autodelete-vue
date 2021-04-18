@@ -4,6 +4,9 @@
       id="cleanup"
       class="rounded-lg p-2 bg-red-500 hover:bg-red-700 focus:outline-none"
       @click="cleanup"
+      @mouseover="hover = true"
+      @mouseout="hover = false"
+      ref="cleanBtn"
     >
       <p class="flex items-center text-white font-bold">
         <svg
@@ -21,21 +24,44 @@
         清空目录
       </p>
     </button>
-    <div target="cleanup" triggers="hover" placement="top">
-      <div>注意</div>
-      按下后当前账号对应目录下<b>所有文件</b>将被清空，请确保需要文件已经自行保存
+    <div
+      v-show="hover"
+      ref="popper"
+      id="tooltip"
+      class="bg-gray-100 p-4 rounded-lg shadow-lg"
+    >
+      <div class="text-xl font-bold text-red-600">注意</div>
+      按下后当前账号对应目录下<b>所有文件</b>将被清空，请确保需要文件已自行保存
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import Vue from "vue";
 import { EventBus } from "../event-bus";
-export default {
+import { createPopper } from "@popperjs/core";
+
+export default Vue.extend({
+  data() {
+    return {
+      hover: false,
+    };
+  },
+  mounted() {
+    createPopper(
+      this.$refs.cleanBtn as HTMLElement,
+      this.$refs.popper as HTMLElement,
+      {
+        placement: "top",
+        modifiers: [{ name: "offset", options: { offset: [-230, 10] } }],
+      }
+    );
+  },
   methods: {
     cleanup(): void {
       console.warn("clean up.");
       EventBus.$emit("clean-up");
     },
   },
-};
+});
 </script>

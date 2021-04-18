@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <div id="mainCard">
-      <div><SelectApp /></div>
-      <div><Footer /></div>
+      <SelectApp ref="selectapp" />
+      <Footer class="mx-4" />
     </div>
   </div>
 </template>

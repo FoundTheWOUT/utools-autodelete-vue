@@ -1,5 +1,5 @@
 <template>
-  <div class="border-4 rounded-lg w-4/5 p-4">
+  <div class="border-4 rounded-lg w-full p-4">
     <div
       class="flex items-center rounded-lg my-3 py-3 border border-dashed border-indigo-200 hover:border-transparent hover:shadow-md hover:shadow-lg hover:bg-gray-100"
       v-for="item in list"
