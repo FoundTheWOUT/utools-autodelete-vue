@@ -7,7 +7,7 @@
     >
       <div class="w-1/12 flex items-center mx-3">
         <input
-          class="appearance-none h-5 w-5 border border-gray-300 rounded-md checked:bg-blue-500  checked:border-transparent"
+          class="appearance-none h-5 w-5 border border-gray-300 rounded-md focus:outline-none checked:bg-blue-500  checked:border-transparent"
           type="checkbox"
           v-model="item.status"
           @click="handleCheckbox"
@@ -26,16 +26,20 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { EventBus } from "../event-bus";
+import * as _ from "lodash";
+import { action } from "../store";
 
 export default Vue.extend({
   props: { list: Array },
+  created() {
+    this.handleCheckbox = _.debounce(this.handleCheckbox, 800);
+  },
   methods: {
     openFloder(target: string): void {
       window.utools.shellOpenPath(target);
     },
     handleCheckbox(): void {
-      EventBus.$emit("check-box-change");
+      this.$store.dispatch(action.GET_SET_FILE_SIZE);
     },
   },
 });

@@ -4,18 +4,21 @@
       <button
         class="m-1 px-3 py-1 rounded-full focus:outline-none hover:bg-blue-200"
         v-for="(account, index) in accounts"
-        :class="index === activeID ? 'bg-blue-500' : ''"
+        :class="index === activeAccountID ? 'bg-blue-500' : ''"
         :key="account.account"
         @click="handelChangeAccount(index)"
       >
-        <p class="font-bold" :class="index === activeID ? 'text-white' : ''">
+        <p
+          class="font-bold"
+          :class="index === activeAccountID ? 'text-white' : ''"
+        >
           {{ account.account }}
         </p>
       </button>
     </div>
-    <div class="flex flex-col">
-      <FolderList :list="folderList"></FolderList>
-      <div class="px-3 pt-2 text-gray-400 ml-auto">
+    <div class="flex flex-col w-full">
+      <FolderList :list="accounts[activeAccountID].waitingFolderList" />
+      <div class="flex px-3 pt-2 text-gray-400 ml-auto">
         <div class="mx-1">文件大小：</div>
         <svg
           v-if="paddingFolderSize"
@@ -46,62 +49,32 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { EventBus } from "../event-bus";
 import FolderList from "./FolderList.vue";
-import type { Accounts } from "../types"
-import * as _ from "lodash";
-
+import { mutations, action } from "../store";
 
 export default Vue.extend({
-  props: { accounts: Array as () => Accounts[] },
   components: {
     FolderList,
   },
-  data() {
-    return {
-      activeID: 0,
-      paddingFolderSize: false,
-      folderSize: "0"
-    };
-  },
-    created() {
-    this.getFileSizeFromArray = _.debounce(this.getFileSizeFromArray, 800);
-  },
-  mounted(){
-    EventBus.$on("check-box-change", () => {
-      this.getFileSizeFromArray();
-    });
-  },
   computed: {
-    folderList(): { status: boolean; path: string }[] {
-      return this.accounts[this.activeID]?.waitingFolderList
-        ? this.accounts[this.activeID].waitingFolderList
-        : [];
+    accounts() {
+      return this.$store.state.accounts;
+    },
+    activeAccountID() {
+      return this.$store.state.activeAccountID;
+    },
+    folderSize() {
+      return this.$store.state.folderSize;
+    },
+    paddingFolderSize() {
+      return this.$store.state.paddingFolderSize;
     },
   },
   methods: {
-    handelChangeAccount(index: number): void {
-      this.activeID = index;
-      EventBus.$emit("check-box-change");
+    async handelChangeAccount(index: number): void {
+      this.$store.commit(mutations.SET_ACCOUNT_ID, index);
+      this.$store.dispatch(action.GET_SET_FILE_SIZE);
     },
-
-    getFileSizeFromArray() {
-      this.paddingFolderSize = true;
-      window.exports
-        ?.getFolderSize(this.$refs.selectapp.filterWaitingFolderList())
-        .then((size: number[]) => {
-          let totalSize =
-            size.length !== 0 ? size.reduce((pre, cur) => pre + cur) : 0;
-          // conver to GB
-          this.folderSize = `${(totalSize / 1024 / 1024 / 1024).toFixed(2)} GB`;
-          this.paddingFolderSize = false;
-        })
-        .catch((err: string) => {
-          console.error(err);
-          this.folderSize = "0";
-          this.paddingFolderSize = false;
-        });
-    }
   },
 });
 </script>

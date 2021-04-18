@@ -3,7 +3,7 @@
     <button
       id="cleanup"
       class="rounded-lg p-2 bg-red-500 hover:bg-red-700 focus:outline-none"
-      @click="cleanup"
+      @click="handelCleanup"
       @mouseover="hover = true"
       @mouseout="hover = false"
       ref="cleanBtn"
@@ -38,7 +38,6 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { EventBus } from "../event-bus";
 import { createPopper } from "@popperjs/core";
 
 export default Vue.extend({
@@ -58,9 +57,15 @@ export default Vue.extend({
     );
   },
   methods: {
-    cleanup(): void {
+    handelCleanup(): void {
       console.warn("clean up.");
-      EventBus.$emit("clean-up");
+      if (window.exports?.cleanUpSubItem) {
+        window.exports.cleanUpSubItem(
+          this.$store.getters.selectedWaitingFolderList
+        );
+      } else {
+        console.log("no method");
+      }
     },
   },
 });
