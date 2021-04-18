@@ -13,12 +13,12 @@
         </p>
       </button>
     </div>
-    <div class="flex flex-col">
+    <div class="flex flex-col w-full">
       <FolderList :list="folderList"></FolderList>
-      <div class="px-3 pt-2 text-gray-400 ml-auto">
+      <div class="px-3 pt-2 text-gray-400 ml-auto flex">
         <div class="mx-1">文件大小：</div>
         <svg
-          v-if="paddingFolderSize"
+          v-if="padding"
           class="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-300"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -38,7 +38,7 @@
             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
           ></path>
         </svg>
-        <div v-if="!paddingFolderSize">{{ folderSize }}</div>
+        <div v-if="!padding">{{ size }}</div>
       </div>
     </div>
   </div>
@@ -49,11 +49,9 @@ import Vue from "vue";
 import { EventBus } from "../event-bus";
 import FolderList from "./FolderList.vue";
 import type { Accounts } from "../types"
-import * as _ from "lodash";
-
 
 export default Vue.extend({
-  props: { accounts: Array as () => Accounts[] },
+  props: { accounts: Array as () => Accounts[],padding:Boolean,size:String },
   components: {
     FolderList,
   },
@@ -64,13 +62,10 @@ export default Vue.extend({
       folderSize: "0"
     };
   },
-    created() {
-    this.getFileSizeFromArray = _.debounce(this.getFileSizeFromArray, 800);
-  },
   mounted(){
-    EventBus.$on("check-box-change", () => {
-      this.getFileSizeFromArray();
-    });
+    EventBus.$on('reset-activeID',()=>{
+      this.resetActiveID()
+    })
   },
   computed: {
     folderList(): { status: boolean; path: string }[] {
@@ -80,28 +75,13 @@ export default Vue.extend({
     },
   },
   methods: {
+    resetActiveID(): void {
+      this.activeID = 0
+    },
     handelChangeAccount(index: number): void {
       this.activeID = index;
       EventBus.$emit("check-box-change");
     },
-
-    getFileSizeFromArray() {
-      this.paddingFolderSize = true;
-      window.exports
-        ?.getFolderSize(this.$refs.selectapp.filterWaitingFolderList())
-        .then((size: number[]) => {
-          let totalSize =
-            size.length !== 0 ? size.reduce((pre, cur) => pre + cur) : 0;
-          // conver to GB
-          this.folderSize = `${(totalSize / 1024 / 1024 / 1024).toFixed(2)} GB`;
-          this.paddingFolderSize = false;
-        })
-        .catch((err: string) => {
-          console.error(err);
-          this.folderSize = "0";
-          this.paddingFolderSize = false;
-        });
-    }
   },
 });
 </script>

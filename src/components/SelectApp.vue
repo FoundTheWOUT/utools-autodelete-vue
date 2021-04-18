@@ -13,7 +13,12 @@
         </p>
       </button>
     </div>
-    <AppCard :accounts="accounts" ref="AppCard"></AppCard>
+    <AppCard
+      :accounts="accounts"
+      :padding="paddingFolderSize"
+      :size="folderSize"
+      ref="AppCard"
+    ></AppCard>
   </div>
 </template>
 
@@ -22,6 +27,7 @@ import Vue from "vue";
 import AppCard from "./AppCard.vue";
 import { EventBus } from "../event-bus";
 import type { Accounts, cacheFile } from "../types";
+import * as _ from "lodash";
 
 const TestAccounts = [
   {
@@ -52,16 +58,23 @@ export default Vue.extend({
       app: ["WeChat", "QQ"],
       accounts: [] as Accounts[],
       cacheFile: {} as cacheFile,
+      paddingFolderSize:false,
+      folderSize: "0"
     };
   },
   components: {
     AppCard,
   },
-
+  created() {
+    this.getFileSizeFromArray = _.debounce(this.getFileSizeFromArray, 800);
+  },
   mounted() {
     this.handleSwitchApp(this.app[this.curApp]);
     EventBus.$on("clean-up", () => {
       this.handelCleanUp(this.filterWaitingFolderList());
+    });
+    EventBus.$on("check-box-change", () => {
+      this.getFileSizeFromArray();
     });
   },
   methods: {
@@ -86,7 +99,9 @@ export default Vue.extend({
     handleSwitchApp(app: string) {
       // we must get the accouts first to own enough information
       this.accounts = this.handleGetFile(app);
+      this.getFileSizeFromArray()
       EventBus.$emit('check-box-change')
+      EventBus.$emit('reset-activeID')
       switch (app) {
         case "QQ":
           this.curApp = 1;
@@ -114,6 +129,24 @@ export default Vue.extend({
         return (this.cacheFile[app] = TestAccounts);
       }
     },
+
+    getFileSizeFromArray() {
+      this.paddingFolderSize = true;
+      window.exports
+        ?.getFolderSize(this.filterWaitingFolderList())
+        .then((size: number[]) => {
+          let totalSize =
+            size.length !== 0 ? size.reduce((pre, cur) => pre + cur) : 0;
+          // conver to GB
+          this.folderSize = `${(totalSize / 1024 / 1024 / 1024).toFixed(2)} GB`;
+          this.paddingFolderSize = false;
+        })
+        .catch((err: string) => {
+          console.error(err);
+          this.folderSize = "0";
+          this.paddingFolderSize = false;
+        });
+    }
   },
 });
 </script>
