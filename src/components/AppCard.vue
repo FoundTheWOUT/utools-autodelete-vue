@@ -1,55 +1,46 @@
 <template>
-  <div>
-    <div title="账号" disabled></div>
-    <div
-      v-show="accounts.length !== 0"
-      v-for="(account, index) in accounts"
-      :key="account.account"
-      :title="account.account"
-      @click="handelChangeAccount(index)"
-    >
-      <div>
-        <div
-          class="d-flex flex-row"
-          flush
-          v-for="item in account.waitingFolderList"
-          :key="item.path"
-        >
-          <div class="my-auto mx-2" @change="handleCheckbox">
-            <div href="#" @click="openFloder(item.path)">
-              {{ item.path }}
-            </div>
-          </div>
-          <div>点击可打开目录查看</div>
-        </div>
-      </div>
+  <div class="flex flex-row justify-center">
+    <div class="flex flex-col mx-2">
+      <button
+        class="m-1 px-3 py-1 rounded-full focus:outline-none hover:bg-blue-200"
+        v-for="(account, index) in accounts"
+        :class="index === activeID ? 'bg-blue-500' : ''"
+        :key="account.account"
+        @click="handelChangeAccount(index)"
+      >
+        <p class="font-bold" :class="index === activeID ? 'text-white' : ''">
+          {{ account.account }}
+        </p>
+      </button>
     </div>
+    <FolderList :list="folderList"></FolderList>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import { EventBus } from "../event-bus";
+import FolderList from "./FolderList.vue";
+import type { Accounts } from "../types"
 
 export default Vue.extend({
-  props: { accounts: Array },
+  props: { accounts: Array as () => Accounts[] },
+  components: {
+    FolderList,
+  },
   data() {
     return {
       activeID: 0,
     };
   },
-  mounted() {
-    // console.log(this.accounts);
+  computed: {
+    folderList(): { status: boolean; path: string }[] {
+      return this.accounts[this.activeID]?.waitingFolderList
+        ? this.accounts[this.activeID].waitingFolderList
+        : [];
+    },
   },
   methods: {
-    openFloder(target: string): void {
-      window.utools.shellOpenPath(target);
-    },
-
-    handleCheckbox(): void {
-      EventBus.$emit("check-box-change");
-    },
-
     handelChangeAccount(index: number): void {
       this.activeID = index;
       EventBus.$emit("check-box-change");
