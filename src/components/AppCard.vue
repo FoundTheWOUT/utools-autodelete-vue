@@ -71,7 +71,7 @@ export default Vue.extend({
     },
   },
   methods: {
-    async handelChangeAccount(index: number): void {
+    handelChangeAccount(index: number): void {
       this.$store.commit(mutations.SET_ACCOUNT_ID, index);
       this.$store.dispatch(action.GET_SET_FILE_SIZE);
     },

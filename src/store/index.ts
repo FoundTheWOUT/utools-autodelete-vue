@@ -35,6 +35,9 @@ export default new Store({
     [mutations.SET_ACCOUNTS]: (state, accounts: Accounts[]) => {
       state.accounts = accounts;
     },
+    [mutations.SET_ACCOUNT_ID]: (state, id) => {
+      state.activeAccountID = id;
+    },
     [mutations.PUT_CACHE_FILE]: (
       state,
       payload: { app: string; accounts: Accounts[] }
@@ -44,9 +47,6 @@ export default new Store({
     [mutations.SET_FILE_SIZE]: (state, size) => {
       console.log("update size: ", size);
       state.folderSize = size;
-    },
-    [mutations.SET_ACCOUNT_ID]: (state, id) => {
-      state.activeAccountID = id;
     },
     [mutations.SET_PADDING_STATUS]: (state, status) => {
       state.paddingFolderSize = status;

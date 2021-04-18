@@ -10,6 +10,7 @@ export const actionsDefinition: ActionTree<any, any> = {
   [action.SET_ACCOUNTS]: async ({ state, commit }, app: string) => {
     let accounts;
     //check cache
+    commit(mutations.SET_ACCOUNT_ID, 0);
     Object.keys(state.cacheFile).some(async arrVal => {
       if (arrVal === app && state.cacheFile[app].length !== 0) {
         console.log("using cache");
