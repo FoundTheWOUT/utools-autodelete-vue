@@ -2,7 +2,7 @@
   <div class="flex flex-row justify-center">
     <div class="flex flex-col mx-2">
       <button
-        class="m-1 px-3 py-1 rounded-full focus:outline-none hover:bg-blue-200"
+        class="m-1 px-3 py-1 rounded-full outline-none focus:outline-none hover:bg-blue-200 transition-all"
         v-for="(account, index) in accounts"
         :class="index === activeID ? 'bg-blue-500' : ''"
         :key="account.account"
@@ -13,7 +13,7 @@
         </p>
       </button>
     </div>
-    <div class="flex flex-col w-full">
+    <div class="flex flex-col w-full flex-shrink-0">
       <FolderList :list="folderList"></FolderList>
       <div class="px-3 pt-2 text-gray-400 ml-auto flex">
         <div class="mx-1">文件大小：</div>

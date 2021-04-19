@@ -2,7 +2,7 @@
   <div>
     <button
       id="cleanup"
-      class="rounded-lg p-2 bg-red-500 hover:bg-red-700 focus:outline-none"
+      class="rounded-lg p-2 bg-red-500 outline-none focus:outline-none hover:bg-red-700 transform hover:shadow-xl hover:scale-110  hover:scale-110 transition-all"
       @click="cleanup"
       @mouseover="hover = true"
       @mouseout="hover = false"
