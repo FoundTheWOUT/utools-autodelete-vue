@@ -4,6 +4,7 @@
       id="cleanup"
       class="rounded-lg p-2 bg-red-500 outline-none focus:outline-none hover:bg-red-700 transform hover:shadow-xl hover:scale-110  hover:scale-110 transition-all"
       @click="cleanup"
+      @mouseenter="mountPopper"
       @mouseover="hover = true"
       @mouseout="hover = false"
       ref="cleanBtn"
@@ -27,7 +28,6 @@
     <div
       v-show="hover"
       ref="popper"
-      id="tooltip"
       class="bg-gray-100 p-4 rounded-lg shadow-lg"
     >
       <div class="text-xl font-bold text-red-600">注意</div>
@@ -47,18 +47,19 @@ export default Vue.extend({
       hover: false,
     };
   },
-  mounted() {
-    createPopper(
-      this.$refs.cleanBtn as HTMLElement,
-      this.$refs.popper as HTMLElement,
-      {
-        placement: "top",
-        modifiers: [{ name: "offset", options: { offset: [-230, 10] } }],
-      }
-    );
-  },
   methods: {
-    cleanup(): void {
+    mountPopper() {
+      createPopper(
+        this.$refs.cleanBtn as HTMLElement,
+        this.$refs.popper as HTMLElement,
+        {
+          placement: "top",
+          modifiers: [{ name: "offset", options: { offset: [0, 10] } }],
+        }
+      );
+    },
+
+    cleanup() {
       console.warn("clean up.");
       EventBus.$emit("clean-up");
     },
