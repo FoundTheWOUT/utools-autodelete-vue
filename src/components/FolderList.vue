@@ -30,7 +30,12 @@ import * as _ from "lodash";
 import { action } from "../store";
 
 export default Vue.extend({
-  props: { list: Array },
+  computed: {
+    list() {
+      let state = this.$store.state;
+      return state.accounts[state.activeAccountID].waitingFolderList;
+    },
+  },
   created() {
     this.handleCheckbox = _.debounce(this.handleCheckbox, 800);
   },

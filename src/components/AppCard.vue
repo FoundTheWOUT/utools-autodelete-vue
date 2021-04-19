@@ -17,7 +17,7 @@
       </button>
     </div>
     <div class="flex flex-col w-full">
-      <FolderList :list="accounts[activeAccountID].waitingFolderList" />
+      <FolderList />
       <div class="flex px-3 pt-2 text-gray-400 ml-auto">
         <div class="mx-1">文件大小：</div>
         <svg
