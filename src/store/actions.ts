@@ -49,7 +49,7 @@ export const actionsDefinition: ActionTree<any, any> = {
     commit(mutations.PUT_CACHE_FILE, { app, accounts });
   },
   [action.GET_SET_FILE_SIZE]: async ({ getters, commit }) => {
-    commit(mutations.SET_PADDING_STATUS, true);
+    commit(mutations.SET_PENDING_STATUS, true);
     window.exports
       ?.getFolderSize(getters.selectedWaitingFolderList)
       .then((size: number[]) => {
@@ -60,12 +60,12 @@ export const actionsDefinition: ActionTree<any, any> = {
           mutations.SET_FILE_SIZE,
           `${(totalSize / 1024 / 1024 / 1024).toFixed(2)} GB`
         );
-        commit(mutations.SET_PADDING_STATUS, false);
+        commit(mutations.SET_PENDING_STATUS, false);
       })
       .catch((err: string) => {
         console.error(err);
         commit(mutations.SET_FILE_SIZE, "0");
-        commit(mutations.SET_PADDING_STATUS, false);
+        commit(mutations.SET_PENDING_STATUS, false);
       });
   },
 };

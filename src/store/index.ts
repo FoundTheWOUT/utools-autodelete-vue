@@ -12,7 +12,7 @@ export const mutations = {
   PUT_CACHE_FILE: "PUT_CACHE_FILE",
   SET_FILE_SIZE: "SET_FILE_SIZE",
   SET_ACCOUNT_ID: "SET_ACCOUNT_ID",
-  SET_PADDING_STATUS: "SET_PADDING_STATUS",
+  SET_PENDING_STATUS: "SET_PENDING_STATUS",
 };
 
 export default new Store({
@@ -21,7 +21,7 @@ export default new Store({
     accounts: [] as Accounts[],
     cacheFile: {} as cacheFile,
     folderSize: "0",
-    paddingFolderSize: false,
+    pendingFolderSize: false,
   },
   getters: {
     selectedWaitingFolderList: state => {
@@ -48,8 +48,8 @@ export default new Store({
       console.log("update size: ", size);
       state.folderSize = size;
     },
-    [mutations.SET_PADDING_STATUS]: (state, status) => {
-      state.paddingFolderSize = status;
+    [mutations.SET_PENDING_STATUS]: (state, status) => {
+      state.pendingFolderSize = status;
     },
   },
   actions: actionsDefinition,

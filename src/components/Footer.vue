@@ -2,7 +2,7 @@
   <div>
     <button
       id="cleanup"
-      class="rounded-lg p-2 bg-red-500 outline-none focus:outline-none hover:bg-red-700 transform hover:shadow-xl hover:scale-110 transition-all"
+      class="rounded-lg p-2 bg-red-500 outline-none focus:outline-none active:shadow-none active:scale-105 hover:bg-red-700 transform hover:scale-110 hover:shadow-xl transition-all"
       @click="cleanup"
       @mouseenter="mountPopper"
       @mouseleave="hover = false"

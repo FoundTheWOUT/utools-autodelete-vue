@@ -21,7 +21,7 @@
       <div class="flex ml-auto px-3 pt-2 text-gray-400">
         <div class="mx-1">文件大小：</div>
         <svg
-          v-if="padding"
+          v-if="pending"
           class="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-300"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -41,7 +41,7 @@
             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
           ></path>
         </svg>
-        <div v-if="!padding">{{ size }}</div>
+        <div v-if="!pending">{{ folderSize }}</div>
       </div>
     </div>
   </div>
@@ -66,8 +66,8 @@ export default Vue.extend({
     folderSize() {
       return this.$store.state.folderSize;
     },
-    paddingFolderSize() {
-      return this.$store.state.paddingFolderSize;
+    pending() {
+      return this.$store.state.pendingFolderSize;
     },
   },
   methods: {
