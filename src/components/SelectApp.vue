@@ -2,7 +2,7 @@
   <div class="w-4/5 m-auto">
     <div class="flex justify-center">
       <button
-        class="w-40 rounded-full m-4 p-2 bg-gray-500 hover:bg-gray-700 focus:outline-none"
+        class="w-40 rounded-full m-4 p-2 bg-gray-500 hover:bg-gray-700 outline-none focus:outline-none transition-all"
         :class="curApp === app.indexOf(item) ? 'bg-gray-700' : ''"
         v-for="item in app"
         :key="item"

@@ -2,10 +2,10 @@
   <div>
     <button
       id="cleanup"
-      class="rounded-lg p-2 bg-red-500 hover:bg-red-700 focus:outline-none"
-      @click="handelCleanup"
-      @mouseover="hover = true"
-      @mouseout="hover = false"
+      class="rounded-lg p-2 bg-red-500 outline-none focus:outline-none hover:bg-red-700 transform hover:shadow-xl hover:scale-110 transition-all"
+      @click="cleanup"
+      @mouseenter="mountPopper"
+      @mouseleave="hover = false"
       ref="cleanBtn"
     >
       <p class="flex items-center text-white font-bold">
@@ -24,15 +24,16 @@
         清空目录
       </p>
     </button>
-    <div
-      v-show="hover"
-      ref="popper"
-      id="tooltip"
-      class="bg-gray-100 p-4 rounded-lg shadow-lg"
-    >
-      <div class="text-xl font-bold text-red-600">注意</div>
-      按下后当前账号对应目录下<b>所有文件</b>将被清空，请确保需要文件已自行保存
-    </div>
+    <transition name="slide-fade">
+      <div
+        v-show="hover"
+        ref="popper"
+        class="bg-gray-100 p-4 rounded-lg shadow-lg"
+      >
+        <div class="text-xl font-bold text-red-600">注意</div>
+        按下后当前账号对应目录下<b>所有文件</b>将被清空，请确保需要文件已自行保存
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -46,18 +47,20 @@ export default Vue.extend({
       hover: false,
     };
   },
-  mounted() {
-    createPopper(
-      this.$refs.cleanBtn as HTMLElement,
-      this.$refs.popper as HTMLElement,
-      {
-        placement: "top",
-        modifiers: [{ name: "offset", options: { offset: [-230, 10] } }],
-      }
-    );
-  },
   methods: {
-    handelCleanup(): void {
+    mountPopper() {
+      this.hover = true;
+      createPopper(
+        this.$refs.cleanBtn as HTMLElement,
+        this.$refs.popper as HTMLElement,
+        {
+          placement: "top",
+          modifiers: [{ name: "offset", options: { offset: [0, 10] } }],
+        }
+      );
+    },
+
+    cleanup() {
       console.warn("clean up.");
       if (window.exports?.cleanUpSubItem) {
         window.exports.cleanUpSubItem(
@@ -70,3 +73,14 @@ export default Vue.extend({
   },
 });
 </script>
+
+<style scoped>
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+.slide-fade-enter,
+.slide-fade-leave-to {
+  opacity: 0;
+}
+</style>

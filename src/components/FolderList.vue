@@ -1,13 +1,13 @@
 <template>
   <div class="border-4 rounded-lg w-full p-4">
     <div
-      class="flex items-center rounded-lg my-3 py-3 border border-dashed border-indigo-200 hover:border-transparent hover:shadow-md hover:shadow-lg hover:bg-gray-100"
+      class="flex items-center rounded-lg my-3 py-3 border border-dashed border-indigo-200 hover:border-transparent hover:shadow-lg hover:bg-gray-100 transition-all"
       v-for="item in list"
       :key="item.path"
     >
       <div class="w-1/12 flex items-center mx-3">
         <input
-          class="appearance-none h-5 w-5 border border-gray-300 rounded-md focus:outline-none checked:bg-blue-500  checked:border-transparent"
+          class="appearance-none h-5 w-5 border border-gray-300 rounded-md checked:bg-blue-500  checked:border-transparent focus:outline-none"
           type="checkbox"
           v-model="item.status"
           @click="handleCheckbox"

@@ -13,4 +13,4 @@
 - [X] 显示删除文件大小
 - [ ] 支持删除账号
 
-![](https://drimagebed.oss-cn-shenzhen.aliyuncs.com/img/autoDelete.png)
+![](https://drimagebed.oss-cn-shenzhen.aliyuncs.com/uPic/utools-autodelete-vue-20210419.gif)

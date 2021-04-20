@@ -1,7 +1,7 @@
 {
   "pluginName": "autoDelete",
   "description": "一键清除微信、QQ缓存垃圾",
-  "version": "v1.0.1",
+  "version": "v1.1.2",
   "author": "FoundTheWOUT",
   "homepage": "https://github.com/FoundTheWOUT/utools-autodelete-vue",
   "main": "dist/index.html",
