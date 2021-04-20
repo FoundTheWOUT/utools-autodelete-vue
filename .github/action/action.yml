@@ -1,0 +1,12 @@
+name: create tag
+description: check input file, find version value and difference with old version, if version change and greater than the old one, then create new tag
+inputs:
+  file:
+    description: the file need to check version value
+    required: true
+  token:
+    description: github token
+    required: true
+runs:
+  using: node12
+  main: dist/index.js

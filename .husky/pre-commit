@@ -1,4 +1,6 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-npx prettier --write **/*.{js,vue,json}
+npx prettier --write src/**/*.{ts,vue,css}
+cd .github/action
+yarn build
