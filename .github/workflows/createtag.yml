@@ -1,0 +1,16 @@
+on:
+  push:
+  workflow_dispatch:
+
+name: create tag
+jobs:
+  createTag:
+    name: create tag
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: create tag
+        uses: FoundTheWOUT/utools-autodelete-vue/.github/action@master      
+        with:
+          file: ./build/plugin.json
+          token: ${{ secrets.ACTIONS_SECRET }}

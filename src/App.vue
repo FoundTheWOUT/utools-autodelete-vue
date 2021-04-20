@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <div id="mainCard">
-      <SelectApp ref="selectapp" />
+    <div class="h-full">
+      <SelectApp />
       <Footer class="mx-4" />
     </div>
   </div>
@@ -33,9 +33,6 @@ body {
   text-align: center;
   color: #2c3e50;
   /* margin-top: 60px; */
-  height: 100%;
-}
-#mainCard {
   height: 100%;
 }
 </style>
