@@ -2,7 +2,7 @@
   <div>
     <button
       id="cleanup"
-      class="rounded-lg p-2 bg-red-500 outline-none focus:outline-none hover:bg-red-700 transform hover:shadow-xl hover:scale-110 transition-all"
+      class="rounded-lg p-2 bg-red-500 outline-none focus:outline-none active:shadow-none active:scale-105 hover:bg-red-700 transform hover:scale-110 hover:shadow-xl transition-all"
       @click="cleanup"
       @mouseenter="mountPopper"
       @mouseleave="hover = false"
@@ -39,7 +39,6 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { EventBus } from "../event-bus";
 import { createPopper } from "@popperjs/core";
 
 export default Vue.extend({
@@ -63,7 +62,13 @@ export default Vue.extend({
 
     cleanup() {
       console.warn("clean up.");
-      EventBus.$emit("clean-up");
+      if (window.exports?.cleanUpSubItem) {
+        window.exports.cleanUpSubItem(
+          this.$store.getters.selectedWaitingFolderList
+        );
+      } else {
+        console.log("no method");
+      }
     },
   },
 });

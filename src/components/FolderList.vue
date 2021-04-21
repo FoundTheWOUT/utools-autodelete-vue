@@ -1,7 +1,7 @@
 <template>
   <div class="border-4 rounded-lg w-full p-4">
     <div
-      class="flex items-center rounded-lg my-3 py-3 border border-dashed border-indigo-200 hover:border-transparent hover:shadow-lg hover:bg-gray-100 transition-all"
+      class="flex items-center rounded-lg my-3 py-3 border border-dashed border-indigo-200 hover:border-transparent hover:shadow-lg hover:bg-gray-100 active:shadow-none transition-all"
       v-for="item in list"
       :key="item.path"
     >
@@ -26,16 +26,25 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { EventBus } from "../event-bus";
+import * as _ from "lodash";
+import { action } from "../store";
 
 export default Vue.extend({
-  props: { list: Array },
+  computed: {
+    list() {
+      let state = this.$store.state;
+      return state.accounts[state.activeAccountID].waitingFolderList;
+    },
+  },
+  created() {
+    this.handleCheckbox = _.debounce(this.handleCheckbox, 800);
+  },
   methods: {
     openFloder(target: string): void {
       window.utools.shellOpenPath(target);
     },
     handleCheckbox(): void {
-      EventBus.$emit("check-box-change");
+      this.$store.dispatch(action.GET_SET_FILE_SIZE);
     },
   },
 });

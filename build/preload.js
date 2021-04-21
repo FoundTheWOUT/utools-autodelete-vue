@@ -87,7 +87,10 @@ function getFile(app) {
   }
   if (accountsList.length === 0) {
     window.utools.showNotification(`没有安装${app}`);
-    return;
+    return {
+      account: "",
+      waitingFolderList: [],
+    };
   }
   // 遍历 Account ，full waitingFolderList
   return accountsList.map(accountRootPath => {

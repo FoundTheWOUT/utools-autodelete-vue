@@ -11,12 +11,17 @@
 import Vue from "vue";
 import SelectApp from "@/components/SelectApp.vue";
 import Footer from "@/components/Footer.vue";
+import { action } from "./store";
 
 export default Vue.extend({
   name: "App",
   components: {
     SelectApp,
     Footer,
+  },
+  async created() {
+    await this.$store.dispatch(action.SET_ACCOUNTS, "WeChat");
+    this.$store.dispatch(action.GET_SET_FILE_SIZE);
   },
 });
 </script>

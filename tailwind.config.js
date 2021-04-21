@@ -8,6 +8,8 @@ module.exports = {
     extend: {
       backgroundColor: ["checked"],
       borderColor: ["checked"],
+      scale: ["active"],
+      boxShadow: ["active"],
     },
   },
   plugins: [],
