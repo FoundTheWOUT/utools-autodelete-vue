@@ -1,12 +1,13 @@
 import { ActionTree } from "vuex";
 import { mutations } from "./index";
+import { stateType } from "../types";
 
 export const action = {
   SET_ACCOUNTS: "SET_ACCOUNTS",
   GET_SET_FILE_SIZE: "GET_SET_FILE_SIZE",
 };
 
-export const actionsDefinition: ActionTree<any, any> = {
+export const actionsDefinition: ActionTree<stateType, any> = {
   [action.SET_ACCOUNTS]: async ({ state, commit }, app: string) => {
     let accounts;
     //check cache

@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex, { Store } from "vuex";
-import { Accounts, cacheFile } from "../types";
+import { Accounts, stateType } from "../types";
 import { actionsDefinition } from "./actions";
 
 Vue.use(Vuex);
@@ -15,11 +15,11 @@ export const mutations = {
   SET_PENDING_STATUS: "SET_PENDING_STATUS",
 };
 
-export default new Store({
+export default new Store<stateType>({
   state: {
     activeAccountID: 0,
-    accounts: [] as Accounts[],
-    cacheFile: {} as cacheFile,
+    accounts: [],
+    cacheFile: {},
     folderSize: "0",
     pendingFolderSize: false,
   },
