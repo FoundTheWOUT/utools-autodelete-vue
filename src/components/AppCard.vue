@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-row justify-center">
-    <div class="flex flex-col mx-2">
+    <div class="max-w-xxs flex flex-col mx-2">
       <button
         class="m-1 px-3 py-1 rounded-full outline-none focus:outline-none hover:bg-blue-200 transition-all"
         v-for="(account, index) in accounts"
@@ -9,7 +9,7 @@
         @click="handelChangeAccount(index)"
       >
         <p
-          class="font-bold"
+          class="truncate font-bold"
           :class="index === activeAccountID ? 'text-white' : ''"
         >
           {{ account.account }}

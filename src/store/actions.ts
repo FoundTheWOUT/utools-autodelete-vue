@@ -26,7 +26,7 @@ export const actionsDefinition: ActionTree<stateType, any> = {
     if (process.env.NODE_ENV === "development") {
       const testAccounts = [
         {
-          account: "waua",
+          account: "wauaddddddddddddddddddd",
           waitingFolderList: [
             {
               status: true,
@@ -69,11 +69,17 @@ export const actionsDefinition: ActionTree<stateType, any> = {
       .then((size: number[]) => {
         const totalSize =
           size.length !== 0 ? size.reduce((pre, cur) => pre + cur) : 0;
+        let totalSizeString;
 
-        // convert to GB
-        const totalSizeString = (totalSize / 1024 / 1024 / 1024).toFixed(2);
+        if (totalSize / 1024 / 1024 / 1024 >= 1) {
+          // if greater then 1GB,
+          totalSizeString = `${(totalSize / 1024 / 1024 / 1024).toFixed(2)} GB`;
+        } else {
+          // convert to GB
+          totalSizeString = `${(totalSize / 1024 / 1024).toFixed(2)} MB`;
+        }
 
-        commit(mutations.SET_FILE_SIZE, `${totalSizeString} GB`);
+        commit(mutations.SET_FILE_SIZE, `${totalSizeString}`);
         commit(mutations.SET_PENDING_STATUS, false);
       })
       .catch((err: string) => {
