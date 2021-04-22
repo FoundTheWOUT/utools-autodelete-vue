@@ -71,7 +71,7 @@ function getWaitingPath(app, accountRootPath) {
  * @param {String} app
  * @returns {Array}
  */
-function getFile(app) {
+function getFile(app, callback) {
   let accountsList = [];
   // find Account
   for (const systemType in dir[app]) {
@@ -85,24 +85,28 @@ function getFile(app) {
         accountsList.push(path.join(dir[app][systemType], i));
       });
   }
+
+  let Accounts;
+
   if (accountsList.length === 0) {
     window.utools.showNotification(`没有安装${app}`);
-    return {
-      account: "",
-      waitingFolderList: [],
-    };
+    // return undefined
+    return;
   }
-  // 遍历 Account ，full waitingFolderList
-  return accountsList.map(accountRootPath => {
+
+  // 遍历 accountsList ，填充 waitingFolderList
+  Accounts = accountsList.map(accountRootPath => {
     return {
       account: getAccountName(app, accountRootPath),
       waitingFolderList: getWaitingPath(app, accountRootPath),
     };
   });
+  callback.call(null, Accounts);
 }
 
-async function cleanUpSubItem(List) {
+async function cleanUpSubItem(List, callback) {
   let delFile = [];
+
   List.forEach(filepath => {
     // if no this file path
     if (!fs.existsSync(filepath)) return;
@@ -110,10 +114,16 @@ async function cleanUpSubItem(List) {
       delFile.push(path.join(filepath, value));
     });
   });
+
+  if (delFile.length === 0) {
+    window.utools.showNotification("没有可清理内容");
+    return;
+  }
+
   for (let index = 0; index < delFile.length; index++) {
     await utils.deleteFilePromise(delFile[index]);
   }
-  window.utools.showNotification("清理完成");
+  callback.call();
 }
 
 window.exports = {

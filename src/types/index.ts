@@ -7,6 +7,8 @@ export interface cacheFile {
 }
 
 export interface stateType {
+  app: string[];
+  curApp: number;
   activeAccountID: number;
   accounts: Accounts[];
   cacheFile: cacheFile;

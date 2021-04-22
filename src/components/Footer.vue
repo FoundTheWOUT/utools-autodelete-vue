@@ -64,7 +64,10 @@ export default Vue.extend({
       console.warn("clean up.");
       if (window.exports?.cleanUpSubItem) {
         window.exports.cleanUpSubItem(
-          this.$store.getters.selectedWaitingFolderList
+          this.$store.getters.selectedWaitingFolderList,
+          () => {
+            window.utools.showNotification("清理完成");
+          }
         );
       } else {
         console.log("no method");

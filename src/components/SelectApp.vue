@@ -23,11 +23,13 @@ import AppCard from "./AppCard.vue";
 import { action } from "../store";
 
 export default Vue.extend({
-  data() {
-    return {
-      curApp: 0,
-      app: ["WeChat", "QQ"],
-    };
+  computed: {
+    curApp() {
+      return this.$store.state.curApp;
+    },
+    app() {
+      return this.$store.state.app;
+    },
   },
   components: {
     AppCard,
@@ -36,14 +38,6 @@ export default Vue.extend({
     async handleSwitchApp(app: string) {
       await this.$store.dispatch(action.SET_ACCOUNTS, app);
       this.$store.dispatch(action.GET_SET_FILE_SIZE);
-      switch (app) {
-        case "QQ":
-          this.curApp = 1;
-          break;
-        case "WeChat":
-          this.curApp = 0;
-          break;
-      }
     },
   },
 });

@@ -1,6 +1,6 @@
 import { ActionTree } from "vuex";
 import { mutations } from "./index";
-import { stateType } from "../types";
+import { Accounts, stateType } from "../types";
 
 export const action = {
   SET_ACCOUNTS: "SET_ACCOUNTS",
@@ -9,20 +9,22 @@ export const action = {
 
 export const actionsDefinition: ActionTree<stateType, any> = {
   [action.SET_ACCOUNTS]: async ({ state, commit }, app: string) => {
-    let accounts;
-    //check cache
+    // reset AccountId
     commit(mutations.SET_ACCOUNT_ID, 0);
-    Object.keys(state.cacheFile).some(async arrVal => {
+
+    //check cache
+    Object.keys(state.cacheFile).some(arrVal => {
       if (arrVal === app && state.cacheFile[app].length !== 0) {
         console.log("using cache");
         console.log({ app, input: state.cacheFile[app] });
         commit(mutations.SET_ACCOUNTS, state.cacheFile[app]);
+        commit(mutations.SWITCH_APP, app);
         return;
       }
     });
 
     if (process.env.NODE_ENV === "development") {
-      accounts = [
+      const testAccounts = [
         {
           account: "waua",
           waitingFolderList: [
@@ -43,11 +45,22 @@ export const actionsDefinition: ActionTree<stateType, any> = {
           ],
         },
       ];
-    } else {
-      accounts = await window.exports.getFile(app);
+      commit(mutations.SET_ACCOUNTS, testAccounts);
+      commit(mutations.PUT_CACHE_FILE, { app, accounts: testAccounts });
+      return;
     }
-    commit(mutations.SET_ACCOUNTS, accounts);
-    commit(mutations.PUT_CACHE_FILE, { app, accounts });
+
+    await window.exports.getFile(app, (AccountsArr: Accounts[]) => {
+      // if have Accounts
+      // 1.set Accounts to state
+      // 2.switch app
+      // 3.put Accounts to cache
+      if (AccountsArr) {
+        commit(mutations.SET_ACCOUNTS, AccountsArr);
+        commit(mutations.SWITCH_APP, app);
+        commit(mutations.PUT_CACHE_FILE, { app, accounts: AccountsArr });
+      }
+    });
   },
   [action.GET_SET_FILE_SIZE]: async ({ getters, commit }) => {
     commit(mutations.SET_PENDING_STATUS, true);
@@ -56,11 +69,11 @@ export const actionsDefinition: ActionTree<stateType, any> = {
       .then((size: number[]) => {
         const totalSize =
           size.length !== 0 ? size.reduce((pre, cur) => pre + cur) : 0;
-        // conver to GB
-        commit(
-          mutations.SET_FILE_SIZE,
-          `${(totalSize / 1024 / 1024 / 1024).toFixed(2)} GB`
-        );
+
+        // convert to GB
+        const totalSizeString = (totalSize / 1024 / 1024 / 1024).toFixed(2);
+
+        commit(mutations.SET_FILE_SIZE, `${totalSizeString} GB`);
         commit(mutations.SET_PENDING_STATUS, false);
       })
       .catch((err: string) => {
