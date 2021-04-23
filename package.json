@@ -1,12 +1,17 @@
 {
   "name": "utools-autodelete-vue",
-  "author": "FoundTheWOUT",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build && cd build && yarn",
     "lint": "vue-cli-service lint",
     "prepare": "husky install"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FoundTheWOUT/auto-delete-vue.git"
+  },
+  "author": "FoundTheWOUT",
+  "license": "MIT",
   "dependencies": {
     "@popperjs/core": "^2.9.2",
     "@tailwindcss/postcss7-compat": "^2.0.2",
@@ -42,9 +47,5 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/FoundTheWOUT/auto-delete-vue.git"
-  }
+  ]
 }
