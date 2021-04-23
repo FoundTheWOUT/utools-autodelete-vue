@@ -45,11 +45,18 @@ function getWaitingPath(app, accountRootPath) {
   switch (app) {
     case "WeChat":
       _mid = ["FileStorage"];
-      _folderPath = ["File", "Video"];
+      _folderPath = ["Cache", "File", "Video", "Image"];
       break;
     case "QQ":
       _mid = [""];
-      _folderPath = ["Audio", "FileRecv", "Image", "Video"];
+      _folderPath = [
+        "AppWebCache",
+        "Audio",
+        "FileRecv",
+        "Image",
+        "ScreenRecorder",
+        "Video",
+      ];
       break;
     default:
       return [];

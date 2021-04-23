@@ -12,5 +12,6 @@
 - [X] 自选择删除目录
 - [X] 显示删除文件大小
 - [ ] 支持删除账号
+- [ ] 记录上次选择清理的目录
 
 ![](https://drimagebed.oss-cn-shenzhen.aliyuncs.com/uPic/utools-autodelete-vue-20210419.gif)
