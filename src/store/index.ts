@@ -1,11 +1,24 @@
 import Vue from "vue";
 import Vuex, { Store } from "vuex";
-import { Accounts, stateType } from "../types";
+import { Accounts, cacheFile } from "../types";
 import { actionsDefinition } from "./actions";
 
 Vue.use(Vuex);
 
 export { action } from "./actions";
+
+const state = {
+  app: ["WeChat", "QQ"],
+  curApp: 0,
+  activeAccountID: 0,
+  accounts: [] as Accounts[],
+  cacheFile: {} as cacheFile,
+  folderSize: "0",
+  pendingFolderSize: false,
+  globalMask: false,
+};
+
+export type StateType = typeof state;
 
 export const mutations = {
   SET_ACCOUNTS: "SET_ACCOUNTS",
@@ -16,16 +29,8 @@ export const mutations = {
   SWITCH_APP: "SWITCH_APP",
 };
 
-export default new Store<stateType>({
-  state: {
-    app: ["WeChat", "QQ"],
-    curApp: 0,
-    activeAccountID: 0,
-    accounts: [],
-    cacheFile: {},
-    folderSize: "0",
-    pendingFolderSize: false,
-  },
+export default new Store({
+  state,
   getters: {
     selectedWaitingFolderList: state => {
       //   return []

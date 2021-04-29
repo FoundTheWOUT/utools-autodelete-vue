@@ -1,13 +1,13 @@
 import { ActionTree } from "vuex";
-import { mutations } from "./index";
-import { Accounts, stateType } from "../types";
+import { mutations, StateType } from "./index";
+import { Accounts } from "../types";
 
 export const action = {
   SET_ACCOUNTS: "SET_ACCOUNTS",
   GET_SET_FILE_SIZE: "GET_SET_FILE_SIZE",
 };
 
-export const actionsDefinition: ActionTree<stateType, any> = {
+export const actionsDefinition: ActionTree<StateType, StateType> = {
   [action.SET_ACCOUNTS]: async ({ state, commit }, app: string) => {
     // reset AccountId
     commit(mutations.SET_ACCOUNT_ID, 0);
