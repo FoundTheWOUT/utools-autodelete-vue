@@ -1,11 +1,11 @@
 import { ActionTree } from "vuex";
 import { mutations, StateType } from "./index";
-import { Accounts } from "../types";
+import { Accounts, FolderSizePromise } from "../types";
 
-export const action = {
-  SET_ACCOUNTS: "SET_ACCOUNTS",
-  GET_SET_FILE_SIZE: "GET_SET_FILE_SIZE",
-};
+export enum action {
+  SET_ACCOUNTS = "SET_ACCOUNTS",
+  GET_SET_FILE_SIZE = "GET_SET_FILE_SIZE",
+}
 
 export const actionsDefinition: ActionTree<StateType, StateType> = {
   [action.SET_ACCOUNTS]: async ({ state, commit }, app: string) => {
@@ -62,10 +62,31 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
       }
     });
   },
-  [action.GET_SET_FILE_SIZE]: async ({ getters, commit }) => {
+  [action.GET_SET_FILE_SIZE]: async ({ state, getters, commit }) => {
+    if (state.getFileSizePromise.length !== 0) {
+      console.log("have promise: ", state.getFileSizePromise);
+      state.getFileSizePromise.forEach(item => item.cancel());
+      // const fastestPromise = new Promise(resolve => resolve("I am fastest"));
+      // Promise.race([fastestPromise, state.getFileSizePromise]).then(res => {
+      //   console.log(res);
+      // });
+    }
+
     commit(mutations.SET_PENDING_STATUS, true);
-    window.exports
-      ?.getFolderSize(getters.selectedWaitingFolderList)
+    const getFolderSizePromise = window.exports?.getFolderSize(
+      getters.selectedWaitingFolderList
+    );
+    // const promiseObj = {
+    //   promise: Promise.all([getFolderSize.map((v: FolderSizePromise) => v.promise)]),
+    //   cancelFunc: getFolderSize.map((v: FolderSizePromise) => v.cancel),
+    // };
+    const promise: Promise<number[]> = Promise.all(
+      getFolderSizePromise.map((v: FolderSizePromise) => v.promise)
+    );
+    // console.log(promiseObj);
+    commit(mutations.SET_PROMISE, getFolderSizePromise);
+
+    promise
       .then((size: number[]) => {
         const totalSize =
           size.length !== 0 ? size.reduce((pre, cur) => pre + cur) : 0;
@@ -81,6 +102,8 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
 
         commit(mutations.SET_FILE_SIZE, `${totalSizeString}`);
         commit(mutations.SET_PENDING_STATUS, false);
+        // clear PROMISE
+        commit(mutations.SET_PROMISE, []);
       })
       .catch((err: string) => {
         console.error(err);

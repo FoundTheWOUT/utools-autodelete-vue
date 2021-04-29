@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex, { Store } from "vuex";
-import { Accounts, cacheFile } from "../types";
+import { Accounts, cacheFile, FolderSizePromise } from "../types";
 import { actionsDefinition } from "./actions";
 
 Vue.use(Vuex);
@@ -16,18 +16,20 @@ const state = {
   folderSize: "0",
   pendingFolderSize: false,
   globalMask: false,
+  getFileSizePromise: [] as FolderSizePromise[],
 };
 
 export type StateType = typeof state;
 
-export const mutations = {
-  SET_ACCOUNTS: "SET_ACCOUNTS",
-  PUT_CACHE_FILE: "PUT_CACHE_FILE",
-  SET_FILE_SIZE: "SET_FILE_SIZE",
-  SET_ACCOUNT_ID: "SET_ACCOUNT_ID",
-  SET_PENDING_STATUS: "SET_PENDING_STATUS",
-  SWITCH_APP: "SWITCH_APP",
-};
+export enum mutations {
+  SET_ACCOUNTS = "SET_ACCOUNTS",
+  PUT_CACHE_FILE = "PUT_CACHE_FILE",
+  SET_FILE_SIZE = "SET_FILE_SIZE",
+  SET_ACCOUNT_ID = "SET_ACCOUNT_ID",
+  SET_PENDING_STATUS = "SET_PENDING_STATUS",
+  SWITCH_APP = "SWITCH_APP",
+  SET_PROMISE = "SET_PROMISE",
+}
 
 export default new Store({
   state,
@@ -62,6 +64,9 @@ export default new Store({
     },
     [mutations.SWITCH_APP]: (state, app: string) => {
       state.curApp = state.app.indexOf(app) !== -1 ? state.app.indexOf(app) : 0;
+    },
+    [mutations.SET_PROMISE]: (state, promiseArr) => {
+      state.getFileSizePromise = promiseArr;
     },
   },
   actions: actionsDefinition,

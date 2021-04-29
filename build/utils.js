@@ -24,17 +24,22 @@ function getFolderSize(pathArr) {
   let _promise = [];
   if (pathArr.length !== 0) {
     for (const pathItem of pathArr) {
-      _promise.push(
-        new Promise((resolve, reject) => {
+      let _reject;
+      _promise.push({
+        promise: new Promise((resolve, reject) => {
+          _reject = reject;
           getFolderSizeCore(pathItem, (err, size) => {
             if (err) reject(err);
             resolve(size);
           });
-        })
-      );
+        }),
+        cancel: () => {
+          _reject("cancel");
+        },
+      });
     }
   }
-  return Promise.all(_promise);
+  return _promise;
 }
 
 module.exports = {

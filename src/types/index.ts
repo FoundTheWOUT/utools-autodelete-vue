@@ -5,3 +5,8 @@ export interface Accounts {
 export interface cacheFile {
   [app: string]: Accounts[];
 }
+
+export interface FolderSizePromise {
+  promise: Promise<number>;
+  cancel: () => void;
+}
