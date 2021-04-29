@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === "production") {
     // window.exports.getWeChatFile();
     new Vue({
       store,
-      render: h => h(App),
+      render: (h) => h(App),
     }).$mount("#app");
     window.utools.onPluginEnter((code: any) => {
       console.log("进入插件", code);
@@ -20,6 +20,6 @@ if (process.env.NODE_ENV === "production") {
 } else {
   new Vue({
     store,
-    render: h => h(App),
+    render: (h) => h(App),
   }).$mount("#app");
 }

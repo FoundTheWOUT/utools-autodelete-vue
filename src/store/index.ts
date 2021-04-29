@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex, { Store } from "vuex";
-import { Accounts, cacheFile, FolderSizePromise } from "../types";
 import { actionsDefinition } from "./actions";
+import type { Accounts, cacheFile, FolderSizePromise } from "../types";
 
 Vue.use(Vuex);
 
@@ -35,11 +35,11 @@ export enum mutations {
 export default new Store({
   state,
   getters: {
-    selectedWaitingFolderList: state => {
+    selectedWaitingFolderList: (state) => {
       //   return []
       return state.accounts[state.activeAccountID].waitingFolderList
-        .filter(v => v.status !== false)
-        .map(v => v.path);
+        .filter((v) => v.status !== false)
+        .map((v) => v.path);
     },
   },
   mutations: {

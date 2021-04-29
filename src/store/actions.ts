@@ -1,6 +1,7 @@
 import { ActionTree } from "vuex";
-import { mutations, StateType } from "./index";
-import { Accounts, FolderSizePromise } from "../types";
+import { mutations } from "./index";
+import type { Accounts, FolderSizePromise } from "../types";
+import type { StateType } from "./index";
 
 export enum action {
   SET_ACCOUNTS = "SET_ACCOUNTS",
@@ -13,7 +14,7 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
     commit(mutations.SET_ACCOUNT_ID, 0);
 
     //check cache
-    Object.keys(state.cacheFile).some(arrVal => {
+    Object.keys(state.cacheFile).some((arrVal) => {
       if (arrVal === app && state.cacheFile[app].length !== 0) {
         console.log("using cache");
         console.log({ app, input: state.cacheFile[app] });
@@ -67,7 +68,7 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
 
     // if pending Promises exists, cancel them.
     if (state.getFileSizePromise.length !== 0)
-      state.getFileSizePromise.forEach(item => item.cancel());
+      state.getFileSizePromise.forEach((item) => item.cancel());
     const getFolderSizePromise = window.exports?.getFolderSize(
       getters.selectedWaitingFolderList
     );

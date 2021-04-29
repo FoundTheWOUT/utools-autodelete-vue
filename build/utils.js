@@ -4,7 +4,7 @@ const getFolderSizeCore = require("get-folder-size");
 
 // 删除arr数组中与rmValue数组重合内容
 function removeValue(arr, rmValue) {
-  rmValue.forEach(v => {
+  rmValue.forEach((v) => {
     // if the value which need to remove is not in arr, then pass
     arr.indexOf(v) !== -1 ? arr.splice(arr.indexOf(v), 1) : "";
   });
@@ -12,7 +12,7 @@ function removeValue(arr, rmValue) {
 }
 
 function deleteFilePromise(path) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     rmdir(path, () => {
       console.log("rmdir");
       resolve();

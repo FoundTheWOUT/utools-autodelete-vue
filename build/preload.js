@@ -62,15 +62,15 @@ function getWaitingPath(app, accountRootPath) {
       return [];
   }
 
-  _mid.forEach(_mid => {
+  _mid.forEach((_mid) => {
     _waitingPath.push(
-      _folderPath.map(i => {
+      _folderPath.map((i) => {
         return { status: true, path: path.join(accountRootPath, _mid, i) };
       })
     );
   });
 
-  return _waitingPath.flat().filter(v => fs.existsSync(v.path));
+  return _waitingPath.flat().filter((v) => fs.existsSync(v.path));
 }
 
 /**
@@ -88,7 +88,7 @@ function getFile(app, callback) {
         Array.from(new Set(fs.readdirSync(dir[app][systemType]))),
         removeV
       )
-      .forEach(i => {
+      .forEach((i) => {
         accountsList.push(path.join(dir[app][systemType], i));
       });
   }
@@ -102,7 +102,7 @@ function getFile(app, callback) {
   }
 
   // 遍历 accountsList ，填充 waitingFolderList
-  Accounts = accountsList.map(accountRootPath => {
+  Accounts = accountsList.map((accountRootPath) => {
     return {
       account: getAccountName(app, accountRootPath),
       waitingFolderList: getWaitingPath(app, accountRootPath),
@@ -114,10 +114,10 @@ function getFile(app, callback) {
 async function cleanUpSubItem(List, callback) {
   let delFile = [];
 
-  List.forEach(filepath => {
+  List.forEach((filepath) => {
     // if no this file path
     if (!fs.existsSync(filepath)) return;
-    fs.readdirSync(filepath).forEach(value => {
+    fs.readdirSync(filepath).forEach((value) => {
       delFile.push(path.join(filepath, value));
     });
   });
