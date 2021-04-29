@@ -12,4 +12,5 @@ jobs:
       - name: create release
         uses: ncipollo/release-action@v1
         with:
+          bodyFile: "CHANGELOG.md"
           token: ${{ secrets.ACTIONS_SECRET }}

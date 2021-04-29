@@ -124,12 +124,14 @@ async function cleanUpSubItem(List, callback) {
 
   if (delFile.length === 0) {
     window.utools.showNotification("没有可清理内容");
+    callback.call();
     return;
   }
 
   for (let index = 0; index < delFile.length; index++) {
     await utils.deleteFilePromise(delFile[index]);
   }
+  window.utools.showNotification("清理完成");
   callback.call();
 }
 

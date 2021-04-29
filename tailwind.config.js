@@ -5,7 +5,16 @@ module.exports = {
     maxWidth: {
       xxs: "8rem",
     },
-    extend: {},
+    extend: {
+      animation: {
+        flow: "flow 0.5s ease",
+      },
+      keyframes: {
+        flow: {
+          "0%": { transform: "translateY(20px)" },
+        },
+      },
+    },
   },
   variants: {
     extend: {

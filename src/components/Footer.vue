@@ -68,9 +68,10 @@ export default Vue.extend({
         window.exports.cleanUpSubItem(
           this.$store.getters.selectedWaitingFolderList,
           () => {
-            window.utools.showNotification("清理完成");
-            this.$store.commit(mutations.SET_GLOBALMASK, false);
-            this.$store.dispatch(action.GET_SET_FILE_SIZE);
+            setTimeout(() => {
+              this.$store.commit(mutations.SET_GLOBALMASK, false);
+              this.$store.dispatch(action.GET_SET_FILE_SIZE);
+            }, 500);
           }
         );
       } else {
