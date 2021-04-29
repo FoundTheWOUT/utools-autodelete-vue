@@ -63,27 +63,18 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
     });
   },
   [action.GET_SET_FILE_SIZE]: async ({ state, getters, commit }) => {
-    if (state.getFileSizePromise.length !== 0) {
-      console.log("have promise: ", state.getFileSizePromise);
-      state.getFileSizePromise.forEach(item => item.cancel());
-      // const fastestPromise = new Promise(resolve => resolve("I am fastest"));
-      // Promise.race([fastestPromise, state.getFileSizePromise]).then(res => {
-      //   console.log(res);
-      // });
-    }
-
     commit(mutations.SET_PENDING_STATUS, true);
+
+    // if pending Promises exists, cancel them.
+    if (state.getFileSizePromise.length !== 0)
+      state.getFileSizePromise.forEach(item => item.cancel());
     const getFolderSizePromise = window.exports?.getFolderSize(
       getters.selectedWaitingFolderList
     );
-    // const promiseObj = {
-    //   promise: Promise.all([getFolderSize.map((v: FolderSizePromise) => v.promise)]),
-    //   cancelFunc: getFolderSize.map((v: FolderSizePromise) => v.cancel),
-    // };
     const promise: Promise<number[]> = Promise.all(
       getFolderSizePromise.map((v: FolderSizePromise) => v.promise)
     );
-    // console.log(promiseObj);
+    // store pending promise
     commit(mutations.SET_PROMISE, getFolderSizePromise);
 
     promise
@@ -102,12 +93,12 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
 
         commit(mutations.SET_FILE_SIZE, `${totalSizeString}`);
         commit(mutations.SET_PENDING_STATUS, false);
-        // clear PROMISE
+        // clear Promise
         commit(mutations.SET_PROMISE, []);
       })
       .catch((err: string) => {
-        console.error(err);
-        commit(mutations.SET_FILE_SIZE, "0");
+        console.warn(err);
+        // commit(mutations.SET_FILE_SIZE, "0");
         commit(mutations.SET_PENDING_STATUS, false);
       });
   },

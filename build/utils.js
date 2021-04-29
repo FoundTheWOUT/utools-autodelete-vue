@@ -34,7 +34,7 @@ function getFolderSize(pathArr) {
           });
         }),
         cancel: () => {
-          _reject("cancel");
+          _reject("promise have been cancelled");
         },
       });
     }

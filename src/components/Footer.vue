@@ -40,6 +40,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { createPopper } from "@popperjs/core";
+import { action, mutations } from "../store";
 
 export default Vue.extend({
   data() {
@@ -62,14 +63,21 @@ export default Vue.extend({
 
     cleanup() {
       console.warn("clean up.");
+      this.$store.commit(mutations.SET_GLOBALMASK, true);
       if (window.exports?.cleanUpSubItem) {
         window.exports.cleanUpSubItem(
           this.$store.getters.selectedWaitingFolderList,
           () => {
             window.utools.showNotification("清理完成");
+            this.$store.commit(mutations.SET_GLOBALMASK, false);
+            this.$store.dispatch(action.GET_SET_FILE_SIZE);
           }
         );
       } else {
+        setTimeout(
+          () => this.$store.commit(mutations.SET_GLOBALMASK, false),
+          500
+        );
         console.log("no method");
       }
     },
