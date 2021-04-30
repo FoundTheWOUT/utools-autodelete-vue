@@ -14,14 +14,14 @@
       </p>
     </button>
     <transition name="slide-fade">
-      <div
-        v-show="hover"
-        ref="popper"
-        class="bg-gray-100 p-4 rounded-lg shadow-lg"
-      >
-        <div class="text-xl font-bold text-red-600">注意</div>
-        按下后当前账号对应目录下<b>所有文件</b>将被清空，请确保需要文件已自行保存
-      </div>
+      <Card v-show="hover" titleCenter ref="popper" id="popper">
+        <template #title>
+          <div class="text-red-500">注意</div>
+        </template>
+        <div>
+          按下后当前账号对应目录下<b>所有文件</b>将被清空，请确保需要文件已自行保存
+        </div>
+      </Card>
     </transition>
   </div>
 </template>
@@ -30,8 +30,10 @@
 import Vue from "vue";
 import { createPopper } from "@popperjs/core";
 import { action, mutations } from "../store";
+import Card from "./Card.vue";
 
 export default Vue.extend({
+  components: { Card },
   data() {
     return {
       hover: false,
@@ -40,14 +42,11 @@ export default Vue.extend({
   methods: {
     mountPopper() {
       this.hover = true;
-      createPopper(
-        this.$refs.cleanBtn as HTMLElement,
-        this.$refs.popper as HTMLElement,
-        {
-          placement: "top",
-          modifiers: [{ name: "offset", options: { offset: [0, 10] } }],
-        }
-      );
+      const popper = (this.$refs.popper as any).$el as HTMLElement;
+      createPopper(this.$refs.cleanBtn as HTMLElement, popper, {
+        placement: "top",
+        modifiers: [{ name: "offset", options: { offset: [0, 10] } }],
+      });
     },
 
     cleanup() {

@@ -2,11 +2,13 @@
   <div id="app">
     <div
       id="global-mask"
-      class="flex flex-col justify-center items-center absolute z-50 w-full h-full bg-gray-300 opacity-70"
+      class="flex justify-center items-center absolute z-50 w-full h-full bg-gray-500 bg-opacity-80"
       v-if="globalMask"
     >
-      <icon class="animate-spin h-10 w-10 text-red-500" iconName="Load"></icon>
-      <p class="animate-flow m-3 text-2xl font-bold">清理中</p>
+      <Card class="flex flex-col items-center">
+        <icon class="animate-spin h-10 w-10 text-red-500" iconName="Load" />
+        <p class="animate-flow m-3 text-2xl font-bold">清理中</p>
+      </Card>
     </div>
     <div class="h-full">
       <SelectApp />
@@ -19,6 +21,7 @@
 import Vue from "vue";
 import SelectApp from "@/components/SelectApp.vue";
 import Footer from "@/components/Footer.vue";
+import Card from "@/components/Card.vue";
 import { action } from "./store";
 
 export default Vue.extend({
@@ -26,6 +29,7 @@ export default Vue.extend({
   components: {
     SelectApp,
     Footer,
+    Card,
   },
   computed: {
     globalMask() {

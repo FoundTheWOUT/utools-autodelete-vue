@@ -2,7 +2,7 @@ import { CreateElement, VNode, VueConstructor } from "vue";
 import Load from "./icon/load.vue";
 import Warn from "./icon/warn.vue";
 
-// constructor
+// options
 const Icon: any = {
   name: "icon",
   props: {
