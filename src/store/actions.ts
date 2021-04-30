@@ -6,7 +6,7 @@ import type { StateType } from "./index";
 export enum action {
   SET_ACCOUNTS = "SET_ACCOUNTS",
   GET_SET_FILE_SIZE = "GET_SET_FILE_SIZE",
-  REMOVE_ACCOUNT = "REMOVE_ACCOUNT"
+  REMOVE_ACCOUNT = "REMOVE_ACCOUNT",
 }
 
 export const actionsDefinition: ActionTree<StateType, StateType> = {
@@ -107,22 +107,22 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
       });
   },
   [action.REMOVE_ACCOUNT]: async ({ state, commit, dispatch }) => {
-    const _app = state.app[state.curApp]
-    const _account = state.accounts[state.activeAccountID]
-    commit(mutations.SET_GLOBALMASK, true)
+    const _app = state.app[state.curApp];
+    const _account = state.accounts[state.activeAccountID];
+    commit(mutations.SET_GLOBALMASK, true);
 
     const newAccount: Account = {
       account: "该账号已删除",
       rootPath: "",
-      waitingFolderList: []
-    }
+      waitingFolderList: [],
+    };
 
     window.exports.cleanUpSubItem(_account.rootPath, () => {
-      commit(mutations.SET_GLOBALMASK, false)
-      commit(mutations.SET_ACCOUNT, newAccount)
+      commit(mutations.SET_GLOBALMASK, false);
+      commit(mutations.SET_ACCOUNT, newAccount);
       console.log(state.accounts);
-      commit(mutations.PUT_CACHE_FILE, { _app, account: state.accounts })
-      dispatch(action.GET_SET_FILE_SIZE)
-    })
-  }
+      commit(mutations.PUT_CACHE_FILE, { _app, account: state.accounts });
+      dispatch(action.GET_SET_FILE_SIZE);
+    });
+  },
 };

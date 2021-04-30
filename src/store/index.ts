@@ -45,7 +45,7 @@ export default new Store({
   },
   mutations: {
     [mutations.SET_ACCOUNT]: (state, account: Account) => {
-      state.accounts[state.activeAccountID] = account
+      state.accounts[state.activeAccountID] = account;
     },
     [mutations.SET_ACCOUNTS]: (state, accounts: Account[]) => {
       state.accounts = accounts;
