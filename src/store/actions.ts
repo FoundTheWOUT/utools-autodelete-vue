@@ -1,11 +1,12 @@
 import { ActionTree } from "vuex";
 import { mutations } from "./index";
-import type { Accounts, FolderSizePromise } from "../types";
+import type { Account, FolderSizePromise } from "../types";
 import type { StateType } from "./index";
 
 export enum action {
   SET_ACCOUNTS = "SET_ACCOUNTS",
   GET_SET_FILE_SIZE = "GET_SET_FILE_SIZE",
+  REMOVE_ACCOUNT = "REMOVE_ACCOUNT"
 }
 
 export const actionsDefinition: ActionTree<StateType, StateType> = {
@@ -14,15 +15,17 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
     commit(mutations.SET_ACCOUNT_ID, 0);
 
     //check cache
-    Object.keys(state.cacheFile).some((arrVal) => {
-      if (arrVal === app && state.cacheFile[app].length !== 0) {
-        console.log("using cache");
-        console.log({ app, input: state.cacheFile[app] });
-        commit(mutations.SET_ACCOUNTS, state.cacheFile[app]);
-        commit(mutations.SWITCH_APP, app);
-        return;
-      }
-    });
+    // let cacheExist = false;
+    // Object.keys(state.cacheFile).some((arrVal) => {
+    //   if (arrVal === app && state.cacheFile[app].length !== 0) {
+    //     console.log("using cache");
+    //     console.log({ app, input: state.cacheFile[app] });
+    //     cacheExist = true;
+    //     commit(mutations.SET_ACCOUNTS, state.cacheFile[app]);
+    //     commit(mutations.SWITCH_APP, app);
+    //   }
+    // });
+    // if (cacheExist) return
 
     if (process.env.NODE_ENV === "development") {
       const testAccounts = [
@@ -51,7 +54,7 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
       return;
     }
 
-    await window.exports.getFile(app, (AccountsArr: Accounts[]) => {
+    await window.exports.getFile(app, (AccountsArr: Account[]) => {
       // if have Accounts
       // 1.set Accounts to state
       // 2.switch app
@@ -103,4 +106,23 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
         commit(mutations.SET_PENDING_STATUS, false);
       });
   },
+  [action.REMOVE_ACCOUNT]: async ({ state, commit, dispatch }) => {
+    const _app = state.app[state.curApp]
+    const _account = state.accounts[state.activeAccountID]
+    commit(mutations.SET_GLOBALMASK, true)
+
+    const newAccount: Account = {
+      account: "该账号已删除",
+      rootPath: "",
+      waitingFolderList: []
+    }
+
+    window.exports.cleanUpSubItem(_account.rootPath, () => {
+      commit(mutations.SET_GLOBALMASK, false)
+      commit(mutations.SET_ACCOUNT, newAccount)
+      console.log(state.accounts);
+      commit(mutations.PUT_CACHE_FILE, { _app, account: state.accounts })
+      dispatch(action.GET_SET_FILE_SIZE)
+    })
+  }
 };

@@ -19,9 +19,11 @@ const dir = {
 const removeV = ["All Users", "Applet", "config"];
 
 function getAccountName(app, accountRootPath) {
+  let accountName;
   switch (app) {
     case "WeChat":
-      return fs.readdirSync(path.join(accountRootPath))[0].substr(8);
+      accountName = fs.readdirSync(path.join(accountRootPath))[0];
+      return accountName ? accountName.substr(8) : "";
     case "QQ":
       return path.basename(accountRootPath);
     default:
@@ -79,6 +81,7 @@ function getWaitingPath(app, accountRootPath) {
  * @returns {Array}
  */
 function getFile(app, callback) {
+  console.log("getFileFunc call");
   let accountsList = [];
   // find Account
   for (const systemType in dir[app]) {
@@ -105,6 +108,7 @@ function getFile(app, callback) {
   Accounts = accountsList.map((accountRootPath) => {
     return {
       account: getAccountName(app, accountRootPath),
+      rootPath: accountRootPath,
       waitingFolderList: getWaitingPath(app, accountRootPath),
     };
   });
@@ -114,6 +118,13 @@ function getFile(app, callback) {
 async function cleanUpSubItem(List, callback) {
   let delFile = [];
 
+  if (!Array.isArray(List)) {
+    let _path = String(List);
+    if (!fs.existsSync(_path)) return;
+    await utils.deleteFilePromise(_path);
+    callback.call();
+    return;
+  }
   List.forEach((filepath) => {
     // if no this file path
     if (!fs.existsSync(filepath)) return;

@@ -3,3 +3,15 @@
 @tailwind components;
 
 @tailwind utilities;
+
+@layer components {
+  .btn {
+    @apply rounded-lg p-2 outline-none focus:outline-none active:shadow-none active:scale-105 transform hover:scale-110 hover:shadow-xl transition-all;
+  }
+  .warn-btn {
+    @apply btn bg-red-500 hover:bg-red-700
+  }
+  .safe-btn {
+    @apply btn bg-green-500 hover:bg-green-700
+  }
+}

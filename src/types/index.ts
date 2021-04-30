@@ -1,9 +1,10 @@
-export interface Accounts {
+export interface Account {
   account: string;
+  rootPath: string;
   waitingFolderList: { status: boolean; path: string }[];
 }
 export interface cacheFile {
-  [app: string]: Accounts[];
+  [app: string]: Account[];
 }
 
 export interface FolderSizePromise {

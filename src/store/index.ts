@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex, { Store } from "vuex";
 import { actionsDefinition } from "./actions";
-import type { Accounts, cacheFile, FolderSizePromise } from "../types";
+import type { Account, cacheFile, FolderSizePromise } from "../types";
 
 Vue.use(Vuex);
 
@@ -11,7 +11,7 @@ const state = {
   app: ["WeChat", "QQ"],
   curApp: 0,
   activeAccountID: 0,
-  accounts: [] as Accounts[],
+  accounts: [] as Account[],
   cacheFile: {} as cacheFile,
   folderSize: "0",
   pendingFolderSize: false,
@@ -22,6 +22,7 @@ const state = {
 export type StateType = typeof state;
 
 export enum mutations {
+  SET_ACCOUNT = "SET_ACCOUNT",
   SET_ACCOUNTS = "SET_ACCOUNTS",
   PUT_CACHE_FILE = "PUT_CACHE_FILE",
   SET_FILE_SIZE = "SET_FILE_SIZE",
@@ -43,7 +44,10 @@ export default new Store({
     },
   },
   mutations: {
-    [mutations.SET_ACCOUNTS]: (state, accounts: Accounts[]) => {
+    [mutations.SET_ACCOUNT]: (state, account: Account) => {
+      state.accounts[state.activeAccountID] = account
+    },
+    [mutations.SET_ACCOUNTS]: (state, accounts: Account[]) => {
       state.accounts = accounts;
     },
     [mutations.SET_ACCOUNT_ID]: (state, id) => {
@@ -51,7 +55,7 @@ export default new Store({
     },
     [mutations.PUT_CACHE_FILE]: (
       state,
-      payload: { app: string; accounts: Accounts[] }
+      payload: { app: string; accounts: Account[] }
     ) => {
       state.cacheFile[payload.app] = payload.accounts;
     },

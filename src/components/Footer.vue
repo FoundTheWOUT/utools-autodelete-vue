@@ -2,7 +2,7 @@
   <div class="mb-4">
     <button
       id="cleanup"
-      class="rounded-lg p-2 bg-red-500 outline-none focus:outline-none active:shadow-none active:scale-105 hover:bg-red-700 transform hover:scale-110 hover:shadow-xl transition-all"
+      class="warn-btn"
       @click="cleanup"
       @mouseenter="mountPopper"
       @mouseleave="hover = false"
@@ -13,16 +13,18 @@
         清空目录
       </p>
     </button>
-    <transition name="slide-fade">
-      <Card v-show="hover" titleCenter ref="popper" id="popper">
-        <template #title>
-          <div class="text-red-500">注意</div>
-        </template>
-        <div>
-          按下后当前账号对应目录下<b>所有文件</b>将被清空，请确保需要文件已自行保存
-        </div>
-      </Card>
-    </transition>
+    <div ref="popper">
+      <transition name="slide-fade">
+        <Card v-show="hover" titleCenter>
+          <template #title>
+            <div class="text-red-500">注意</div>
+          </template>
+          <div>
+            按下后当前账号对应目录下<b>所有文件</b>将被清空，请确保需要文件已自行保存
+          </div>
+        </Card>
+      </transition>
+    </div>
   </div>
 </template>
 
@@ -42,11 +44,14 @@ export default Vue.extend({
   methods: {
     mountPopper() {
       this.hover = true;
-      const popper = (this.$refs.popper as any).$el as HTMLElement;
-      createPopper(this.$refs.cleanBtn as HTMLElement, popper, {
-        placement: "top",
-        modifiers: [{ name: "offset", options: { offset: [0, 10] } }],
-      });
+      createPopper(
+        this.$refs.cleanBtn as HTMLElement,
+        this.$refs.popper as HTMLElement,
+        {
+          placement: "top",
+          modifiers: [{ name: "offset", options: { offset: [0, 10] } }],
+        }
+      );
     },
 
     cleanup() {
@@ -77,10 +82,11 @@ export default Vue.extend({
 <style scoped>
 .slide-fade-enter-active,
 .slide-fade-leave-active {
-  transition: opacity 0.3s ease;
+  transition: all 0.3s ease;
 }
 .slide-fade-enter,
 .slide-fade-leave-to {
+  transform: translateY(20px) scale(0.7);
   opacity: 0;
 }
 </style>
