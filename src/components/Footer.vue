@@ -57,8 +57,8 @@ export default Vue.extend({
     cleanup() {
       console.warn("clean up.");
       this.$store.commit(mutations.SET_GLOBALMASK, true);
-      if (window.exports?.cleanUpSubItem) {
-        window.exports.cleanUpSubItem(
+      if (window.api?.cleanUpSubItem) {
+        window.api.cleanUpSubItem(
           this.$store.getters.selectedWaitingFolderList,
           () => {
             setTimeout(() => {

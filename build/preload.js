@@ -112,7 +112,7 @@ function getFile(app, callback) {
       waitingFolderList: getWaitingPath(app, accountRootPath),
     };
   });
-  callback.call(null, Accounts);
+  callback(Accounts);
 }
 
 async function cleanUpSubItem(List, callback) {
@@ -146,7 +146,7 @@ async function cleanUpSubItem(List, callback) {
   callback.call();
 }
 
-window.exports = {
+window.api = {
   getFile,
   cleanUpSubItem,
   getFolderSize: utils.getFolderSize,

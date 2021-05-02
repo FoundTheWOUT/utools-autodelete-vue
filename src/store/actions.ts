@@ -1,6 +1,6 @@
 import { ActionTree } from "vuex";
 import { mutations } from "./index";
-import type { Account, FolderSizePromise } from "../types";
+import type { Account } from "../types";
 import type { StateType } from "./index";
 
 export enum action {
@@ -54,15 +54,15 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
       return;
     }
 
-    await window.exports.getFile(app, (AccountsArr: Account[]) => {
+    window.api.getFile(app, (Accounts) => {
       // if have Accounts
       // 1.set Accounts to state
       // 2.switch app
       // 3.put Accounts to cache
-      if (AccountsArr) {
-        commit(mutations.SET_ACCOUNTS, AccountsArr);
+      if (Accounts) {
+        commit(mutations.SET_ACCOUNTS, Accounts);
         commit(mutations.SWITCH_APP, app);
-        commit(mutations.PUT_CACHE_FILE, { app, accounts: AccountsArr });
+        commit(mutations.PUT_CACHE_FILE, { app, accounts: Accounts });
       }
     });
   },
@@ -72,11 +72,11 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
     // if pending Promises exists, cancel them.
     if (state.getFileSizePromise.length !== 0)
       state.getFileSizePromise.forEach((item) => item.cancel());
-    const getFolderSizePromise = window.exports?.getFolderSize(
+    const getFolderSizePromise = window.api.getFolderSize(
       getters.selectedWaitingFolderList
     );
     const promise: Promise<number[]> = Promise.all(
-      getFolderSizePromise.map((v: FolderSizePromise) => v.promise)
+      getFolderSizePromise.map((v) => v.promise)
     );
     // store pending promise
     commit(mutations.SET_PROMISE, getFolderSizePromise);
@@ -117,7 +117,7 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
       waitingFolderList: [],
     };
 
-    window.exports.cleanUpSubItem(_account.rootPath, () => {
+    window.api.cleanUpSubItem(_account.rootPath, () => {
       commit(mutations.SET_GLOBALMASK, false);
       commit(mutations.SET_ACCOUNT, newAccount);
       console.log(state.accounts);
