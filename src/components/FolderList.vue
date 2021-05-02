@@ -25,33 +25,37 @@
       <div class="text-gray-400">点击对应条目可打开目录</div>
       <button
         class="warn-btn w-2/12"
-        @click="mountPopper"
+        @click="showDialog = true"
+        @mouseenter="mountPopper"
+        @mouseleave="hover = false"
         ref="removeAccountBtn"
       >
         <p class="text-white font-bold">删除账号</p>
       </button>
     </div>
+    <Dialog v-model="showDialog">
+      <Card titleCenter>
+        <template #title>
+          <div class="text-red-500">你确定删除账号吗</div>
+        </template>
+        <p class="m-3">
+          按下确定后该账号文件夹将会被直接移除，且移除过程不可逆
+        </p>
+        <button class="mx-2 warn-btn text-white font-bold" @click="sureRemove">
+          确定
+        </button>
+        <button class="mx-2 safe-btn text-white font-bold" @click="closePanel">
+          取消
+        </button>
+      </Card>
+    </Dialog>
     <div style="z-index: 999" ref="popper">
       <transition name="slide-fade">
-        <Card v-show="removeAccountEnsure" titleCenter>
+        <Card v-show="hover" titleCenter>
           <template #title>
-            <div class="text-red-500">你确定删除账号吗</div>
+            <div class="text-red-500">删除当前账号</div>
           </template>
-          <p class="m-3">
-            按下确定后该账号文件夹将会被直接移除，该过程无法被阻止
-          </p>
-          <button
-            class="mx-2 warn-btn text-white font-bold"
-            @click="sureRemove"
-          >
-            确定
-          </button>
-          <button
-            class="mx-2 safe-btn text-white font-bold"
-            @click="closePanel"
-          >
-            取消
-          </button>
+          <p>按下后会询问你是否确认删除账号</p>
         </Card>
       </transition>
     </div>
@@ -63,13 +67,15 @@ import Vue from "vue";
 import * as _ from "lodash";
 import { action } from "../store";
 import Card from "./Card.vue";
+import Dialog from "./Dialog.vue";
 import { createPopper } from "@popperjs/core";
 
 export default Vue.extend({
-  components: { Card },
+  components: { Card, Dialog },
   data() {
     return {
-      removeAccountEnsure: false,
+      hover: false,
+      showDialog: false,
     };
   },
   computed: {
@@ -93,32 +99,19 @@ export default Vue.extend({
       this.$store.dispatch(action.REMOVE_ACCOUNT);
     },
     closePanel(): void {
-      this.removeAccountEnsure = false;
+      this.showDialog = false;
     },
     mountPopper(): void {
-      if (this.removeAccountEnsure) return;
-      this.removeAccountEnsure = true;
+      this.hover = true;
       createPopper(
         this.$refs.removeAccountBtn as HTMLElement,
         this.$refs.popper as HTMLElement,
         {
           placement: "top",
-          modifiers: [{ name: "offset", options: { offset: [-150, 10] } }],
+          modifiers: [{ name: "offset", options: { offset: [0, 10] } }],
         }
       );
     },
   },
 });
 </script>
-
-<style scoped>
-.slide-fade-enter-active,
-.slide-fade-leave-active {
-  transition: all 0.3s ease;
-}
-.slide-fade-enter,
-.slide-fade-leave-to {
-  transform: translateY(20px) scale(0.7);
-  opacity: 0;
-}
-</style>

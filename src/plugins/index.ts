@@ -1,2 +1,2 @@
 export * from "./Icon";
-export * from "./Dialog"
+export * from "./Dialog";

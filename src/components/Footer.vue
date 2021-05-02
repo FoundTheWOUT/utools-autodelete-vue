@@ -1,5 +1,11 @@
 <template>
   <div class="mb-4">
+    <Dialog v-model="showDialog">
+      <Card class="flex flex-col items-center">
+        <icon class="animate-spin h-10 w-10 text-red-500" iconName="Load" />
+        <p class="animate-flow m-3 text-2xl font-bold">清理中</p>
+      </Card>
+    </Dialog>
     <button
       id="cleanup"
       class="warn-btn"
@@ -20,7 +26,7 @@
             <div class="text-red-500">注意</div>
           </template>
           <div>
-            按下后当前账号对应目录下<b>所有文件</b>将被清空，请确保需要文件已自行保存
+            按下后当前选中目录将会被<b>直接</b>清空，请确保需要文件已自行保存
           </div>
         </Card>
       </transition>
@@ -31,14 +37,16 @@
 <script lang="ts">
 import Vue from "vue";
 import { createPopper } from "@popperjs/core";
-import { action, mutations } from "../store";
+import { action } from "../store";
 import Card from "./Card.vue";
+import Dialog from "./Dialog.vue";
 
 export default Vue.extend({
-  components: { Card },
+  components: { Card, Dialog },
   data() {
     return {
       hover: false,
+      showDialog: false,
     };
   },
   methods: {
@@ -56,37 +64,22 @@ export default Vue.extend({
 
     cleanup() {
       console.warn("clean up.");
-      this.$store.commit(mutations.SET_GLOBALMASK, true);
+      this.showDialog = true;
       if (window.api?.cleanUpSubItem) {
         window.api.cleanUpSubItem(
           this.$store.getters.selectedWaitingFolderList,
           () => {
             setTimeout(() => {
-              this.$store.commit(mutations.SET_GLOBALMASK, false);
+              this.showDialog = false;
               this.$store.dispatch(action.GET_SET_FILE_SIZE);
             }, 500);
           }
         );
       } else {
-        setTimeout(
-          () => this.$store.commit(mutations.SET_GLOBALMASK, false),
-          500
-        );
+        setTimeout(() => (this.showDialog = false), 500);
         console.log("no method");
       }
     },
   },
 });
 </script>
-
-<style scoped>
-.slide-fade-enter-active,
-.slide-fade-leave-active {
-  transition: all 0.3s ease;
-}
-.slide-fade-enter,
-.slide-fade-leave-to {
-  transform: translateY(20px) scale(0.7);
-  opacity: 0;
-}
-</style>
