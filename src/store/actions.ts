@@ -72,7 +72,7 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
     // if pending Promises exists, cancel them.
     if (state.getFileSizePromise.length !== 0)
       state.getFileSizePromise.forEach((item) => item.cancel());
-    const getFolderSizePromise = window.api.getFolderSize(
+    const getFolderSizePromise = window.api?.getFolderSize(
       getters.selectedWaitingFolderList
     );
     const promise: Promise<number[]> = Promise.all(

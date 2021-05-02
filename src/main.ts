@@ -1,13 +1,13 @@
 import Vue from "vue";
 import App from "./App.vue";
 import store from "./store";
-import * as plugins from "./plugins";
+import { autoDelete } from "./plugins/install";
 
 import "./assets/tailwind.css";
 
 Vue.config.productionTip = false;
 
-Vue.use(plugins.Icon);
+Vue.use(autoDelete);
 
 if (process.env.NODE_ENV === "production") {
   window.utools.onPluginReady(() => {

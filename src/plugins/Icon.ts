@@ -17,9 +17,5 @@ const Icon: any = {
   },
 };
 
-Icon.install = (Vue: VueConstructor) => {
-  Vue.component(Icon.name, Icon);
-};
-
 export { Icon };
 export default Icon;
