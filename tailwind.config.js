@@ -1,6 +1,6 @@
 module.exports = {
   purge: { content: ["./public/**/*.html", "./src/**/*.vue"] },
-  darkMode: false, // or 'media' or 'class'
+  darkMode: "class",
   theme: {
     maxWidth: {
       xxs: "8rem",
@@ -14,6 +14,13 @@ module.exports = {
           "0%": { transform: "translateY(20px)" },
         },
       },
+      boxShadow: {
+        white: "0 10px 15px -3px rgba(77,84,93,0.9)",
+        red: "0 10px 15px -3px rgba(250,198,198,0.9)",
+        "dark-red": "0 10px 15px -3px rgba(130,0,20,0.9)",
+        green: "0 10px 15px -3px rgba(222,245,199,0.9)",
+        "dark-green": "0 10px 15px -3px rgba(19,82,0,0.9)",
+      },
     },
   },
   variants: {
@@ -21,7 +28,7 @@ module.exports = {
       backgroundColor: ["checked"],
       borderColor: ["checked"],
       scale: ["active"],
-      boxShadow: ["active"],
+      boxShadow: ["active", "dark"],
     },
   },
   plugins: [],

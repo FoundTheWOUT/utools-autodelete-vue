@@ -1,6 +1,6 @@
 <template>
-  <div id="app">
-    <div class="h-full">
+  <div id="app" :class="isDark ? 'dark' : ''">
+    <div class="h-full dark:bg-gray-900">
       <SelectApp />
       <Footer class="mx-4" />
     </div>
@@ -20,9 +20,7 @@ export default Vue.extend({
     Footer,
   },
   computed: {
-    globalMask() {
-      return this.$store.state.globalMask;
-    },
+    isDark: () => (window.utools ? window.utools.isDark() : undefined),
   },
   async created() {
     await this.$store.dispatch(action.SET_ACCOUNTS, "WeChat");

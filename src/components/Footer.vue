@@ -2,8 +2,10 @@
   <div class="mb-4">
     <Dialog v-model="showDialog">
       <Card class="flex flex-col items-center">
-        <icon class="animate-spin h-10 w-10 text-red-500" iconName="Load" />
-        <p class="animate-flow m-3 text-2xl font-bold">清理中</p>
+        <div class="flex flex-col items-center">
+          <icon class="animate-spin h-10 w-10 text-red-500" iconName="Load" />
+          <p class="animate-flow m-3 text-2xl font-bold">清理中</p>
+        </div>
       </Card>
     </Dialog>
     <button

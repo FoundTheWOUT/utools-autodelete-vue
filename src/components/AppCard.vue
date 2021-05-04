@@ -9,7 +9,7 @@
         @click="handelChangeAccount(index)"
       >
         <p
-          class="truncate font-bold"
+          class="truncate font-bold dark:text-white"
           :class="index === activeAccountID ? 'text-white' : ''"
         >
           {{ account.account }}

@@ -1,7 +1,7 @@
 <template>
-  <div class="border-4 rounded-lg w-full p-4">
+  <div class="border-4 rounded-lg w-full p-4 dark:border-gray-500">
     <div
-      class="flex items-center rounded-lg my-3 py-3 border border-dashed border-indigo-200 hover:border-transparent hover:shadow-lg hover:bg-gray-100 active:shadow-none transition-all"
+      class="flex items-center rounded-lg my-3 py-3 border border-dashed border-indigo-200 hover:border-transparent hover:shadow-lg hover:bg-gray-100 active:shadow-none transition-all dark:hover:bg-gray-500 dark:hover:shadow-white dark:active:shadow-none"
       v-for="item in list"
       :key="item.path"
     >
@@ -17,7 +17,7 @@
         class="h-auto w-11/12 px-3 focus:outline-none"
         @click="openFloder(item.path)"
       >
-        <div class="break-words">{{ item.path }}</div>
+        <div class="break-words dark:text-white">{{ item.path }}</div>
       </button>
     </div>
     <div class="flex justify-between items-center">
