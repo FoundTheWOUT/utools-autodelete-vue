@@ -20,7 +20,7 @@ export default Vue.extend({
     Footer,
   },
   computed: {
-    isDark: () => (window.utools ? window.utools.isDark() : undefined),
+    isDark: () => (window.utools ? window.utools.isDarkColors() : undefined),
   },
   async created() {
     await this.$store.dispatch(action.SET_ACCOUNTS, "WeChat");
