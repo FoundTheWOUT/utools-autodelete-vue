@@ -109,7 +109,6 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
   [action.REMOVE_ACCOUNT]: async ({ state, commit, dispatch }) => {
     const _app = state.app[state.curApp];
     const _account = state.accounts[state.activeAccountID];
-    commit(mutations.SET_GLOBALMASK, true);
 
     const newAccount: Account = {
       account: "该账号已删除",
@@ -118,7 +117,6 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
     };
 
     window.api.cleanUpSubItem(_account.rootPath, () => {
-      commit(mutations.SET_GLOBALMASK, false);
       commit(mutations.SET_ACCOUNT, newAccount);
       console.log(state.accounts);
       commit(mutations.PUT_CACHE_FILE, { _app, account: state.accounts });

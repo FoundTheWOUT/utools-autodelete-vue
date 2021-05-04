@@ -15,7 +15,6 @@ const state = {
   cacheFile: {} as cacheFile,
   folderSize: "0",
   pendingFolderSize: false,
-  globalMask: false,
   getFileSizePromise: [] as FolderSizePromise[],
 };
 
@@ -29,7 +28,6 @@ export enum mutations {
   SET_ACCOUNT_ID = "SET_ACCOUNT_ID",
   SET_PENDING_STATUS = "SET_PENDING_STATUS",
   SWITCH_APP = "SWITCH_APP",
-  SET_GLOBALMASK = "SET_GLOBALMASK",
   SET_PROMISE = "SET_PROMISE",
 }
 
@@ -69,9 +67,6 @@ export default new Store({
     },
     [mutations.SWITCH_APP]: (state, app: string) => {
       state.curApp = state.app.indexOf(app) !== -1 ? state.app.indexOf(app) : 0;
-    },
-    [mutations.SET_GLOBALMASK]: (state, status: boolean) => {
-      state.globalMask = status;
     },
     [mutations.SET_PROMISE]: (state, promiseArr) => {
       state.getFileSizePromise = promiseArr;
