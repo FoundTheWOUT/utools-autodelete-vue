@@ -2,7 +2,7 @@
   "name": "utools-autodelete-vue",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build && cd build && yarn",
+    "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "prepare": "husky install"
   },
@@ -12,6 +12,11 @@
   },
   "author": "FoundTheWOUT",
   "license": "MIT",
+  "workspaces": [
+    "./build",
+    "./.github/action"
+  ],
+  "private": true,
   "dependencies": {
     "@popperjs/core": "^2.9.2",
     "@tailwindcss/postcss7-compat": "^2.0.2",
