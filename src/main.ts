@@ -11,7 +11,6 @@ Vue.use(autoDelete);
 
 if (process.env.NODE_ENV === "production") {
   window.utools.onPluginReady(() => {
-    // window.api.getWeChatFile();
     new Vue({
       store,
       render: (h) => h(App),

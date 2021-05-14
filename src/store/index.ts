@@ -40,6 +40,9 @@ export default new Store({
         .filter((v) => v.status !== false)
         .map((v) => v.path);
     },
+    curAccount: (state) => {
+      return state.accounts[state.activeAccountID];
+    },
   },
   mutations: {
     [mutations.SET_ACCOUNT]: (state, account: Account) => {

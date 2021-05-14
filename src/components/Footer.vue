@@ -64,11 +64,17 @@ export default Vue.extend({
       );
     },
 
-    cleanup() {
+    async cleanup() {
       console.warn("clean up.");
       this.showDialog = true;
-      if (window.api?.cleanUpSubItem) {
-        window.api.cleanUpSubItem(
+      await this.$store.dispatch(action.CLEAR_FILES);
+      setTimeout(() => {
+        this.showDialog = false;
+        this.$store.dispatch(action.GET_SET_FILE_SIZE);
+      }, 500);
+
+      if (module.exports.cleanUpSubItem) {
+        module.exports.cleanUpSubItem(
           this.$store.getters.selectedWaitingFolderList,
           () => {
             setTimeout(() => {

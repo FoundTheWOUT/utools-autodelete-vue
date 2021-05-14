@@ -6,6 +6,7 @@ import type { StateType } from "./index";
 export enum action {
   SET_ACCOUNTS = "SET_ACCOUNTS",
   GET_SET_FILE_SIZE = "GET_SET_FILE_SIZE",
+  CLEAR_FILES = "CLEAR_FILES",
   REMOVE_ACCOUNT = "REMOVE_ACCOUNT",
 }
 
@@ -34,8 +35,11 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
           waitingFolderList: [
             {
               status: true,
-              path:
+              name: "hi",
+              path: [
                 "34dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+                "hi",
+              ],
             },
             { status: true, path: "12" },
             { status: true, path: "hi" },
@@ -54,12 +58,12 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
       return;
     }
 
-    window.api.getFile(app, (Accounts) => {
+    window.api?.getFile(app, (Accounts: Account[]) => {
       // if have Accounts
       // 1.set Accounts to state
       // 2.switch app
       // 3.put Accounts to cache
-      if (Accounts) {
+      if (Accounts.length) {
         commit(mutations.SET_ACCOUNTS, Accounts);
         commit(mutations.SWITCH_APP, app);
         commit(mutations.PUT_CACHE_FILE, { app, accounts: Accounts });
@@ -115,12 +119,17 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
       rootPath: "",
       waitingFolderList: [],
     };
-
-    window.api.cleanUpSubItem(_account.rootPath, () => {
+    window.api?.cleanUpSubItem(_account.rootPath, () => {
       commit(mutations.SET_ACCOUNT, newAccount);
       console.log(state.accounts);
       commit(mutations.PUT_CACHE_FILE, { _app, account: state.accounts });
       dispatch(action.GET_SET_FILE_SIZE);
     });
+  },
+  [action.CLEAR_FILES]: async ({ getters, dispatch }) => {
+    if (window.api?.cleanUpSubItem) {
+      window.api?.cleanUpSubItem(getters.selectedWaitingFolderList);
+    }
+    console.log("no method");
   },
 };
