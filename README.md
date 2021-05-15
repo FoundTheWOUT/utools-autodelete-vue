@@ -8,12 +8,9 @@
 
 此些缓存文件都是占用空间大户, 几个月下来一个文件夹几个g, 我们应该也需要一些简单的方法去清理它们.
 
-[📖 更新日志](https://github.com/FoundTheWOUT/utools-autodelete-vue/releases)
+- 支持清除Mac, Window微信
+- 支持清除Window QQ
 
-- [X] 支持QQ
-- [X] 自选择删除目录
-- [X] 显示删除文件大小
-- [X] 支持删除账号
-- [ ] 记录上次选择清理的目录
+[📖 更新日志](https://github.com/FoundTheWOUT/utools-autodelete-vue/releases)
 
 ![](https://drimagebed.oss-cn-shenzhen.aliyuncs.com/uPic/utools-autodelete-vue-20210419.gif)
