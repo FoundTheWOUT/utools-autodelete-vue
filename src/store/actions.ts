@@ -115,7 +115,7 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
     const _account = state.accounts[state.activeAccountID];
 
     const newAccount: Account = {
-      account: "该账号已删除",
+      username: "该账号已删除",
       rootPath: "",
       waitingFolderList: [],
     };
@@ -126,10 +126,19 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
       dispatch(action.GET_SET_FILE_SIZE);
     });
   },
-  [action.CLEAR_FILES]: async ({ getters, dispatch }) => {
-    if (window.api?.cleanUpSubItem) {
-      window.api?.cleanUpSubItem(getters.selectedWaitingFolderList);
+  [action.CLEAR_FILES]: async ({ getters }) => {
+    try {
+      if (window.utools.isWindows()) {
+        if (window.api?.cleanUpSubItem) {
+          window.api?.cleanUpSubItem(getters.selectedWaitingFolderList);
+        }
+      } else if (window.utools.isMacOs()) {
+        for (const i in getters.selectedWaitingFolderList) {
+          await window.api?.deleteFilePromise(i);
+        }
+      }
+    } catch (error) {
+      console.warn(error);
     }
-    console.log("no method");
   },
 };

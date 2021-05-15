@@ -17,7 +17,7 @@
         class="h-auto w-11/12 px-3 focus:outline-none"
         @click="openFloder(item.path)"
       >
-        <div class="break-words dark:text-white">{{ item.path }}</div>
+        <div class="break-words dark:text-white">{{ item.name }}</div>
       </button>
     </div>
     <div class="flex justify-between items-center">
@@ -88,8 +88,12 @@ export default Vue.extend({
     this.handleCheckbox = _.debounce(this.handleCheckbox, 800);
   },
   methods: {
-    openFloder(target: string): void {
-      window.utools.shellOpenPath(target);
+    openFloder(target: string | string[]): void {
+      if (Array.isArray(target)) {
+        window.utools.shellOpenPath(this.$store.getters.curAccount.rootPath);
+      } else {
+        window.utools.shellOpenPath(target);
+      }
     },
     handleCheckbox(): void {
       this.$store.dispatch(action.GET_SET_FILE_SIZE);

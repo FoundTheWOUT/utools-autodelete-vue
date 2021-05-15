@@ -35,10 +35,13 @@ export default new Store({
   state,
   getters: {
     selectedWaitingFolderList: (state) => {
-      //   return []
-      return state.accounts[state.activeAccountID].waitingFolderList
-        .filter((v) => v.status !== false)
-        .map((v) => v.path);
+      const waitingFolderList =
+        state.accounts[state.activeAccountID].waitingFolderList;
+      if (!Array.isArray(waitingFolderList)) return [];
+      return waitingFolderList
+        .filter((v) => v.status === true)
+        .map((v) => v.path)
+        .flat();
     },
     curAccount: (state) => {
       return state.accounts[state.activeAccountID];

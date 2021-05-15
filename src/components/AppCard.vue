@@ -5,14 +5,14 @@
         class="m-1 px-3 py-1 rounded-full outline-none focus:outline-none hover:bg-blue-200 transition-all"
         v-for="(account, index) in accounts"
         :class="index === activeAccountID ? 'bg-blue-500' : ''"
-        :key="account.account"
+        :key="account.username"
         @click="handelChangeAccount(index)"
       >
         <p
           class="truncate font-bold dark:text-white"
           :class="index === activeAccountID ? 'text-white' : ''"
         >
-          {{ account.account }}
+          {{ account.username }}
         </p>
       </button>
     </div>

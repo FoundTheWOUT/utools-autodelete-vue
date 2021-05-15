@@ -1,7 +1,11 @@
 export interface Account {
-  account: string;
+  username: string;
   rootPath: string;
-  waitingFolderList: { status: boolean; path: string }[];
+  waitingFolderList: {
+    status: boolean;
+    name: string;
+    path: string | string[];
+  }[];
 }
 export interface cacheFile {
   [app: string]: Account[];

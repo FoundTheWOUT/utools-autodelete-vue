@@ -72,21 +72,6 @@ export default Vue.extend({
         this.showDialog = false;
         this.$store.dispatch(action.GET_SET_FILE_SIZE);
       }, 500);
-
-      if (module.exports.cleanUpSubItem) {
-        module.exports.cleanUpSubItem(
-          this.$store.getters.selectedWaitingFolderList,
-          () => {
-            setTimeout(() => {
-              this.showDialog = false;
-              this.$store.dispatch(action.GET_SET_FILE_SIZE);
-            }, 500);
-          }
-        );
-      } else {
-        setTimeout(() => (this.showDialog = false), 500);
-        console.log("no method");
-      }
     },
   },
 });
