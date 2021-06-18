@@ -10,12 +10,12 @@ Vue.config.productionTip = false;
 Vue.use(autoDelete);
 
 if (process.env.NODE_ENV === "production") {
-  window.utools.onPluginReady(() => {
+  utools.onPluginReady(() => {
     new Vue({
       store,
       render: (h) => h(App),
     }).$mount("#app");
-    window.utools.onPluginEnter((code: any) => {
+    utools.onPluginEnter((code: any) => {
       console.log("进入插件", code);
     });
   });

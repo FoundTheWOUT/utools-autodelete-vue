@@ -23,7 +23,7 @@
         <icon
           v-if="pending"
           class="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-300"
-          iconName="Load"
+          icon-name="Load"
         ></icon>
         <div v-if="!pending">{{ folderSize }}</div>
       </div>

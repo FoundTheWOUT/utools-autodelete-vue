@@ -1,4 +1,4 @@
-import { CreateElement, VNode, VueConstructor } from "vue";
+import { CreateElement, VNode } from "vue";
 import Load from "./icon/load.vue";
 import Warn from "./icon/warn.vue";
 

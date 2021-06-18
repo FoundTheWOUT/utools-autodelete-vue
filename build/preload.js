@@ -4,7 +4,7 @@ const os = require("os");
 const path = require("path");
 const fs = require("fs");
 const utils = require("./utils");
-const child_process = require("child_process");
+// const child_process = require("child_process");
 const USER = os.userInfo().username;
 
 const appName = {
@@ -46,19 +46,20 @@ function getAccountName(app, accountRootPath) {
         return defaultName;
     }
   } else if (window.utools.isMacOs()) {
-    switch (app) {
-      case "WeChat": {
-        let filePath = path.join(accountRootPath, "Account", "userinfo.data");
-        let str = child_process
-          .execSync(`strings '${filePath}' |  sed -n 6p`)
-          .toString();
-        return str || defaultName;
-      }
-      case "QQ":
-        return path.basename(accountRootPath);
-      default:
-        return defaultName;
-    }
+    // switch (app) {
+    //   case "WeChat": {
+    //     let filePath = path.join(accountRootPath, "Account", "userinfo.data");
+    //     let str = child_process
+    //       .execSync(`strings '${filePath}' |  sed -n 6p`)
+    //       .toString();
+    //     return str || defaultName;
+    //   }
+    //   case "QQ":
+    //     return path.basename(accountRootPath);
+    //   default:
+    //     return defaultName;
+    // }
+    return path.basename(accountRootPath);
   }
 }
 

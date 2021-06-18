@@ -1,8 +1,8 @@
 import type { Account, FolderSizePromise } from "./types";
 
 declare global {
+  const utools: any;
   interface Window {
-    utools: any;
     api: {
       getFile: (app: string, cb?: (Accounts: Account[]) => void) => void;
       cleanUpSubItem: (List: string | string[], cb?: () => void) => void;
@@ -11,4 +11,3 @@ declare global {
     };
   }
 }
-export {};

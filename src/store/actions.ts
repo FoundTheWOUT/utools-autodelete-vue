@@ -11,7 +11,7 @@ export enum action {
 }
 
 export const actionsDefinition: ActionTree<StateType, StateType> = {
-  [action.SET_ACCOUNTS]: async ({ state, commit }, app: string) => {
+  [action.SET_ACCOUNTS]: async ({ commit }, app: string) => {
     // reset AccountId
     commit(mutations.SET_ACCOUNT_ID, 0);
 
@@ -128,11 +128,11 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
   },
   [action.CLEAR_FILES]: async ({ getters }) => {
     try {
-      if (window.utools.isWindows()) {
+      if (utools.isWindows()) {
         if (window.api?.cleanUpSubItem) {
           window.api?.cleanUpSubItem(getters.selectedWaitingFolderList);
         }
-      } else if (window.utools.isMacOs()) {
+      } else if (utools.isMacOs()) {
         for (const i in getters.selectedWaitingFolderList) {
           await window.api?.deleteFilePromise(i);
         }

@@ -21,7 +21,9 @@
       </button>
     </div>
     <div class="flex justify-between items-center">
-      <div class="w-2/12"></div>
+      <button class="safe-btn w-2/12" @click="openFloder([])">
+        <p class="text-white font-bold">打开账号</p>
+      </button>
       <div class="text-gray-400">点击对应条目可打开目录</div>
       <button
         class="warn-btn w-2/12"
@@ -34,7 +36,7 @@
       </button>
     </div>
     <Dialog v-model="showDialog">
-      <Card titleCenter>
+      <Card title-center>
         <template #title>
           <div class="text-red-500">你确定删除账号吗</div>
         </template>
@@ -51,7 +53,7 @@
     </Dialog>
     <div style="z-index: 999" ref="popper">
       <transition name="slide-fade">
-        <Card v-show="hover" titleCenter>
+        <Card v-show="hover" title-center>
           <template #title>
             <div class="text-red-500">删除当前账号</div>
           </template>
@@ -90,9 +92,9 @@ export default Vue.extend({
   methods: {
     openFloder(target: string | string[]): void {
       if (Array.isArray(target)) {
-        window.utools.shellOpenPath(this.$store.getters.curAccount.rootPath);
+        utools.shellOpenPath(this.$store.getters.curAccount.rootPath);
       } else {
-        window.utools.shellOpenPath(target);
+        utools.shellOpenPath(target);
       }
     },
     handleCheckbox(): void {

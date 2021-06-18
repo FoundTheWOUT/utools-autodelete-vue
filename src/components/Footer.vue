@@ -3,7 +3,7 @@
     <Dialog v-model="showDialog">
       <Card class="flex flex-col items-center">
         <div class="flex flex-col items-center">
-          <icon class="animate-spin h-10 w-10 text-red-500" iconName="Load" />
+          <icon class="animate-spin h-10 w-10 text-red-500" icon-name="Load" />
           <p class="animate-flow m-3 text-2xl font-bold">清理中</p>
         </div>
       </Card>
@@ -17,13 +17,13 @@
       ref="cleanBtn"
     >
       <p class="flex items-center text-white font-bold">
-        <icon class="h-5 w-5" iconName="Warn"></icon>
+        <icon class="h-5 w-5" icon-name="Warn"></icon>
         清空目录
       </p>
     </button>
     <div ref="popper">
       <transition name="slide-fade">
-        <Card v-show="hover" titleCenter>
+        <Card v-show="hover" title-center>
           <template #title>
             <div class="text-red-500">注意</div>
           </template>
