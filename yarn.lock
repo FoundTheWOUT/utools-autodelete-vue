@@ -9094,6 +9094,11 @@ utils-merge@1.0.1:
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
 
+utools-api-types@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/utools-api-types/-/utools-api-types-2.0.4.tgz#beaaa1f0a14af6915f98ec6db7a9e5a53c0cc927"
+  integrity sha512-dVVFsXCTWaRaFsOO2eUX32HA3fB6khU6eS6pWQjkEhd52eXifJL3F1GLmwFZOCBDcxhTpE60RZhClq4Le1fWsQ==
+
 uuid@^3.3.2, uuid@^3.4.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"

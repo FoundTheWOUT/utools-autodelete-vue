@@ -1,7 +1,7 @@
 {
   "name": "utools-autodelete-vue",
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "prepare": "husky install"
@@ -25,6 +25,7 @@
     "lodash": "^4.17.21",
     "postcss": "^7",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2",
+    "utools-api-types": "^2.0.4",
     "vue": "^2.6.11",
     "vuex": "^3.6.2"
   },

@@ -1,13 +1,13 @@
 import Vue from "vue";
 import App from "./App.vue";
 import store from "./store";
-import { autoDelete } from "./plugins/install";
+import { autoDeleteVuePlugin } from "./plugins/install";
 
 import "./assets/tailwind.css";
 
 Vue.config.productionTip = false;
 
-Vue.use(autoDelete);
+Vue.use(autoDeleteVuePlugin);
 
 if (process.env.NODE_ENV === "production") {
   utools.onPluginReady(() => {
@@ -15,7 +15,7 @@ if (process.env.NODE_ENV === "production") {
       store,
       render: (h) => h(App),
     }).$mount("#app");
-    utools.onPluginEnter((code: any) => {
+    utools.onPluginEnter((code) => {
       console.log("进入插件", code);
     });
   });
