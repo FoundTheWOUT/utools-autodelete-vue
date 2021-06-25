@@ -1,0 +1,60 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "typescript",
+      "tsconfig": "packages/plugin/tsconfig.json",
+      "option": "watch",
+      "problemMatcher": [
+        "$tsc-watch"
+      ],
+      "presentation": {
+        "reveal": "never",
+        "group": "watcher"
+      },
+      "label": "tsc: watch - plugin"
+    },
+    {
+      "type": "npm",
+      "script": "watch",
+      "path": "packages/ui/",
+      "group": "build",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "never",
+        "group": "watcher"
+      },
+      "label": "npm: watch - packages/ui",
+      "detail": "vue-cli-service build --watch"
+    },
+    {
+      "label": "AutoDelte - Build",
+      "dependsOn": [
+        "tsc: watch - plugin",
+        "npm: watch - packages/ui"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "type": "npm",
+      "script": "build",
+      "path": "packages/ui/",
+      "group": "build",
+      "problemMatcher": [],
+      "label": "npm: build - packages/ui",
+      "detail": "vue-cli-service build"
+    },
+    {
+      "type": "typescript",
+      "tsconfig": "packages/plugin/tsconfig.json",
+      "problemMatcher": [
+        "$tsc"
+      ],
+      "group": "build",
+      "label": "tsc: build - packages/plugin/tsconfig.json"
+    }
+  ]
+}

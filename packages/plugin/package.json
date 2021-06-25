@@ -4,5 +4,9 @@
   "dependencies": {
     "get-folder-size": "2.0.1",
     "rimraf": "2.0.1"
+  },
+  "devDependencies": {
+    "@types/get-folder-size": "2.0.0",
+    "@types/rimraf": "^3.0.0"
   }
 }

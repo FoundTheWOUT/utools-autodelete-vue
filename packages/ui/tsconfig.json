@@ -5,13 +5,12 @@
     "strict": true,
     "moduleResolution": "node",
     "sourceMap": false,
-    "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["/src/*"]
     },
+    "resolveJsonModule": true,
     "types": ["utools-api-types", "@types/node"]
   },
-  "include": ["src/**/*.ts", "src/**/*.vue"],
-  "exclude": ["node_modules"]
+  "include": ["../global.d.ts", "./src/**/*.ts", "./src/**/*.vue"]
 }

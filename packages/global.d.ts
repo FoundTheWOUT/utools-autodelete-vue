@@ -11,8 +11,8 @@ declare global {
 
   interface IWaitingFolder {
     status: boolean;
-    name?: string;
-    path: string | string[];
+    name: string;
+    path: string[];
   }
 
   interface ICancelablePromise<T> {

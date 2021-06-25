@@ -1,9 +1,10 @@
 <template>
   <div class="border-4 rounded-lg w-full p-4 dark:border-gray-500">
+    <!-- TODO: add poper show the folders will be removed -->
     <div
       class="flex items-center rounded-lg my-3 py-3 border border-dashed border-indigo-200 hover:border-transparent hover:shadow-lg hover:bg-gray-100 active:shadow-none transition-all dark:hover:bg-gray-500 dark:hover:shadow-white dark:active:shadow-none"
       v-for="item in list"
-      :key="item.path"
+      :key="item.name"
     >
       <div class="w-1/12 flex items-center mx-3">
         <input
@@ -71,6 +72,7 @@ import { action } from "../store";
 import Card from "./Card.vue";
 import Dialog from "./Dialog.vue";
 import { createPopper } from "@popperjs/core";
+import { mapGetters } from "vuex";
 
 export default Vue.extend({
   components: { Card, Dialog },
@@ -81,20 +83,24 @@ export default Vue.extend({
     };
   },
   computed: {
+    ...mapGetters(["waitingFolderList"]),
     list(): [] {
-      let state = this.$store.state;
-      return state.accounts[state.activeAccountID].waitingFolderList;
+      // console.log("List update");
+      // let state = this.$store.state;
+      // console.log(state.accounts[state.activeAccountID]);
+      return this.$store.getters.curAccount?.waitingFolderList;
     },
   },
   created() {
     this.handleCheckbox = _.debounce(this.handleCheckbox, 800);
   },
   methods: {
+    // TODO: mac os open messageTemp
     openFloder(target: string | string[]): void {
       if (Array.isArray(target)) {
-        utools.shellOpenPath(this.$store.getters.curAccount.rootPath);
+        window.utools.shellOpenPath(this.$store.getters.curAccount.rootPath);
       } else {
-        utools.shellOpenPath(target);
+        window.utools.shellOpenPath(target);
       }
     },
     handleCheckbox(): void {

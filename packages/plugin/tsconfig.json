@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es2018",
+    "sourceMap": false,
+    "module": "commonjs",
+    "outDir": "../../dist/plugin",
+    // "module": "amd",
+    "baseUrl": "./",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    // "allowSyntheticDefaultImports": true,
+    "types": ["utools-api-types"],
+  },
+  "include": ["../global.d.ts", "src/**/*.ts"]
+}

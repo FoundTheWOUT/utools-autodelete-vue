@@ -15,7 +15,7 @@ export default class Account implements IAccount {
   public getName(): string {
     return this.username;
   }
-  
+
   public getRootPath(): string {
     return this.rootPath;
   }

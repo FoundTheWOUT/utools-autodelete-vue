@@ -21,8 +21,6 @@ export function deleteFilePromise(path: string): Promise<void> | undefined {
   });
 }
 
-
-
 // save promise to class
 export function getFolderSize(pathArr: string[]): ICancelablePromise<number>[] {
   const _promise = [] as ICancelablePromise<number>[];

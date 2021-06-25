@@ -28,6 +28,7 @@ export default abstract class AutoDelete {
     return this.appMapAccounts[app];
   }
 
+  // TODO: mac os clear it parents
   async cleanUp(List: string[]): Promise<void> {
     if (List.length === 0) {
       window.utools.showNotification("没有可清理内容");

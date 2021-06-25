@@ -15,7 +15,7 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
     commit(mutations.SET_ACCOUNT_ID, 0);
     let Accounts: IAccount[];
     if (process.env.NODE_ENV === "production") {
-      Accounts = window?.autoDelete.getAccounts(app) as IAccount[];
+      Accounts = window?.autoDelete.getAccounts(app);
     } else {
       Accounts = await import("../mock/data.json");
     }
@@ -33,11 +33,12 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
     commit(mutations.SET_PENDING_STATUS, true);
     // example
     // let size = await windows?.AutoDelete.getFolderSize(List[])
+    if (process.env.NODE_ENV === "development") return;
 
     // if pending Promises exists, cancel them.
     if (state.getFileSizePromise.length !== 0)
       state.getFileSizePromise.forEach((item) => item.cancel());
-    const getFolderSizePromise = window?.utils.getFolderSize(
+    const getFolderSizePromise = window?.utils?.getFolderSize(
       getters.selectedWaitingFolderList
     );
     const promise: Promise<number[]> = Promise.all(

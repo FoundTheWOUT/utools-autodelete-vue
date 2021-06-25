@@ -1,3 +1,4 @@
+import * as _ from "lodash";
 import Vue from "vue";
 import Vuex, { Store } from "vuex";
 import { actionsDefinition } from "./actions";
@@ -31,23 +32,24 @@ export enum mutations {
 export default new Store({
   state,
   getters: {
-    selectedWaitingFolderList: (state) => {
-      const waitingFolderList =
-        state.accounts[state.activeAccountID].waitingFolderList;
+    curAccount: (state) => {
+      console.debug("curring account: ", state.accounts[state.activeAccountID]);
+      return state.accounts[state.activeAccountID];
+    },
+    selectedWaitingFolderList: (_, getters) => {
+      const waitingFolderList = getters.curAccount.waitingFolderList;
       if (!Array.isArray(waitingFolderList)) return [];
       return waitingFolderList
         .filter((v) => v.status === true)
         .map((v) => v.path)
         .flat();
     },
-    curAccount: (state) => {
-      console.debug("curring account: ", state.accounts[state.activeAccountID]);
-      return state.accounts[state.activeAccountID];
-    },
   },
   mutations: {
     [mutations.SET_ACCOUNT]: (state, account: IAccount) => {
-      state.accounts[state.activeAccountID] = account;
+      const _accounts = _.cloneDeep(state.accounts);
+      _accounts[state.activeAccountID] = account;
+      state.accounts = _accounts;
     },
     [mutations.SET_ACCOUNTS]: (state, accounts: IAccount[]) => {
       state.accounts = accounts;

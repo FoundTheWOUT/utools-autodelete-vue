@@ -11,16 +11,16 @@
           "hi"
         ]
       },
-      { "status": true, "path": "12" },
-      { "status": true, "path": "hi" }
+      { "status": true, "name": "12", "path": ["12"] },
+      { "status": true, "name": "foo", "path": ["hi"] }
     ]
   },
   {
     "username": "happy",
     "rootPath": "",
     "waitingFolderList": [
-      { "status": true, "path": "134" },
-      { "status": true, "path": "15" }
+      { "status": true, "name": "123", "path": ["134"] },
+      { "status": true, "name": "15", "path": ["15"] }
     ]
   }
 ]

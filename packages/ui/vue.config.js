@@ -4,7 +4,7 @@ const path = require("path");
 
 module.exports = {
   publicPath: "./",
-  outputDir: "./build/dist",
+  outputDir: "../../dist/ui",
   productionSourceMap: false,
   configureWebpack: {
     resolve: {

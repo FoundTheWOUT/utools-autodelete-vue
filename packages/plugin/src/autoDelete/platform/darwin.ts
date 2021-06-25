@@ -1,6 +1,6 @@
 import path from "path";
 import fs from "fs";
-import AutoDelete, { USER, appName, appNameType } from "../../autoDelete";
+import AutoDelete, { USER, appName, appNameType } from "..";
 import Account from "../account";
 
 const config = {
