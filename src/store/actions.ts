@@ -1,6 +1,5 @@
 import { ActionTree } from "vuex";
 import { mutations } from "./index";
-import type { Account } from "../types";
 import type { StateType } from "./index";
 
 export enum action {
@@ -14,51 +13,12 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
   [action.SET_ACCOUNTS]: async ({ commit }, app: string) => {
     // reset AccountId
     commit(mutations.SET_ACCOUNT_ID, 0);
-
-    //check cache
-    // let cacheExist = false;
-    // Object.keys(state.cacheFile).some((arrVal) => {
-    //   if (arrVal === app && state.cacheFile[app].length !== 0) {
-    //     console.log("using cache");
-    //     console.log({ app, input: state.cacheFile[app] });
-    //     cacheExist = true;
-    //     commit(mutations.SET_ACCOUNTS, state.cacheFile[app]);
-    //     commit(mutations.SWITCH_APP, app);
-    //   }
-    // });
-    // if (cacheExist) return
-
-    if (process.env.NODE_ENV === "development") {
-      const testAccounts = [
-        {
-          account: "wauaddddddddddddddddddd",
-          waitingFolderList: [
-            {
-              status: true,
-              name: "hi",
-              path: [
-                "34dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
-                "hi",
-              ],
-            },
-            { status: true, path: "12" },
-            { status: true, path: "hi" },
-          ],
-        },
-        {
-          account: "happy",
-          waitingFolderList: [
-            { status: true, path: "134" },
-            { status: true, path: "15" },
-          ],
-        },
-      ];
-      commit(mutations.SET_ACCOUNTS, testAccounts);
-      commit(mutations.PUT_CACHE_FILE, { app, accounts: testAccounts });
-      return;
+    let Accounts: IAccount[];
+    if (process.env.NODE_ENV === "production") {
+      Accounts = window?.autoDelete.getAccounts(app) as IAccount[];
+    } else {
+      Accounts = await import("../mock/data.json");
     }
-
-    const Accounts = window?.autoDelete.getFile(app) as Account[];
     // if have Accounts
     // 1.set Accounts to state
     // 2.switch app
@@ -66,11 +26,13 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
     if (Accounts.length) {
       commit(mutations.SET_ACCOUNTS, Accounts);
       commit(mutations.SWITCH_APP, app);
-      commit(mutations.PUT_CACHE_FILE, { app, accounts: Accounts });
     }
   },
+  // TODO: refactor get file size, extract function to Class
   [action.GET_SET_FILE_SIZE]: async ({ state, getters, commit }) => {
     commit(mutations.SET_PENDING_STATUS, true);
+    // example
+    // let size = await windows?.AutoDelete.getFolderSize(List[])
 
     // if pending Promises exists, cancel them.
     if (state.getFileSizePromise.length !== 0)
@@ -82,7 +44,7 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
       getFolderSizePromise.map((v: any) => v.promise)
     );
     // store pending promise
-    commit(mutations.SET_PROMISE, getFolderSizePromise);
+    // commit(mutations.SET_PROMISE, getFolderSizePromise);
 
     promise
       .then((size: number[]) => {
@@ -101,7 +63,6 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
         commit(mutations.SET_FILE_SIZE, `${totalSizeString}`);
         commit(mutations.SET_PENDING_STATUS, false);
         // clear Promise
-        commit(mutations.SET_PROMISE, []);
       })
       .catch((err: string) => {
         console.warn(err);
@@ -110,35 +71,23 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
       });
   },
   [action.REMOVE_ACCOUNT]: async ({ state, commit, dispatch }) => {
-    const _app = state.app[state.curApp];
     const _account = state.accounts[state.activeAccountID];
 
-    const newAccount: Account = {
+    const newAccount: IAccount = {
       username: "该账号已删除",
       rootPath: "",
       waitingFolderList: [],
     };
-    window?.autoDelete.cleanUpSubItem(_account.rootPath, () => {
+    window?.autoDelete.cleanUp([_account.rootPath]).then(() => {
       commit(mutations.SET_ACCOUNT, newAccount);
-      console.log(state.accounts);
-      commit(mutations.PUT_CACHE_FILE, { _app, account: state.accounts });
       dispatch(action.GET_SET_FILE_SIZE);
     });
   },
   [action.CLEAR_FILES]: async ({ getters }) => {
-    // TODO: disuse try cache
-    try {
-      if (utools.isWindows()) {
-        if (window?.autoDelete.cleanUpSubItem) {
-          window?.autoDelete.cleanUpSubItem(getters.selectedWaitingFolderList);
-        }
-      } else if (utools.isMacOs()) {
-        for (const i in getters.selectedWaitingFolderList) {
-          await window?.autoDelete.deleteFilePromise(i);
-        }
-      }
-    } catch (error) {
-      console.warn(error);
-    }
+    window?.autoDelete
+      .cleanUp(getters.selectedWaitingFolderList)
+      .catch((err: any) => {
+        console.warn("action CLEAR_FILES fail: ", err);
+      });
   },
 };

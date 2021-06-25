@@ -3,5 +3,21 @@ declare global {
     autoDelete: any;
     utils: any;
   }
+  interface IAccount {
+    username: string;
+    rootPath: string;
+    waitingFolderList: IWaitingFolder[];
+  }
+
+  interface IWaitingFolder {
+    status: boolean;
+    name?: string;
+    path: string | string[];
+  }
+
+  interface ICancelablePromise<T> {
+    promise: Promise<T>;
+    cancel: () => void;
+  }
 }
 export {};

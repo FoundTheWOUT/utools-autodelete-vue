@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const path = require("path");
-const fs = require("fs");
-const { AutoDelete, appName } = require("..");
-const { removeValue } = require("../../utils");
+import path from "path";
+import fs from "fs";
+import AutoDelete, { appName, appNameType, USER } from "..";
+import { removeValue } from "../../utils";
+import Account from "../account";
 
 const config = {
   dir: {
@@ -19,22 +19,33 @@ const config = {
   removeV: ["All Users", "Applet", "config"],
 };
 
-class AutoDeleteWin extends AutoDelete {
-  getAccountsList = (app) => {
-    const accountsList = [];
+export default class AutoDeleteWin extends AutoDelete {
+  getAccountsList = (app: appNameType): void => {
+    const accountsList = [] as string[];
     for (const appStorePath in Object.values(config.dir[app])) {
       if (!fs.existsSync(appStorePath)) continue;
-      Array.from(new Set(fs.readdirSync(appStorePath)))
-        .filter((i) => i.length === 32)
-        .forEach((i) => accountsList.push(path.join(appStorePath, i)));
+      Array.from(new Set(fs.readdirSync(appStorePath))).forEach((i) =>
+        accountsList.push(path.join(appStorePath, i))
+      );
     }
-    return removeValue(accountsList, config.removeV);
+    this.appMapAccounts[app] = removeValue(accountsList, config.removeV).map(
+      (i) => {
+        return new Account(
+          this.getAccountName(app, i),
+          i,
+          this.getWaitingPath(app, i)
+        );
+      }
+    );
   };
 
-  getWaitingPath = (app, accountRootPath) => {
+  getWaitingPath = (
+    app: appNameType,
+    accountRootPath: string
+  ): IWaitingFolder[] => {
     let _mid;
-    let _waitingPath = [];
-    let _folderPath = [];
+    const _waitingPath = [] as any;
+    let _folderPath = [] as string[];
     switch (app) {
       case appName.WeChat:
         _mid = ["FileStorage"];
@@ -68,11 +79,11 @@ class AutoDeleteWin extends AutoDelete {
     return _waitingPath;
   };
 
-  getAccountName = (app, accountRootPath) => {
+  getAccountName = (app: appNameType, accountRootPath: string): string => {
     const defaultName = "没找到名字";
     switch (app) {
       case appName.WeChat: {
-        let accountName = fs.readdirSync(path.join(accountRootPath))[0];
+        const accountName = fs.readdirSync(path.join(accountRootPath))[0];
         return accountName ? accountName.substr(8) : defaultName;
       }
       case appName.QQ:
@@ -82,5 +93,3 @@ class AutoDeleteWin extends AutoDelete {
     }
   };
 }
-
-module.exports = AutoDeleteWin;

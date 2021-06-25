@@ -1,36 +1,47 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const path = require("path");
-const fs = require("fs");
-const { AutoDelete, USER, appName } = require("..");
+import path from "path";
+import fs from "fs";
+import AutoDelete, { USER, appName, appNameType } from "../../autoDelete";
+import Account from "../account";
 
 const config = {
   dir: {
     [appName.WeChat]: {
       macStore: `/Users/${USER}/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9`,
     },
+    [appName.QQ]: {},
   },
 };
 
-class AutoDeleteMac extends AutoDelete {
+export default class AutoDeleteMac extends AutoDelete {
   constructor() {
     super();
   }
 
-  getAccountsList = (app) => {
-    const accountsList = [];
-
-    if (Object.keys(config.dir).indexOf(app) === -1) return [];
+  getAccountsList = (app: appNameType): void => {
+    const accountsList = [] as IAccount[];
 
     for (const appStorePath of Object.values(config.dir[app])) {
       if (!fs.existsSync(appStorePath)) continue;
-      Array.from(new Set(fs.readdirSync(appStorePath)))
+      Array.from(fs.readdirSync(appStorePath))
         .filter((i) => i.length === 32)
-        .forEach((i) => accountsList.push(path.join(appStorePath, i)));
+        .forEach((i) =>
+          accountsList.push(
+            new Account(
+              this.getAccountName(app, i),
+              path.join(appStorePath, i),
+              this.getWaitingPath(app, path.join(appStorePath, i))
+            )
+          )
+        );
     }
-    return accountsList;
+    this.appMapAccounts[app] = accountsList;
+    console.debug("accounts list updated: ", accountsList);
   };
 
-  getWaitingPath = (app, accountRootPath) => {
+  private getWaitingPath = (
+    app: appNameType,
+    accountRootPath: string
+  ): IWaitingFolder[] => {
     switch (app) {
       case appName.WeChat: {
         // fs.readdirSync(path.join(accountRootPath, "Message", "MessageTemp"));
@@ -39,7 +50,7 @@ class AutoDeleteMac extends AutoDelete {
           "Message",
           "MessageTemp"
         );
-        if (!fs.existsSync(MessageTempDir)) return;
+        if (!fs.existsSync(MessageTempDir)) return [];
         // Mac中MessageTemp中的全部文件夹
         const _mid = fs.readdirSync(MessageTempDir);
 
@@ -51,9 +62,9 @@ class AutoDeleteMac extends AutoDelete {
             path: _mid
               .map((_mid) => {
                 const folderPath = path.join(MessageTempDir, _mid, folder);
-                return fs.existsSync(folderPath) ? folderPath : undefined;
+                return fs.existsSync(folderPath) ? folderPath : "";
               })
-              .filter((i) => i !== undefined),
+              .filter((i) => i !== ""),
           };
         });
       }
@@ -61,12 +72,15 @@ class AutoDeleteMac extends AutoDelete {
       case appName.QQ: {
         return [];
       }
+      default:
+        return [];
     }
   };
 
-  getAccountName = (app, accountRootPath) => {
+  private getAccountName = (
+    app: appNameType,
+    accountRootPath: string
+  ): string => {
     return path.basename(accountRootPath);
   };
 }
-
-module.exports = AutoDeleteMac;

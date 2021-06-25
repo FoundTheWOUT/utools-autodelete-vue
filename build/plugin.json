@@ -6,7 +6,7 @@
   "author": "FoundTheWOUT",
   "homepage": "https://github.com/FoundTheWOUT/utools-autodelete-vue",
   "main": "dist/index.html",
-  "preload": "preload.js",
+  "preload": "plugin/preload.js",
   "logo": "logo.png",
   "platform": ["win32", "darwin"],
   "features": [

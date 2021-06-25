@@ -1,0 +1,26 @@
+[
+  {
+    "username": "wauaddddddddddddddddddd",
+    "rootPath": "",
+    "waitingFolderList": [
+      {
+        "status": true,
+        "name": "hi",
+        "path": [
+          "34dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+          "hi"
+        ]
+      },
+      { "status": true, "path": "12" },
+      { "status": true, "path": "hi" }
+    ]
+  },
+  {
+    "username": "happy",
+    "rootPath": "",
+    "waitingFolderList": [
+      { "status": true, "path": "134" },
+      { "status": true, "path": "15" }
+    ]
+  }
+]
