@@ -7,7 +7,7 @@
     "sourceMap": false,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["/src/*"]
+      "@/*": ["./src/*"]
     },
     "resolveJsonModule": true,
     "types": ["utools-api-types", "@types/node"]

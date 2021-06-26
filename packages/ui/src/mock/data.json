@@ -22,5 +22,10 @@
       { "status": true, "name": "123", "path": ["134"] },
       { "status": true, "name": "15", "path": ["15"] }
     ]
+  },
+  {
+    "username": "drawki",
+    "rootPath": "",
+    "waitingFolderList": []
   }
 ]

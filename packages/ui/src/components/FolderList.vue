@@ -1,26 +1,6 @@
 <template>
   <div class="border-4 rounded-lg w-full p-4 dark:border-gray-500">
-    <!-- TODO: add poper show the folders will be removed -->
-    <div
-      class="flex items-center rounded-lg my-3 py-3 border border-dashed border-indigo-200 hover:border-transparent hover:shadow-lg hover:bg-gray-100 active:shadow-none transition-all dark:hover:bg-gray-500 dark:hover:shadow-white dark:active:shadow-none"
-      v-for="item in list"
-      :key="item.name"
-    >
-      <div class="w-1/12 flex items-center mx-3">
-        <input
-          class="appearance-none h-5 w-5 border border-gray-300 rounded-md checked:bg-blue-500 checked:border-transparent focus:outline-none"
-          type="checkbox"
-          v-model="item.status"
-          @click="handleCheckbox"
-        />
-      </div>
-      <button
-        class="h-auto w-11/12 px-3 focus:outline-none"
-        @click="openFloder(item.path)"
-      >
-        <div class="break-words dark:text-white">{{ item.name }}</div>
-      </button>
-    </div>
+    <FolderListItem v-for="item in list" :key="item.name" :data="item" />
     <div class="flex justify-between items-center">
       <button class="safe-btn w-2/12" @click="openFloder([])">
         <p class="text-white font-bold">打开账号</p>
@@ -29,14 +9,14 @@
       <button
         class="warn-btn w-2/12"
         @click="showDialog = true"
-        @mouseenter="mountPopper"
+        @mouseenter="hover = true"
         @mouseleave="hover = false"
         ref="removeAccountBtn"
       >
         <p class="text-white font-bold">删除账号</p>
       </button>
     </div>
-    <Dialog v-model="showDialog">
+    <Dialog v-model="showDialog" @close="closePanel">
       <Card title-center>
         <template #title>
           <div class="text-red-500">你确定删除账号吗</div>
@@ -52,30 +32,27 @@
         </button>
       </Card>
     </Dialog>
-    <div style="z-index: 999" ref="popper">
-      <transition name="slide-fade">
-        <Card v-show="hover" title-center>
-          <template #title>
-            <div class="text-red-500">删除当前账号</div>
-          </template>
-          <p>按下后会询问你是否确认删除账号</p>
-        </Card>
-      </transition>
-    </div>
+    <Popper :show.sync="hover" :target="$refs.removeAccountBtn">
+      <Card title-center>
+        <template #title>
+          <div class="text-red-500">删除当前账号</div>
+        </template>
+        <p>按下后会询问你是否确认删除账号</p>
+      </Card>
+    </Popper>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import * as _ from "lodash";
 import { action } from "../store";
 import Card from "./Card.vue";
 import Dialog from "./Dialog.vue";
-import { createPopper } from "@popperjs/core";
 import { mapGetters } from "vuex";
+import FolderListItem from "./FolderListItem.vue";
 
 export default Vue.extend({
-  components: { Card, Dialog },
+  components: { Card, Dialog, FolderListItem },
   data() {
     return {
       hover: false,
@@ -91,38 +68,13 @@ export default Vue.extend({
       return this.$store.getters.curAccount?.waitingFolderList;
     },
   },
-  created() {
-    this.handleCheckbox = _.debounce(this.handleCheckbox, 800);
-  },
   methods: {
-    // TODO: mac os open messageTemp
-    openFloder(target: string | string[]): void {
-      if (Array.isArray(target)) {
-        window.utools.shellOpenPath(this.$store.getters.curAccount.rootPath);
-      } else {
-        window.utools.shellOpenPath(target);
-      }
-    },
-    handleCheckbox(): void {
-      this.$store.dispatch(action.GET_SET_FILE_SIZE);
-    },
     sureRemove(): void {
       this.closePanel();
       this.$store.dispatch(action.REMOVE_ACCOUNT);
     },
     closePanel(): void {
       this.showDialog = false;
-    },
-    mountPopper(): void {
-      this.hover = true;
-      createPopper(
-        this.$refs.removeAccountBtn as HTMLElement,
-        this.$refs.popper as HTMLElement,
-        {
-          placement: "top",
-          modifiers: [{ name: "offset", options: { offset: [0, 10] } }],
-        }
-      );
     },
   },
 });

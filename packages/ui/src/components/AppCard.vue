@@ -62,15 +62,3 @@ export default Vue.extend({
   },
 });
 </script>
-
-<style>
-.slide-fade-enter-active,
-.slide-fade-leave-active {
-  transition: all 0.3s ease;
-}
-.slide-fade-enter,
-.slide-fade-leave-to {
-  transform: translateY(20px) scale(0.7);
-  opacity: 0;
-}
-</style>

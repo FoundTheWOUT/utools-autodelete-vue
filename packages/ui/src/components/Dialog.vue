@@ -3,6 +3,7 @@
     <div
       v-show="value"
       class="flex justify-center items-center fixed z-50 w-full h-full inset-0 bg-gray-500 bg-opacity-80"
+      @click.self="$emit('close')"
     >
       <div class="dialog__body">
         <slot></slot>

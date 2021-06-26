@@ -17,7 +17,9 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
     if (process.env.NODE_ENV === "production") {
       Accounts = window?.autoDelete.getAccounts(app);
     } else {
-      Accounts = await import("../mock/data.json");
+      const data = await import("../mock/data.json");
+      // eslint-disable-next-line prettier/prettier
+      Accounts = data.default
     }
     // if have Accounts
     // 1.set Accounts to state

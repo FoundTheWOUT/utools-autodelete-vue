@@ -33,7 +33,7 @@ export default new Store({
   state,
   getters: {
     curAccount: (state) => {
-      console.debug("curring account: ", state.accounts[state.activeAccountID]);
+      console.debug("current account: ", state.accounts[state.activeAccountID]);
       return state.accounts[state.activeAccountID];
     },
     selectedWaitingFolderList: (_, getters) => {

@@ -12,7 +12,7 @@
       id="cleanup"
       class="warn-btn"
       @click="cleanup"
-      @mouseenter="mountPopper"
+      @mouseenter="hover = true"
       @mouseleave="hover = false"
       ref="cleanBtn"
     >
@@ -21,24 +21,21 @@
         清空目录
       </p>
     </button>
-    <div ref="popper">
-      <transition name="slide-fade">
-        <Card v-show="hover" title-center>
-          <template #title>
-            <div class="text-red-500">注意</div>
-          </template>
-          <div>
-            按下后当前选中目录将会被<b>直接</b>清空，请确保需要文件已自行保存
-          </div>
-        </Card>
-      </transition>
-    </div>
+    <Popper :show.sync="hover" :target="$refs.cleanBtn">
+      <Card title-center>
+        <template #title>
+          <div class="text-red-500">注意</div>
+        </template>
+        <div>
+          按下后当前选中目录将会被<b>直接</b>清空，请确保需要文件已自行保存
+        </div>
+      </Card>
+    </Popper>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import { createPopper } from "@popperjs/core";
 import { action } from "../store";
 import Card from "./Card.vue";
 import Dialog from "./Dialog.vue";
@@ -52,18 +49,6 @@ export default Vue.extend({
     };
   },
   methods: {
-    mountPopper() {
-      this.hover = true;
-      createPopper(
-        this.$refs.cleanBtn as HTMLElement,
-        this.$refs.popper as HTMLElement,
-        {
-          placement: "top",
-          modifiers: [{ name: "offset", options: { offset: [0, 10] } }],
-        }
-      );
-    },
-
     async cleanup() {
       console.warn("clean up.");
       this.showDialog = true;
