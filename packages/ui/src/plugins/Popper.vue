@@ -1,10 +1,18 @@
 <template>
-  <div style="z-index: 999" ref="popper">
-    <transition name="slide-fade">
-      <div v-show="show">
-        <slot></slot>
-      </div>
-    </transition>
+  <div>
+    <div
+      v-if="show && closeable"
+      style="z-index: 998"
+      class="fixed top-0 right-0 h-full w-full"
+      @click.self="$emit('close')"
+    ></div>
+    <div style="z-index: 999" ref="popper">
+      <transition name="slide-fade">
+        <div v-show="show">
+          <slot></slot>
+        </div>
+      </transition>
+    </div>
   </div>
 </template>
 
@@ -27,6 +35,10 @@ export default Vue.extend({
     placement: {
       type: String,
       default: "top",
+    },
+    closeable: {
+      type: Boolean,
+      default: false,
     },
   },
   watch: {

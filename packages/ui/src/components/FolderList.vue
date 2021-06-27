@@ -1,8 +1,12 @@
 <template>
   <div class="border-4 rounded-lg w-full p-4 dark:border-gray-500">
-    <FolderListItem v-for="item in list" :key="item.name" :data="item" />
+    <FolderListItem
+      v-for="item in waitingFolderList"
+      :key="item.name"
+      :data="item"
+    />
     <div class="flex justify-between items-center">
-      <button class="safe-btn w-2/12" @click="openFloder([])">
+      <button class="safe-btn w-2/12" @click="openFolder([])">
         <p class="text-white font-bold">打开账号</p>
       </button>
       <div class="text-gray-400">点击对应条目可打开目录</div>
@@ -50,6 +54,7 @@ import Card from "./Card.vue";
 import Dialog from "./Dialog.vue";
 import { mapGetters } from "vuex";
 import FolderListItem from "./FolderListItem.vue";
+import utoolsApiMixins from "@/mixins/utools-api.vue";
 
 export default Vue.extend({
   components: { Card, Dialog, FolderListItem },
@@ -59,19 +64,16 @@ export default Vue.extend({
       showDialog: false,
     };
   },
+  mixins: [utoolsApiMixins],
   computed: {
     ...mapGetters(["waitingFolderList"]),
-    list(): [] {
-      // console.log("List update");
-      // let state = this.$store.state;
-      // console.log(state.accounts[state.activeAccountID]);
-      return this.$store.getters.curAccount?.waitingFolderList;
-    },
   },
   methods: {
     sureRemove(): void {
       this.closePanel();
-      this.$store.dispatch(action.REMOVE_ACCOUNT);
+      this.$store.dispatch(action.REMOVE_ACCOUNT).then(() => {
+        this.$emit("change-active-account");
+      });
     },
     closePanel(): void {
       this.showDialog = false;

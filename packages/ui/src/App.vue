@@ -32,7 +32,16 @@ export default Vue.extend({
 <style>
 html,
 body {
-  height: 100%;
+  overflow: hidden;
+  height: 100vh;
+  scrollbar-width: thin;
+}
+*::-webkit-scrollbar {
+  width: 5px;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: gray;
+  border-radius: 20px;
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

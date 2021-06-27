@@ -17,7 +17,7 @@
       </button>
     </div>
     <div class="flex flex-col w-full flex-shrink-0">
-      <FolderList />
+      <FolderList @change-active-account="mutateAccountID" />
       <div class="flex ml-auto px-3 pt-2 text-gray-400">
         <div class="mx-1">文件大小：</div>
         <icon
@@ -35,29 +35,23 @@
 import Vue from "vue";
 import FolderList from "./FolderList.vue";
 import { mutations, action } from "../store";
+import { mapState } from "vuex";
 
 export default Vue.extend({
   components: {
     FolderList,
   },
   computed: {
-    accounts() {
-      return this.$store.state.accounts;
-    },
-    activeAccountID() {
-      return this.$store.state.activeAccountID;
-    },
-    folderSize() {
-      return this.$store.state.folderSize;
-    },
-    pending() {
-      return this.$store.state.pendingFolderSize;
-    },
+    ...mapState(["accounts", "activeAccountID", "folderSize", "pending"]),
   },
   methods: {
     handelChangeAccount(index: number): void {
       this.$store.commit(mutations.SET_ACCOUNT_ID, index);
       this.$store.dispatch(action.GET_SET_FILE_SIZE);
+    },
+    mutateAccountID() {
+      if (this.activeAccountID === 0) return;
+      this.handelChangeAccount(--this.activeAccountID);
     },
   },
 });

@@ -12,14 +12,14 @@ export enum action {
 export const actionsDefinition: ActionTree<StateType, StateType> = {
   [action.SET_ACCOUNTS]: async ({ commit }, app: string) => {
     // reset AccountId
-    commit(mutations.SET_ACCOUNT_ID, 0);
+    // commit(mutations.SET_ACCOUNT_ID, 0);
     let Accounts: IAccount[];
     if (process.env.NODE_ENV === "production") {
       Accounts = window?.autoDelete.getAccounts(app);
     } else {
       const data = await import("../mock/data.json");
       // eslint-disable-next-line prettier/prettier
-      Accounts = data.default
+      Accounts = data.default;
     }
     // if have Accounts
     // 1.set Accounts to state
@@ -73,16 +73,17 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
         commit(mutations.SET_PENDING_STATUS, false);
       });
   },
-  [action.REMOVE_ACCOUNT]: async ({ state, commit, dispatch }) => {
+  [action.REMOVE_ACCOUNT]: async ({ state, getters, dispatch }) => {
     const _account = state.accounts[state.activeAccountID];
 
-    const newAccount: IAccount = {
-      username: "该账号已删除",
-      rootPath: "",
-      waitingFolderList: [],
-    };
-    window?.autoDelete.cleanUp([_account.rootPath]).then(() => {
-      commit(mutations.SET_ACCOUNT, newAccount);
+    // const newAccount: IAccount = {
+    //   username: "该账号已删除",
+    //   rootPath: "",
+    //   waitingFolderList: [],
+    // };
+    return window?.autoDelete.cleanUp([_account.rootPath]).then(() => {
+      // commit(mutations.SET_ACCOUNT, newAccount);
+      dispatch(action.SET_ACCOUNTS, getters.curAppName);
       dispatch(action.GET_SET_FILE_SIZE);
     });
   },

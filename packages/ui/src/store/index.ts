@@ -32,12 +32,18 @@ export enum mutations {
 export default new Store({
   state,
   getters: {
+    curAppName: (state) => {
+      return state.app[state.curApp];
+    },
     curAccount: (state) => {
       console.debug("current account: ", state.accounts[state.activeAccountID]);
       return state.accounts[state.activeAccountID];
     },
+    waitingFolderList: (_, getters) => {
+      return getters.curAccount?.waitingFolderList;
+    },
     selectedWaitingFolderList: (_, getters) => {
-      const waitingFolderList = getters.curAccount.waitingFolderList;
+      const waitingFolderList = getters.waitingFolderList;
       if (!Array.isArray(waitingFolderList)) return [];
       return waitingFolderList
         .filter((v) => v.status === true)
