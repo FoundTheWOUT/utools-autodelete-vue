@@ -1,4 +1,5 @@
-const CopyPlugin = require("copy-webpack-plugin");
+/* eslint-disable @typescript-eslint/no-var-requires */
+// const CopyPlugin = require("copy-webpack-plugin");
 const path = require("path");
 
 module.exports = {
@@ -12,14 +13,14 @@ module.exports = {
       },
     },
     plugins: [
-      new CopyPlugin({
-        patterns: [
-          {
-            from: "./README.md",
-            to: path.resolve(__dirname, "./build/README.md"),
-          },
-        ],
-      }),
+      // new CopyPlugin({
+      //   patterns: [
+      //     {
+      //       from: "./README.md",
+      //       to: path.resolve(__dirname, "./build/README.md"),
+      //     },
+      //   ],
+      // }),
     ],
   },
 };

@@ -3,7 +3,7 @@ const fs = require("fs");
 const rmdir = require("rimraf");
 const getFolderSizeCore = require("get-folder-size");
 
-// 删除arr数组中与rmValue数组重合内容
+// // 删除arr数组中与rmValue数组重合内容
 function removeValue(arr, rmValue) {
   rmValue.forEach((v) => {
     // if the value which need to remove is not in arr, then pass
@@ -16,7 +16,7 @@ function deleteFilePromise(path) {
   if (!fs.existsSync(path)) return;
   return new Promise((resolve, reject) => {
     rmdir(path, (err) => {
-      if (err) reject("rmdir Error:", err);
+      if (err) reject(`rmdir Error: ${err}`);
       resolve();
     });
   });

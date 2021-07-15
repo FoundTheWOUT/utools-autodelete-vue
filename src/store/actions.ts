@@ -58,17 +58,16 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
       return;
     }
 
-    window.api?.getFile(app, (Accounts: Account[]) => {
-      // if have Accounts
-      // 1.set Accounts to state
-      // 2.switch app
-      // 3.put Accounts to cache
-      if (Accounts.length) {
-        commit(mutations.SET_ACCOUNTS, Accounts);
-        commit(mutations.SWITCH_APP, app);
-        commit(mutations.PUT_CACHE_FILE, { app, accounts: Accounts });
-      }
-    });
+    const Accounts = window?.autoDelete.getFile(app) as Account[];
+    // if have Accounts
+    // 1.set Accounts to state
+    // 2.switch app
+    // 3.put Accounts to cache
+    if (Accounts.length) {
+      commit(mutations.SET_ACCOUNTS, Accounts);
+      commit(mutations.SWITCH_APP, app);
+      commit(mutations.PUT_CACHE_FILE, { app, accounts: Accounts });
+    }
   },
   [action.GET_SET_FILE_SIZE]: async ({ state, getters, commit }) => {
     commit(mutations.SET_PENDING_STATUS, true);
@@ -76,11 +75,11 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
     // if pending Promises exists, cancel them.
     if (state.getFileSizePromise.length !== 0)
       state.getFileSizePromise.forEach((item) => item.cancel());
-    const getFolderSizePromise = window.api?.getFolderSize(
+    const getFolderSizePromise = window?.utils.getFolderSize(
       getters.selectedWaitingFolderList
     );
     const promise: Promise<number[]> = Promise.all(
-      getFolderSizePromise.map((v) => v.promise)
+      getFolderSizePromise.map((v: any) => v.promise)
     );
     // store pending promise
     commit(mutations.SET_PROMISE, getFolderSizePromise);
@@ -119,7 +118,7 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
       rootPath: "",
       waitingFolderList: [],
     };
-    window.api?.cleanUpSubItem(_account.rootPath, () => {
+    window?.autoDelete.cleanUpSubItem(_account.rootPath, () => {
       commit(mutations.SET_ACCOUNT, newAccount);
       console.log(state.accounts);
       commit(mutations.PUT_CACHE_FILE, { _app, account: state.accounts });
@@ -127,14 +126,15 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
     });
   },
   [action.CLEAR_FILES]: async ({ getters }) => {
+    // TODO: disuse try cache
     try {
       if (utools.isWindows()) {
-        if (window.api?.cleanUpSubItem) {
-          window.api?.cleanUpSubItem(getters.selectedWaitingFolderList);
+        if (window?.autoDelete.cleanUpSubItem) {
+          window?.autoDelete.cleanUpSubItem(getters.selectedWaitingFolderList);
         }
       } else if (utools.isMacOs()) {
         for (const i in getters.selectedWaitingFolderList) {
-          await window.api?.deleteFilePromise(i);
+          await window?.autoDelete.deleteFilePromise(i);
         }
       }
     } catch (error) {
