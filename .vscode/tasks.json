@@ -28,7 +28,7 @@
         "owner": "webpack",
         // "applyTo": "closedDocuments",
         // "fileLocation":"absolute",
-        "pattern":[
+        "pattern": [
           {
             "regexp": "^([^\\\\s].*)\\\\((\\\\d+,\\\\d+)\\\\):\\\\s*(.*)$",
             "file": 1,
@@ -44,8 +44,16 @@
       }
     },
     {
+      "type": "shell",
+      "label": "Clear",
+      "command": "rm -rf ./dist",
+      "presentation": {
+        "reveal": "never"
+      }
+    },
+    {
       "label": "AutoDelte - Build",
-      "dependsOn": ["tsc: watch - plugin", "npm: watch - packages/ui"],
+      "dependsOn": ["Clear", "tsc: watch - plugin", "npm: watch - packages/ui"],
       "group": {
         "kind": "build",
         "isDefault": true

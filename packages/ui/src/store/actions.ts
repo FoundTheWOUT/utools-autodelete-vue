@@ -1,6 +1,7 @@
 import { ActionTree } from "vuex";
 import { mutations } from "./index";
 import type { StateType } from "./index";
+import testData from "@/mock/data";
 
 export enum action {
   SET_ACCOUNTS = "SET_ACCOUNTS",
@@ -14,13 +15,10 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
     // reset AccountId
     // commit(mutations.SET_ACCOUNT_ID, 0);
     let Accounts: IAccount[];
-    if (process.env.NODE_ENV === "production") {
-      Accounts = window?.autoDelete.getAccounts(app);
-    } else {
-      const data = await import("../mock/data.json");
-      // eslint-disable-next-line prettier/prettier
-      Accounts = data.default;
-    }
+    process.env.NODE_ENV === "production"
+      ? (Accounts = window?.autoDelete.getAccounts(app))
+      : (Accounts = testData);
+
     // if have Accounts
     // 1.set Accounts to state
     // 2.switch app
