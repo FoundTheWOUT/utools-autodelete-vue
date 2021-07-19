@@ -18,6 +18,7 @@ const config = {
 export default class AutoDeleteMac extends AutoDelete {
   constructor() {
     super();
+    this.config = config;
   }
 
   getAccountsList = (app: appNameType): void => {
@@ -58,7 +59,7 @@ export default class AutoDeleteMac extends AutoDelete {
         const _mid = fs.readdirSync(MessageTempDir);
         // mutate the config
         this.config[app].mid = _mid;
-        super.getWaitingPath(app, accountRootPath);
+        return super.getWaitingPath(app, MessageTempDir);
 
         // const folderList = ["Audio", "File", "Image", "OpenData", "Video"];
         // return folderList.map((folder) => {

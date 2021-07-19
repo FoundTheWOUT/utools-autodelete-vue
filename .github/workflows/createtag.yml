@@ -14,5 +14,5 @@ jobs:
       - name: create tag
         uses: FoundTheWOUT/utools-autodelete-vue/.github/action@master
         with:
-          file: ./packages/plugin/plugin.json
+          file: ./dist/plugin.json
           token: ${{ secrets.ACTIONS_SECRET }}

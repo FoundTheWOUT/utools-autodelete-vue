@@ -39,7 +39,7 @@ export default class AutoDeleteWin extends AutoDelete {
   }
 
   getAccountsList = (app: appNameType): void => {
-    let accountsList = [] as string[];
+    const accountsList = [] as string[];
     const appConfig = config[app];
     for (const appStorePath of Object.values(appConfig.dir)) {
       if (!fs.existsSync(appStorePath)) continue;

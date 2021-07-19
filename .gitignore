@@ -2,6 +2,8 @@
 node_modules
 dist/*
 !dist/package.json
+!dist/logo.png
+!dist/plugin.json
 !.github/**/dist
 build/README.md
 build/Release

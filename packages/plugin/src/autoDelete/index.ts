@@ -31,8 +31,9 @@ export default abstract class AutoDelete {
     return this.appMapAccounts[app];
   }
 
-  getWaitingPath(app: appNameType, root: string) {
+  getWaitingPath(app: appNameType, root: string): IWaitingFolder[] {
     const { waitingFolderPath, mid } = this.config[app];
+    console.log(mid);
     return waitingFolderPath.map((folder) => {
       return {
         status: true,
