@@ -17,7 +17,8 @@ jobs:
           yarn
           yarn workspace ui run build
           tsc -p ./packages/plugin/tsconfig.json
-          cp -r ./packages/plugin/ ./dist/plugin/
+          cd ./dist
+          yarn
       - name: pack
         uses: mohuishou/utools/.github/action@master
         env:

@@ -44,7 +44,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from "vue";
 import * as _ from "lodash";
 import { action } from "@/store";
@@ -82,8 +82,7 @@ export default Vue.extend({
     this.handleCheckbox = _.debounce(this.handleCheckbox, 800);
   },
   methods: {
-    handleCheckbox(state: string): void {
-      console.debug(state);
+    handleCheckbox() {
       this.$store.dispatch(action.GET_SET_FILE_SIZE);
     },
   },
