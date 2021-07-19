@@ -4,11 +4,14 @@ import AutoDelete, { USER, appName, appNameType } from "..";
 import Account from "../account";
 
 const config = {
-  dir: {
-    [appName.WeChat]: {
+  [appName.WeChat]: {
+    dir: {
       macStore: `/Users/${USER}/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9`,
     },
-    [appName.QQ]: {},
+    waitingFolderPath: ["Audio", "File", "Image", "OpenData", "Video"],
+  },
+  [appName.QQ]: {
+    dir: {},
   },
 };
 
@@ -20,7 +23,7 @@ export default class AutoDeleteMac extends AutoDelete {
   getAccountsList = (app: appNameType): void => {
     const accountsList = [] as IAccount[];
 
-    for (const appStorePath of Object.values(config.dir[app])) {
+    for (const appStorePath of Object.values(config[app].dir)) {
       if (!fs.existsSync(appStorePath)) continue;
       Array.from(fs.readdirSync(appStorePath))
         .filter((i) => i.length === 32)
@@ -38,7 +41,7 @@ export default class AutoDeleteMac extends AutoDelete {
     console.debug("accounts list updated: ", accountsList);
   };
 
-  private getWaitingPath = (
+  getWaitingPath = (
     app: appNameType,
     accountRootPath: string
   ): IWaitingFolder[] => {
@@ -51,22 +54,25 @@ export default class AutoDeleteMac extends AutoDelete {
           "MessageTemp"
         );
         if (!fs.existsSync(MessageTempDir)) return [];
-        // Mac中MessageTemp中的全部文件夹
+        // Mac中MessageTemp中的全部文件夹
         const _mid = fs.readdirSync(MessageTempDir);
+        // mutate the config
+        this.config[app].mid = _mid;
+        super.getWaitingPath(app, accountRootPath);
 
-        const folderList = ["Audio", "File", "Image", "OpenData", "Video"];
-        return folderList.map((folder) => {
-          return {
-            status: true,
-            name: folder,
-            path: _mid
-              .map((_mid) => {
-                const folderPath = path.join(MessageTempDir, _mid, folder);
-                return fs.existsSync(folderPath) ? folderPath : "";
-              })
-              .filter((i) => i !== ""),
-          };
-        });
+        // const folderList = ["Audio", "File", "Image", "OpenData", "Video"];
+        // return folderList.map((folder) => {
+        //   return {
+        //     status: true,
+        //     name: folder,
+        //     path: _mid
+        //       .map((_mid) => {
+        //         const folderPath = path.join(MessageTempDir, _mid, folder);
+        //         return fs.existsSync(folderPath) ? folderPath : "";
+        //       })
+        //       .filter((i) => i !== ""),
+        //   };
+        // });
       }
       // TODO: Macos QQ
       case appName.QQ: {

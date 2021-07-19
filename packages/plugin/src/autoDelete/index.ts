@@ -1,5 +1,7 @@
 import os from "os";
 import * as utils from "../utils";
+import path from "path";
+import fs from "fs";
 
 export const USER = os.userInfo().username;
 
@@ -13,6 +15,7 @@ export type appNameType = keyof typeof appName;
 export default abstract class AutoDelete {
   appMapAccounts: Record<appNameType, IAccount[]>;
   fileSizePromise: ICancelablePromise<number>[];
+  config: any;
   constructor() {
     this.appMapAccounts = { WeChat: [], QQ: [] };
     this.fileSizePromise = [];
@@ -26,6 +29,22 @@ export default abstract class AutoDelete {
       window.utools.showNotification(`没有安装${app}`);
     }
     return this.appMapAccounts[app];
+  }
+
+  getWaitingPath(app: appNameType, root: string) {
+    const { waitingFolderPath, mid } = this.config[app];
+    return waitingFolderPath.map((folder) => {
+      return {
+        status: true,
+        name: folder,
+        path: mid
+          .map((_mid) => {
+            const folderPath = path.join(root, _mid, folder);
+            return fs.existsSync(folderPath) ? folderPath : "";
+          })
+          .filter((i) => i !== ""),
+      };
+    });
   }
 
   // TODO: mac os clear it parents
