@@ -1,0 +1,19 @@
+{
+  "name": "a8c74f1c",
+  "pluginName": "autoDelete",
+  "description": "一键清除微信、QQ缓存垃圾",
+  "version": "v1.3.5",
+  "author": "FoundTheWOUT",
+  "homepage": "https://github.com/FoundTheWOUT/utools-autodelete-vue",
+  "main": "./ui/index.html",
+  "preload": "./plugin/preload.js",
+  "logo": "logo.png",
+  "platform": ["win32", "darwin"],
+  "features": [
+    {
+      "code": "main",
+      "explain": "一键清除微信、QQ缓存垃圾",
+      "cmds": ["autoDelete", "自动清理", "垃圾", "微信", "QQ"]
+    }
+  ]
+}

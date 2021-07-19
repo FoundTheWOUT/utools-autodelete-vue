@@ -1,0 +1,79 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "typescript",
+      "tsconfig": "packages/plugin/tsconfig.json",
+      "option": "watch",
+      "problemMatcher": ["$tsc-watch"],
+      "presentation": {
+        "reveal": "never",
+        "group": "watcher"
+      },
+      "label": "tsc: watch - plugin"
+    },
+    {
+      "type": "npm",
+      "script": "watch",
+      "path": "packages/ui/",
+      "group": "build",
+      "isBackground": true,
+      "presentation": {
+        "reveal": "never",
+        "group": "watcher"
+      },
+      "label": "npm: watch - packages/ui",
+      "detail": "vue-cli-service build --watch",
+      "problemMatcher": {
+        "owner": "webpack",
+        // "applyTo": "closedDocuments",
+        // "fileLocation":"absolute",
+        "pattern": [
+          {
+            "regexp": "^([^\\\\s].*)\\\\((\\\\d+,\\\\d+)\\\\):\\\\s*(.*)$",
+            "file": 1,
+            "location": 2,
+            "message": 3
+          }
+        ],
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Compiling",
+          "endsPattern": "Build complete"
+        }
+      }
+    },
+    {
+      "type": "shell",
+      "label": "Clear",
+      "command": "rm -rf ./dist/plugin ./dist/ui",
+      "presentation": {
+        "reveal": "never"
+      }
+    },
+    {
+      "label": "AutoDelte - Build",
+      "dependsOn": ["Clear", "tsc: watch - plugin", "npm: watch - packages/ui"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "type": "npm",
+      "script": "build",
+      "path": "packages/ui/",
+      "group": "build",
+      "problemMatcher": [],
+      "label": "npm: build - packages/ui",
+      "detail": "vue-cli-service build"
+    },
+    {
+      "type": "typescript",
+      "tsconfig": "packages/plugin/tsconfig.json",
+      "problemMatcher": ["$tsc"],
+      "group": "build",
+      "label": "tsc: build - packages/plugin/tsconfig.json"
+    }
+  ]
+}

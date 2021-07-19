@@ -15,13 +15,15 @@ jobs:
       - name: build
         run: |
           yarn
-          yarn build
+          yarn workspace ui run build
+          tsc -p ./packages/plugin/tsconfig.json
+          cp -r ./packages/plugin/ ./dist/plugin/
       - name: pack
         uses: mohuishou/utools/.github/action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          dir: ./build
+          dir: ./dist
           filename: utools-autodelete-vue
           tag_name: $ {{ github.ref }}
           upload_url: ${{ github.event.release.upload_url }}

@@ -1,6 +1,9 @@
 .DS_Store
 node_modules
-dist
+dist/*
+!dist/package.json
+!dist/logo.png
+!dist/plugin.json
 !.github/**/dist
 build/README.md
 build/Release
@@ -17,7 +20,6 @@ pnpm-debug.log*
 
 # Editor directories and files
 .idea
-.vscode
 *.suo
 *.ntvs*
 *.njsproj
