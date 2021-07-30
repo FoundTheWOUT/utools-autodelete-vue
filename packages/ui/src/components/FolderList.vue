@@ -54,7 +54,7 @@ import Card from "./Card.vue";
 import Dialog from "./Dialog.vue";
 import { mapGetters } from "vuex";
 import FolderListItem from "./FolderListItem.vue";
-import utoolsApiMixins from "@/mixins/utools-api.vue";
+import utoolsApiMixin from "@/mixins/utools-api";
 
 export default Vue.extend({
   components: { Card, Dialog, FolderListItem },
@@ -64,7 +64,7 @@ export default Vue.extend({
       showDialog: false,
     };
   },
-  mixins: [utoolsApiMixins],
+  mixins: [utoolsApiMixin],
   computed: {
     ...mapGetters(["waitingFolderList"]),
   },

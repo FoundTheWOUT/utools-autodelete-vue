@@ -49,7 +49,7 @@ import Vue from "vue";
 import * as _ from "lodash";
 import { action } from "@/store";
 import Card from "./Card.vue";
-import utoolsApi from "@/mixins/utools-api.vue";
+import utoolsApiMixin from "@/mixins/utools-api";
 
 export default Vue.extend({
   components: { Card },
@@ -61,7 +61,7 @@ export default Vue.extend({
       },
     },
   },
-  mixins: [utoolsApi],
+  mixins: [utoolsApiMixin],
   data() {
     return {
       hoverDetail: false,

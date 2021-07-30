@@ -31,19 +31,23 @@ export default abstract class AutoDelete {
     return this.appMapAccounts[app];
   }
 
+  private getPathFromFolder(midPaths: string[], folder: string): string[] {
+    if (midPaths.length > 0) {
+      return midPaths.map((_mid: string) => path.join(_mid, folder));
+    } else {
+      return [folder];
+    }
+  }
+
   getWaitingPath(app: appNameType, root: string): IWaitingFolder[] {
     const { waitingFolderPath, mid } = this.config[app];
-    console.log(mid);
     return waitingFolderPath.map((folder) => {
       return {
         status: true,
         name: folder,
-        path: mid
-          .map((_mid) => {
-            const folderPath = path.join(root, _mid, folder);
-            return fs.existsSync(folderPath) ? folderPath : "";
-          })
-          .filter((i) => i !== ""),
+        path: this.getPathFromFolder(mid, folder).map((pth) =>
+          path.join(root, pth)
+        ),
       };
     });
   }

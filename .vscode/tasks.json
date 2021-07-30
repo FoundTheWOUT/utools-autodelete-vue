@@ -46,7 +46,7 @@
     {
       "type": "shell",
       "label": "Clear",
-      "command": "rm -rf ./dist/plugin ./dist/ui",
+      "command": "npx rimraf ./dist/plugin ./dist/ui",
       "presentation": {
         "reveal": "never"
       }

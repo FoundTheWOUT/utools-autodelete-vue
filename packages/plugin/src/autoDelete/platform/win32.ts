@@ -28,7 +28,7 @@ const config = {
       "ScreenRecorder",
       "Video",
     ],
-    removeV: [],
+    removeV: ["All Users"],
   },
 };
 
