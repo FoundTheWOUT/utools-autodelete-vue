@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-100 dark:bg-gray-700 p-5 rounded-lg shadow-lg">
+  <div class="card-box p-5">
     <div
       class="flex text-xl font-bold"
       :class="titleCenter ? 'justify-center' : ''"

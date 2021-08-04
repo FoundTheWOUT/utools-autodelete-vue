@@ -1,18 +1,15 @@
 <template>
-  <div>
-    <div
-      v-if="show && closeable"
-      style="z-index: 998"
-      class="fixed top-0 right-0 h-full w-full"
-      @click.self="$emit('close')"
-    ></div>
-    <div style="z-index: 999" ref="popper">
-      <transition name="slide-fade">
-        <div v-show="show">
-          <slot></slot>
-        </div>
-      </transition>
-    </div>
+  <div
+    style="z-index: 999"
+    ref="popper"
+    @mouseenter="handelMouseenter"
+    @mouseleave="handelMouseleave"
+  >
+    <transition name="slide-fade">
+      <div v-show="show">
+        <slot></slot>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -28,7 +25,7 @@ export default Vue.extend({
       default: false,
     },
     target: {
-      type: HTMLElement,
+      type: [HTMLElement, Array],
       default: undefined,
       require: true,
     },
@@ -36,19 +33,44 @@ export default Vue.extend({
       type: String,
       default: "top",
     },
-    closeable: {
+    // 是否有点击其它地方退出当前popper
+    autohide: {
       type: Boolean,
       default: false,
     },
   },
+  data() {
+    return {
+      timeout: 0,
+    };
+  },
   watch: {
     show(val) {
       if (val) {
-        createPopper(this.target, this.$refs.popper, {
+        let _target;
+
+        Array.isArray(this.target)
+          ? (_target = this.target[0])
+          : (_target = this.target);
+        if (this.autohide) {
+          _target.onmouseleave = this.handelMouseleave;
+        }
+        createPopper(_target, this.$refs.popper, {
           placement: this.placement,
           modifiers: [{ name: "offset", options: { offset: [0, 10] } }],
         });
       }
+    },
+  },
+  methods: {
+    handelMouseenter() {
+      clearTimeout(this.timeout);
+    },
+    handelMouseleave() {
+      if (!this.autohide) return;
+      this.timeout = setTimeout(() => {
+        this.$emit("update:show", false);
+      }, 100);
     },
   },
 });

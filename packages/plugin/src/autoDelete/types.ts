@@ -8,4 +8,8 @@ export type IAppConfig = {
   accountPaths?: string[];
 };
 
-export type IConfig = Record<appNameType, IAppConfig>;
+export type IConfig = Partial<Record<appNameType, IAppConfig>>;
+
+export interface IConfigFuncOptions {
+  remove?: boolean;
+}

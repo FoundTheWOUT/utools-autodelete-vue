@@ -13,7 +13,6 @@
       class="warn-btn"
       @click="cleanup"
       @mouseenter="hover = true"
-      @mouseleave="hover = false"
       ref="cleanBtn"
     >
       <p class="flex items-center text-white font-bold">
@@ -21,7 +20,7 @@
         清空目录
       </p>
     </button>
-    <Popper :show.sync="hover" :target="$refs.cleanBtn">
+    <Popper :show.sync="hover" :target="$refs.cleanBtn" autohide>
       <Card title-center>
         <template #title>
           <div class="text-red-500">注意</div>

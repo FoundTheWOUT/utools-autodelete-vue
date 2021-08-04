@@ -14,7 +14,6 @@
         class="warn-btn w-2/12"
         @click="showDialog = true"
         @mouseenter="hover = true"
-        @mouseleave="hover = false"
         ref="removeAccountBtn"
       >
         <p class="text-white font-bold">删除账号</p>
@@ -25,18 +24,19 @@
         <template #title>
           <div class="text-red-500">你确定删除账号吗</div>
         </template>
-        <p class="m-3">
-          按下确定后该账号文件夹将会被直接移除，且移除过程不可逆
-        </p>
-        <button class="mx-2 warn-btn text-white font-bold" @click="sureRemove">
-          确定
-        </button>
+        <div class="m-3">
+          按下确定后该账号文件夹将会被直接移除，且移除过程不可逆。<br />
+          注意，该功能是删除文件夹，不是把账号移除列表！
+        </div>
         <button class="mx-2 safe-btn text-white font-bold" @click="closePanel">
           取消
         </button>
+        <button class="mx-2 warn-btn text-white font-bold" @click="sureRemove">
+          确定
+        </button>
       </Card>
     </Dialog>
-    <Popper :show.sync="hover" :target="$refs.removeAccountBtn">
+    <Popper :show.sync="hover" :target="$refs.removeAccountBtn" autohide>
       <Card title-center>
         <template #title>
           <div class="text-red-500">删除当前账号</div>

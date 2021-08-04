@@ -1,60 +1,55 @@
 import path from "path";
 import fs from "fs";
 import AutoDelete, { appName, appNameType, USER } from "..";
-import Account from "../account";
-
-const config = {
-  [appName.WeChat]: {
-    dir: {
-      forwin10: ` C:\\Users\\${USER}\\AppData\\Local\\Packages\\TencentWeChatLimited.forWindows10_sdtnhv12zgd7a\\LocalCache\\Roaming\\Tencent\\WeChatAppStore\\WeChatAppStore Files`,
-
-      pc: `C:\\Users\\${USER}\\Documents\\WeChat Files`,
-      foruwp: `C:\\Users\\${USER}\\AppData\\Local\\Packages\\TencentWeChatLimited.WeChatUWP_sdtnhv12zgd7a\\LocalCache\\Roaming\\Tencent\\WeChatAppStore\\WeChatAppStore Files`,
-    },
-    mid: ["FileStorage"],
-    waitingFolderPath: ["Cache", "File", "Video", "Image"],
-    removeV: ["All Users", "Applet", "config"],
-  },
-  [appName.QQ]: {
-    dir: {
-      pc: `C:\\Users\\${USER}\\Documents\\Tencent Files`,
-    },
-    mid: [],
-    waitingFolderPath: [
-      "AppWebCache",
-      "Audio",
-      "FileRecv",
-      "Image",
-      "ScreenRecorder",
-      "Video",
-    ],
-    removeV: ["All Users"],
-  },
-};
+import { IConfig } from "../types";
 
 export default class AutoDeleteWin extends AutoDelete {
+  config: IConfig;
   constructor() {
     super();
-    this.config = config;
+    this.config = {
+      [appName.WeChat]: {
+        dir: [
+          ` C:\\Users\\${USER}\\AppData\\Local\\Packages\\TencentWeChatLimited.forWindows10_sdtnhv12zgd7a\\LocalCache\\Roaming\\Tencent\\WeChatAppStore\\WeChatAppStore Files`,
+
+          `C:\\Users\\${USER}\\Documents\\WeChat Files`,
+          `C:\\Users\\${USER}\\AppData\\Local\\Packages\\TencentWeChatLimited.WeChatUWP_sdtnhv12zgd7a\\LocalCache\\Roaming\\Tencent\\WeChatAppStore\\WeChatAppStore Files`,
+        ],
+        mid: ["FileStorage"],
+        waitingFolderPath: ["Cache", "File", "Video", "Image"],
+        removeV: ["All Users", "Applet", "config"],
+        accountPaths: [],
+      },
+      [appName.QQ]: {
+        dir: [`C:\\Users\\${USER}\\Documents\\Tencent Files`],
+        mid: [],
+        waitingFolderPath: [
+          "AppWebCache",
+          "Audio",
+          "FileRecv",
+          "Image",
+          "ScreenRecorder",
+          "Video",
+        ],
+        removeV: ["All Users"],
+      },
+    };
   }
 
   getAccountsList = (app: appNameType): void => {
-    const accountsList = [] as string[];
-    const appConfig = config[app];
-    for (const appStorePath of Object.values(appConfig.dir)) {
+    const appConfig = this.config[app];
+    appConfig.accountPaths = [];
+
+    this.mergeConfig(this.getOwnConfig(app), this.config[app]);
+
+    for (const appStorePath of appConfig.dir) {
       if (!fs.existsSync(appStorePath)) continue;
       Array.from(new Set(fs.readdirSync(appStorePath))).forEach((i) => {
-        if (appConfig.removeV.indexOf(i) === -1)
-          accountsList.push(path.join(appStorePath, i));
+        if (appConfig.removeV.indexOf(i) === -1) {
+          this.config[app].accountPaths.push(i);
+        }
       });
     }
-    this.appMapAccounts[app] = accountsList.map((i) => {
-      return new Account(
-        this.getAccountName(app, i),
-        i,
-        super.getWaitingPath(app, i)
-      );
-    });
   };
 
   getAccountName = (app: appNameType, accountRootPath: string): string => {

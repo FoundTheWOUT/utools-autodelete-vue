@@ -4,10 +4,10 @@
   >
     <div class="w-1/12 flex items-center mx-3">
       <input
-        class="appearance-none h-5 w-5 border border-gray-300 rounded-md checked:bg-blue-500 checked:border-transparent focus:outline-none"
+        class="form-tick appearance-none h-5 w-5 border border-gray-300 rounded-md checked:bg-blue-500 checked:border-transparent focus:outline-none"
         type="checkbox"
         v-model="status"
-        @click="handleCheckbox"
+        @change="handleCheckbox"
       />
     </div>
     <button
@@ -27,8 +27,7 @@
       :show.sync="hoverDetail"
       :target="$refs.detail"
       placement="left"
-      closeable
-      @close="hoverDetail = false"
+      autohide
     >
       <Card>
         <div class="w-96 flex flex-col">
@@ -88,3 +87,9 @@ export default Vue.extend({
   },
 });
 </script>
+
+<style scoped>
+.form-tick:checked {
+  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M5.707 7.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 0 0-1.414-1.414L7 8.586 5.707 7.293z'/%3e%3c/svg%3e");
+}
+</style>

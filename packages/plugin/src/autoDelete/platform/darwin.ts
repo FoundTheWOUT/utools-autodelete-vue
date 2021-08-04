@@ -1,51 +1,50 @@
 import path from "path";
 import fs from "fs";
 import AutoDelete, { USER, appName, appNameType } from "..";
-import Account from "../account";
+import { IConfig } from "../types";
 
-const config = {
+const rawConfig: IConfig = {
   [appName.WeChat]: {
-    dir: {
-      macStore: `/Users/${USER}/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9`,
-    },
+    dir: [
+      `/Users/${USER}/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9`,
+    ],
     waitingFolderPath: ["Audio", "File", "Image", "OpenData", "Video"],
+    accountPaths: [],
   },
   [appName.QQ]: {
-    dir: {},
+    dir: [],
+    accountPaths: [],
   },
 };
 
 export default class AutoDeleteMac extends AutoDelete {
+  config: IConfig;
   constructor() {
     super();
-    this.config = config;
+    this.config = Object.create(rawConfig);
   }
 
   getAccountsList = (app: appNameType): void => {
-    const accountsList = [] as IAccount[];
+    // TODO: reset config
+    this.config[app].accountPaths = [];
+    // merge config
+    this.mergeConfig(this.getOwnConfig(app), this.config[app]);
 
-    for (const appStorePath of Object.values(config[app].dir)) {
+    // find all account paths
+    for (const appStorePath of this.config[app].dir) {
       if (!fs.existsSync(appStorePath)) continue;
       Array.from(fs.readdirSync(appStorePath))
         .filter((i) => i.length === 32)
         .forEach((i) =>
-          accountsList.push(
-            new Account(
-              this.getAccountName(app, i),
-              path.join(appStorePath, i),
-              this.getWaitingPath(app, path.join(appStorePath, i))
-            )
-          )
+          this.config[app].accountPaths.push(path.join(appStorePath, i))
         );
     }
-    this.appMapAccounts[app] = accountsList;
-    console.debug("accounts list updated: ", accountsList);
   };
 
-  getWaitingPath = (
+  getWaitingFolderList(
     app: appNameType,
     accountRootPath: string
-  ): IWaitingFolder[] => {
+  ): IWaitingFolder[] {
     switch (app) {
       case appName.WeChat: {
         // fs.readdirSync(path.join(accountRootPath, "Message", "MessageTemp"));
@@ -60,20 +59,6 @@ export default class AutoDeleteMac extends AutoDelete {
         // mutate the config
         this.config[app].mid = _mid;
         return super.getWaitingPath(app, MessageTempDir);
-
-        // const folderList = ["Audio", "File", "Image", "OpenData", "Video"];
-        // return folderList.map((folder) => {
-        //   return {
-        //     status: true,
-        //     name: folder,
-        //     path: _mid
-        //       .map((_mid) => {
-        //         const folderPath = path.join(MessageTempDir, _mid, folder);
-        //         return fs.existsSync(folderPath) ? folderPath : "";
-        //       })
-        //       .filter((i) => i !== ""),
-        //   };
-        // });
       }
       // TODO: Macos QQ
       case appName.QQ: {
@@ -82,12 +67,9 @@ export default class AutoDeleteMac extends AutoDelete {
       default:
         return [];
     }
-  };
+  }
 
-  private getAccountName = (
-    app: appNameType,
-    accountRootPath: string
-  ): string => {
+  getUserName(app: appNameType, accountRootPath: string): string {
     return path.basename(accountRootPath);
-  };
+  }
 }

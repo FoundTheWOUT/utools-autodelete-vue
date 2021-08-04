@@ -14,4 +14,10 @@
   .safe-btn {
     @apply btn bg-green-500 hover:bg-green-700 hover:shadow-green dark:hover:shadow-dark-green;
   }
+  .account-btn {
+    @apply m-1 px-3 py-1 rounded-full outline-none focus:outline-none hover:bg-blue-200 transition-all;
+  }
+  .card-box{
+    @apply bg-gray-100 dark:bg-gray-700 rounded-lg shadow-lg
+  }
 }

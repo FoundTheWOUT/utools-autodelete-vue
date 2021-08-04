@@ -1,15 +1,13 @@
+import { appNameType } from ".";
+
 export default class Account implements IAccount {
-  public username;
-  public rootPath;
-  public waitingFolderList;
-  constructor(
-    username: string,
-    rootPath: string,
-    folderList: IWaitingFolder[]
-  ) {
-    this.username = username;
+  public username: string;
+  public rootPath: string;
+  public waitingFolderList: IWaitingFolder[];
+  constructor(rootPath: string, app: appNameType, platform: any) {
     this.rootPath = rootPath;
-    this.waitingFolderList = folderList;
+    this.username = platform.getUserName(app, rootPath);
+    this.waitingFolderList = platform.getWaitingFolderList(app, rootPath);
   }
 
   public getName(): string {
