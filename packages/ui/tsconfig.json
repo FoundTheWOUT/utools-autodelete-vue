@@ -9,6 +9,7 @@
     "paths": {
       "@/*": ["./src/*"]
     },
+    "lib": ["ESNext", "DOM"],
     "resolveJsonModule": true,
     "types": ["utools-api-types", "@types/node"]
   },
