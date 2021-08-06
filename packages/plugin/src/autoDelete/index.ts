@@ -127,7 +127,7 @@ export default abstract class AutoDelete {
   ): void {
     const localId = utools.getLocalId();
     const remoteConfig = this.getOwnConfig();
-    if (remoteConfig[localId]) {
+    if (remoteConfig?.[localId]) {
       // if remoteConfig already has localId, merge config
       this.mergeConfig(config[app], remoteConfig[localId][app], options);
       this.saveData("config", { ...remoteConfig });
@@ -152,6 +152,7 @@ export default abstract class AutoDelete {
   }
 
   public removeAccountFromList(app: appNameType, account: IAccount): void {
+    console.debug("remove account", app, account);
     // get current saved config
     const _config = this.getOwnConfig(app) as IAppConfig;
     if (_config) {

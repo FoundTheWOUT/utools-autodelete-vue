@@ -79,6 +79,10 @@ export const actionsDefinition: ActionTree<StateType, StateType> = {
     //   rootPath: "",
     //   waitingFolderList: [],
     // };
+    window?.autoDelete.removeAccountFromList(
+      getters.curAppName,
+      getters.curAccount
+    );
     return window?.autoDelete.cleanUp([_account.rootPath]).then(() => {
       // commit(mutations.SET_ACCOUNT, newAccount);
       dispatch(action.SET_ACCOUNTS, getters.curAppName);
