@@ -46,13 +46,15 @@ export default class AutoDeleteWin extends AutoDelete {
       if (!fs.existsSync(appStorePath)) continue;
       Array.from(new Set(fs.readdirSync(appStorePath))).forEach((i) => {
         if (appConfig.removeV.indexOf(i) === -1) {
-          this.config[app].accountPaths.push(i);
+          this.config[app].accountPaths.push(path.join(appStorePath, i));
         }
       });
     }
   };
 
-  getAccountName = (app: appNameType, accountRootPath: string): string => {
+  getWaitingFolderList = super.getWaitingPath;
+
+  getUserName = (app: appNameType, accountRootPath: string): string => {
     const defaultName = "没找到名字";
     switch (app) {
       case appName.WeChat: {
