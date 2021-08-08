@@ -2,6 +2,12 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "type": "npm",
+      "script": "dev",
+      "path": "packages/ui/",
+      "label": "browser dev"
+    },
+    {
       "type": "typescript",
       "tsconfig": "packages/plugin/tsconfig.json",
       "option": "watch",

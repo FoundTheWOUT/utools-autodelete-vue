@@ -51,13 +51,12 @@
 import Vue from "vue";
 import { action } from "../store";
 import Card from "./Card.vue";
-import Dialog from "./Dialog.vue";
 import { mapGetters } from "vuex";
 import FolderListItem from "./FolderListItem.vue";
 import utoolsApiMixin from "@/mixins/utools-api";
 
 export default Vue.extend({
-  components: { Card, Dialog, FolderListItem },
+  components: { Card, FolderListItem },
   data() {
     return {
       hover: false,

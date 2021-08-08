@@ -37,10 +37,9 @@
 import Vue from "vue";
 import { action } from "../store";
 import Card from "./Card.vue";
-import Dialog from "./Dialog.vue";
 
 export default Vue.extend({
-  components: { Card, Dialog },
+  components: { Card },
   data() {
     return {
       hover: false,
