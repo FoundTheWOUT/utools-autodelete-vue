@@ -1,4 +1,4 @@
-import * as _ from "lodash";
+import { cloneDeep } from "lodash-es";
 import Vue from "vue";
 import Vuex, { Store } from "vuex";
 import { actionsDefinition } from "./actions";
@@ -53,7 +53,7 @@ export default new Store({
   },
   mutations: {
     [mutations.SET_ACCOUNT]: (state, account: IAccount) => {
-      const _accounts = _.cloneDeep(state.accounts);
+      const _accounts = cloneDeep(state.accounts);
       _accounts[state.activeAccountID] = account;
       state.accounts = _accounts;
     },
