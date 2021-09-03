@@ -6,7 +6,7 @@
       <input
         class="form-tick appearance-none h-5 w-5 border border-gray-300 rounded-md checked:bg-blue-500 checked:border-transparent focus:outline-none"
         type="checkbox"
-        v-model="status"
+        v-model="data.status"
         @change="handleCheckbox"
       />
     </div>
@@ -67,9 +67,6 @@ export default Vue.extend({
     };
   },
   computed: {
-    status() {
-      return this.data.status ?? false;
-    },
     paths() {
       return this.data.path ?? "";
     },

@@ -4,6 +4,7 @@ module.exports = {
   theme: {
     maxWidth: {
       xxs: "8rem",
+      "4/5": "80%",
     },
     extend: {
       animation: {

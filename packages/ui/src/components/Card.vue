@@ -1,5 +1,5 @@
 <template>
-  <div class="card-box p-5">
+  <div class="card-box p-5 w-full">
     <div
       class="flex text-xl font-bold"
       :class="titleCenter ? 'justify-center' : ''"
