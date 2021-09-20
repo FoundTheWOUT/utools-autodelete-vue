@@ -5,7 +5,8 @@
       "type": "npm",
       "script": "dev",
       "path": "packages/ui/",
-      "label": "browser dev"
+      "label": "browser dev",
+      "problemMatcher": []
     },
     {
       "type": "shell",
@@ -75,7 +76,7 @@
     },
     {
       "type": "npm",
-      "script": "build",  
+      "script": "build",
       "path": "packages/ui/",
       "group": "build",
       "problemMatcher": [],

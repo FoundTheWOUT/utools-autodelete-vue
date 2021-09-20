@@ -41,11 +41,11 @@
       <div class="flex ml-auto px-3 pt-2 text-gray-400">
         <div class="mx-1">文件大小：</div>
         <icon
-          v-if="pending"
+          v-if="pendingFolderSize"
           class="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-300"
           icon-name="Load"
         ></icon>
-        <div v-if="!pending">{{ folderSize }}</div>
+        <div v-else>{{ folderSize }}</div>
       </div>
     </div>
   </div>
@@ -72,7 +72,12 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapState(["accounts", "activeAccountID", "folderSize", "pending"]),
+    ...mapState([
+      "accounts",
+      "activeAccountID",
+      "folderSize",
+      "pendingFolderSize",
+    ]),
     ...mapGetters(["curAppName"]),
   },
   methods: {
