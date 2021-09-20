@@ -8,6 +8,22 @@
       "label": "browser dev"
     },
     {
+      "type": "shell",
+      "label": "Clear",
+      "command": "npx rimraf ./dist/plugin ./dist/ui",
+      "presentation": {
+        "reveal": "never"
+      }
+    },
+    {
+      "label": "AutoDelte - Watch",
+      "dependsOn": ["Clear", "tsc: watch - plugin", "npm: watch - packages/ui"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
       "type": "typescript",
       "tsconfig": "packages/plugin/tsconfig.json",
       "option": "watch",
@@ -50,16 +66,8 @@
       }
     },
     {
-      "type": "shell",
-      "label": "Clear",
-      "command": "npx rimraf ./dist/plugin ./dist/ui",
-      "presentation": {
-        "reveal": "never"
-      }
-    },
-    {
       "label": "AutoDelte - Build",
-      "dependsOn": ["Clear", "tsc: watch - plugin", "npm: watch - packages/ui"],
+      "dependsOn": ["Clear", "tsc: build - plugin", "npm: build - packages/ui"],
       "group": {
         "kind": "build",
         "isDefault": true
@@ -67,7 +75,7 @@
     },
     {
       "type": "npm",
-      "script": "build",
+      "script": "build",  
       "path": "packages/ui/",
       "group": "build",
       "problemMatcher": [],
@@ -79,7 +87,7 @@
       "tsconfig": "packages/plugin/tsconfig.json",
       "problemMatcher": ["$tsc"],
       "group": "build",
-      "label": "tsc: build - packages/plugin/tsconfig.json"
+      "label": "tsc: build - plugin"
     }
   ]
 }

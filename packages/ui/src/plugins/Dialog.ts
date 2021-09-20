@@ -7,9 +7,9 @@ export const Dialog = (options: any) => {
   document.getElementById("dialog")?.remove();
   const instance = new DialogExtended({
     el: document.createElement("div"),
-    components: `123`,
     propsData: {
       value: true,
+      content: options.content,
     },
     ...options,
   });

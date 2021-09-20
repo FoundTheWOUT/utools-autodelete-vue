@@ -2,6 +2,7 @@ declare global {
   interface Window {
     autoDelete: any;
     utils: any;
+    Dialog: any;
   }
   interface IAccount {
     username: string;

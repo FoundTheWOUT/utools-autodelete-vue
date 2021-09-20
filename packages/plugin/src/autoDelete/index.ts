@@ -76,6 +76,9 @@ export default abstract class AutoDelete {
       window.utools.showNotification("清理完成");
     } catch (error) {
       window.utools.showNotification("发送错误");
+      window.Dialog({
+        content: error.toString(),
+      });
       return error;
     }
   }

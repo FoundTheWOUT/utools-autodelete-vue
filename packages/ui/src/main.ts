@@ -4,10 +4,12 @@ import store from "./store";
 import { autoDeleteVuePlugin } from "./plugins/install";
 
 import "./assets/tailwind.css";
+import { Dialog } from "./plugins/Dialog";
 
 Vue.config.productionTip = false;
 
 Vue.use(autoDeleteVuePlugin);
+window.Dialog = Dialog;
 
 if (process.env.NODE_ENV === "production") {
   utools.onPluginReady(() => {
