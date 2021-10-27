@@ -39,7 +39,7 @@
       "type": "npm",
       "script": "watch",
       "path": "packages/ui/",
-      "group": "build",
+      "group": "test",
       "isBackground": true,
       "presentation": {
         "reveal": "never",
@@ -70,10 +70,11 @@
       "label": "AutoDelte - Build",
       "dependsOn": ["Clear", "tsc: build - plugin", "npm: build - packages/ui"],
       "group": {
-        "kind": "build",
+        "kind": "test",
         "isDefault": true
       }
     },
+    // Build
     {
       "type": "npm",
       "script": "build",

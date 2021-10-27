@@ -29,13 +29,15 @@
       placement="left"
       autohide
     >
-      <Card>
-        <div class="w-96 flex flex-col">
-          <div class="mr-auto text-lg font-semibold">即将清理列表</div>
-          <div class="max-h-80 overflow-y-scroll">
-            <div class="break-all" v-for="path in paths" :key="path">
-              {{ path }}
-            </div>
+      <Card title-center>
+        <template #title>
+          <span class="dark:text-white text-lg font-semibold"
+            >即将清理列表</span
+          >
+        </template>
+        <div class="max-h-80 w-96 overflow-y-scroll">
+          <div class="break-all" v-for="path in paths" :key="path">
+            {{ path }}
           </div>
         </div>
       </Card>
@@ -45,7 +47,7 @@
 
 <script>
 import Vue from "vue";
-import * as _ from "lodash";
+import { debounce } from "lodash";
 import { action } from "@/store";
 import Card from "./Card.vue";
 import utoolsApiMixin from "@/mixins/utools-api";
@@ -75,7 +77,7 @@ export default Vue.extend({
     },
   },
   created() {
-    this.handleCheckbox = _.debounce(this.handleCheckbox, 800);
+    this.handleCheckbox = debounce(this.handleCheckbox, 800);
   },
   methods: {
     handleCheckbox() {

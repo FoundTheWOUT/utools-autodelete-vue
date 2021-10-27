@@ -33,7 +33,7 @@
             {{ content }}
           </span>
         </div>
-        <div v-else>
+        <div v-else class="flex items-center h-full">
           <slot></slot>
         </div>
       </div>

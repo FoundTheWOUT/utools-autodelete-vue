@@ -1,6 +1,7 @@
 module.exports = {
   purge: { content: ["./public/**/*.html", "./src/**/*.vue"] },
   darkMode: "class",
+  mode: "jit",
   theme: {
     maxWidth: {
       xxs: "8rem",

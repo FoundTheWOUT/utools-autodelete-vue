@@ -1,19 +1,25 @@
 <template>
   <div class="mb-4">
     <Dialog v-model="showDialog">
-      <Card class="flex flex-col items-center">
-        <template #title>即将清理列表</template>
+      <Card :title-center="true" class="max-h-[80%]">
+        <template #title>
+          <span class="dark:text-white text-lg font-semibold"
+            >即将清理列表</span
+          >
+        </template>
         <div v-if="isCleaning" class="flex flex-col items-center">
           <icon class="animate-spin h-10 w-10 text-red-500" icon-name="Load" />
           <p class="animate-flow m-3 text-2xl font-bold">清理中</p>
         </div>
         <div v-else>
-          <div
-            v-for="path in selectedWaitingFolderList"
-            :key="path"
-            class="break-all"
-          >
-            {{ path }}
+          <div class="max-h-96 overflow-auto">
+            <div
+              v-for="path in selectedWaitingFolderList"
+              :key="path"
+              class="break-all"
+            >
+              {{ path }}
+            </div>
           </div>
           <div class="flex mt-4">
             <button
@@ -52,7 +58,6 @@ import Vue from "vue";
 import { mapGetters } from "vuex";
 import { action } from "../store";
 import Card from "./Card.vue";
-// import { Dialog } from "@/plugins/Dialog";
 
 export default Vue.extend({
   components: { Card },

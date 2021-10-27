@@ -15,7 +15,10 @@
 <script>
 export default {
   props: {
-    title: String,
+    title: {
+      type: String,
+      default: "",
+    },
     titleCenter: {
       type: Boolean,
       default: false,
@@ -23,5 +26,3 @@ export default {
   },
 };
 </script>
-
-<style></style>

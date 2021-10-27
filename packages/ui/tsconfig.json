@@ -13,5 +13,5 @@
     "resolveJsonModule": true,
     "types": ["utools-api-types", "@types/node"]
   },
-  "include": ["../global.d.ts", "./src/**/*.ts", "./src/**/*.vue"]
+  "include": ["../global.d.ts", "./src/**/*"]
 }
